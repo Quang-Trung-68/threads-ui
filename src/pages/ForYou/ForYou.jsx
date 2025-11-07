@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import NavigateInHome from "@/components/Navigation/NavigateInHome";
 import PostLists from "@/components/Posts/PostLists";
 import { Spinner } from "@/components/ui/spinner";
+import React, { useEffect, useState } from "react";
 
 export default function ForYou() {
   const [posts, setPosts] = useState([]);
@@ -40,7 +40,7 @@ export default function ForYou() {
             </div>
           ) : (
             <div>
-              <PostLists posts={posts} />
+              <PostLists isPermitDetailPost={true} posts={posts} />
             </div>
           )}
         </div>

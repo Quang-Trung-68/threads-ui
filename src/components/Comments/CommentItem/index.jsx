@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Heart as LikeIcon,
@@ -8,14 +8,19 @@ import {
   Send as SendIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import ReplyModal from "../ReplyModal";
 
 function CommentItem({ postId, id, name, body }) {
   const username = "user_" + Math.floor(Math.random() * 100);
   const urlImage =
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
 
+  const ReplyModalRef = useRef(null);
+  const toggleReplyModal = () => {
+    ReplyModalRef.current?.toggle();
+  };
   return (
-    <Card className="flex cursor-pointer flex-col rounded-none border-b p-3 md:p-6">
+    <Card className="flex flex-col rounded-none border-b p-3 md:p-6">
       <div className="flex gap-2">
         <div>
           <Avatar className="size-9">
@@ -54,28 +59,32 @@ function CommentItem({ postId, id, name, body }) {
           )}
 
           <div className="interaction flex gap-4 text-gray-600">
-            <div className="flex cursor-pointer items-center gap-1 hover:text-red-500">
-              <LikeIcon className="size-5" />
+            <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-red-500">
+              <LikeIcon className="size-4.5" />
               <span className="text-sm">{22}</span>
             </div>
 
-            <div className="flex cursor-pointer items-center gap-1 hover:text-blue-500">
-              <ReplyIcon className="size-5" />
+            <div
+              onClick={toggleReplyModal}
+              className="flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-blue-500"
+            >
+              <ReplyIcon className="size-4.5" />
               <span className="text-sm">{3}</span>
             </div>
 
-            <div className="flex cursor-pointer items-center gap-1 hover:text-green-500">
-              <Repeat2Icon className="size-5" />
+            <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-green-500">
+              <Repeat2Icon className="size-4.5" />
               <span className="text-sm">{2}</span>
             </div>
 
-            <div className="flex cursor-pointer items-center gap-1 hover:text-purple-500">
-              <SendIcon className="size-5" />
+            <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-purple-500">
+              <SendIcon className="size-4.5" />
               <span className="text-sm">{10}</span>
             </div>
           </div>
         </div>
       </div>
+      <ReplyModal ref={ReplyModalRef} />
     </Card>
   );
 }

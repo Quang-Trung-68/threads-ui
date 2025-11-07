@@ -1,4 +1,4 @@
-import PostItem from "@/components/PostItem/PostItem";
+import PostItem from "@/components/PostItem";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CommentItem from "@/components/Comments/CommentItem";
@@ -43,7 +43,7 @@ export default function PostDetail() {
   return (
     <>
       <div>
-        <PostItem {...post} />
+        <PostItem isPermitDetailPost={false} {...post} />
       </div>
       <div>
         {comments.map((comment) => (

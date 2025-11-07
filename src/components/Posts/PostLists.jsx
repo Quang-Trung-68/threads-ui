@@ -1,10 +1,16 @@
-import PostItem from "../PostItem/PostItem";
+import PostItem from "../PostItem";
 
-const PostLists = ({posts}) => {
+const PostLists = ({ isPermitDetailPost, posts }) => {
   return (
     <div>
       {posts.map((post) => {
-        return <PostItem key={post.id} {...post} />;
+        return (
+          <PostItem
+            key={post.id}
+            isPermitDetailPost={isPermitDetailPost}
+            {...post}
+          />
+        );
       })}
     </div>
   );

@@ -1,7 +1,6 @@
 import NavigateInHome from "@/components/Navigation/NavigateInHome";
 import PostLists from "@/components/Posts/PostLists";
 import { Spinner } from "@/components/ui/spinner";
-import { mockPostsFollowing } from "@/mockDatas/mockPostsFollowing";
 import React, { useEffect, useState } from "react";
 
 export default function Following() {
@@ -41,7 +40,7 @@ export default function Following() {
             </div>
           ) : (
             <div>
-              <PostLists posts={posts} />
+              <PostLists isPermitDetailPost={true} posts={posts} />
             </div>
           )}
         </div>

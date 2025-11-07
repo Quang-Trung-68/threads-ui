@@ -7,10 +7,6 @@
   background-color: rgba(0, 0, 0, 0.035);
 }
 
-* {
-  user-select: none;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -48,7 +44,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   /* custom break point */
-  --breakpoint-md:698px;
+  --breakpoint-md: 698px;
 }
 
 :root {
@@ -119,8 +115,6 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-
-
 
 @layer base {
   * {

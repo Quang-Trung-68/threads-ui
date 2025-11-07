@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import ForYou from "../ForYou/ForYou";
-import Following from "../Following/Following";
-import PostItem from "@/components/PostItem/PostItem";
-
-import { mockPosts } from "@/mockDatas/mockPosts.js";
-
-import { NavLink } from "react-router";
 import NavigateInHome from "@/components/Navigation/NavigateInHome";
 import PostLists from "@/components/Posts/PostLists";
 import { useEffect, useState } from "react";
@@ -37,17 +29,17 @@ export default function Home() {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col items-center justify-center">
         <div>
           <NavigateInHome />
         </div>
         {loading ? (
-          <div className="flex h-dvh w-dvw items-center justify-center gap-4">
+          <div className="flex h-dvh w-dvw items-center justify-center">
             <Spinner />
           </div>
         ) : (
           <div>
-            <PostLists posts={posts} />
+            <PostLists isPermitDetailPost={true} posts={posts} />
           </div>
         )}
       </div>
