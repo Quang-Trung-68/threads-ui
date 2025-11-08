@@ -12,6 +12,7 @@ src/
 ├── routes.js # Định nghĩa tuyến đường (Routing)
 └── main.jsx # Điểm khởi đầu của ứng dụng
 ```
+
 ## 🚀 Cách cài đặt & chạy dự án
 
 ```bash
@@ -32,7 +33,5 @@ npm run dev
 ## 🚀🚀 Deloy Vercel
 
 ```txt
-
+https://threads-day-34.vercel.app/
 ```
-
-
