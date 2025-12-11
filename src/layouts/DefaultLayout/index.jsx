@@ -1,17 +1,21 @@
 import { Outlet } from "react-router";
-import Header from "@components/Header";
 import Navigation from "@/components/Navigation";
+import LoginActonCard from "@/components/Modals/LoginActonCard";
 
 export default function DefaultLayout() {
   return (
-    <div className="relative flex items-start justify-center md:mx-24">
-      <Header />
-
-      <div className="mt-14 w-175 max-w-full min-w-dvw md:sticky md:top-4 md:h-auto md:max-w-160 md:min-w-136 md:overflow-y-auto md:rounded-3xl md:border md:[-ms-overflow-style:none] md:[scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <Outlet />
+    <div className="relative flex justify-center min-h-screen">
+      <div className="flex w-full justify-center gap-3">
+        <div className="w-full max-w-160 min-w-0">
+          <Outlet />
+        </div>
+        <div className="hidden lg:block w-85 h-fit sticky top-15">
+          <LoginActonCard />
+        </div>
       </div>
-
-      <Navigation />
+      <div>
+        <Navigation />
+      </div>
     </div>
   );
 }

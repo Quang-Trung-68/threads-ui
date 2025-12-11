@@ -59,6 +59,9 @@ httpRequest.interceptors.response.use(
         queueJobs.forEach((job) => job.reject());
         window.location.href = "/login";
         return Promise.reject(error);
+      } finally {
+        isRefreshing = false;
+        queueJobs = [];
       }
     }
     return Promise.reject(error);
