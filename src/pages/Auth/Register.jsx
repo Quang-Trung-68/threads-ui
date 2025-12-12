@@ -8,17 +8,21 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 
 import { Eye, EyeOff } from "lucide-react";
+import { useDebouncedField } from "@/hooks/useDebouncedField";
 // dt1234@gmail.com 12345678
 //
 export default function Register() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
+    mode: "onChange",
   });
 
+  const [status, setStatus] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -31,10 +35,14 @@ export default function Register() {
       if (!response.error) {
         Cookies.set("access_token", response.data.access_token);
         Cookies.set("refresh_token", response.data.refresh_token);
-        toast.success("Register successfully!");
-        navigate("/");
+        setStatus(
+          "Register successfully, please check your email to verify your account!",
+        );
+        toast.success(
+          "Register successfully, please check your email to verify your account!",
+        );
       } else {
-        const entries = Object.entries(response.error.data.message);
+        const entries = Object.entries(response.error.data.errors);
         for (const [_, [key, value]] of Object.entries(entries)) {
           toast.error(`${value}`);
         }
@@ -45,40 +53,36 @@ export default function Register() {
     }
   };
 
+  // Debounced input
+  const usernameChange = useDebouncedField(setValue, "username", 800);
+  const emailChange = useDebouncedField(setValue, "email", 800);
+  const passwordChange = useDebouncedField(setValue, "password", 800);
+  const passwordConfirmationChange = useDebouncedField(
+    setValue,
+    "password_confirmation",
+    800,
+  );
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-transparent">
       {/* Main register container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-2 text-center">
           <h1 className="mb-8 text-2xl font-semibold">Register an account</h1>
-
+          <div className="mb-8 text-sm text-blue-400 italic">{status}</div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* First Name */}
+            {/* Username */}
             <div className="text-left">
               <input
                 type="text"
-                placeholder="First name"
-                {...register("firstName")}
+                placeholder="Username"
+                {...register("username")}
+                onChange={(e) => usernameChange(e.target.value)}
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
               />
-              {errors.firstName && (
+              {errors.username && (
                 <span className="mt-1 block text-sm text-red-500">
-                  {errors.firstName.message}
-                </span>
-              )}
-            </div>
-
-            {/* Last Name */}
-            <div className="text-left">
-              <input
-                type="text"
-                placeholder="Last name"
-                {...register("lastName")}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
-              />
-              {errors.lastName && (
-                <span className="mt-1 block text-sm text-red-500">
-                  {errors.lastName.message}
+                  {errors.username.message}
                 </span>
               )}
             </div>
@@ -89,6 +93,7 @@ export default function Register() {
                 type="email"
                 placeholder="example@fullstack.edu.vn"
                 {...register("email")}
+                onChange={(e) => emailChange(e.target.value)}
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
               />
               {errors.email && (
@@ -105,6 +110,7 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   placeholder="12345678"
                   {...register("password")}
+                  onChange={(e) => passwordChange(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
                 />
                 <span
@@ -128,6 +134,7 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   placeholder="12345678"
                   {...register("password_confirmation")}
+                  onChange={(e) => passwordConfirmationChange(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
                 />
                 <span

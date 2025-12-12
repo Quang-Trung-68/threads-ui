@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const httpRequest = axios.create({
-  baseURL: "https://api01.f8team.dev/api",
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 httpRequest.interceptors.request.use((config) => {
@@ -24,7 +24,7 @@ let queueJobs = [];
 async function sendRefreshToken(config, refreshToken) {
   isRefreshing = true;
 
-  const response = await axios.post(`${config.baseURL}/auth/refresh-token`, {
+  const response = await axios.post(`${config.baseURL}/api/auth/refresh`, {
     refresh_token: refreshToken,
   });
 

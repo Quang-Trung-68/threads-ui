@@ -6,20 +6,49 @@ export const authApi = createApi({
   baseQuery: baseQuery(),
   tagTypes: ["User"],
   endpoints: (builder) => ({
-    // Register user
+    // Register
     register: builder.mutation({
       query: (credentials) => ({
-        url: `/auth/register`,
+        url: `/api/auth/register`,
+        method: "POST",
+        data: credentials,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    // Verify email
+    verifyEmail: builder.mutation({
+      query: (credentials) => ({
+        url: `/api/auth/verify-email`,
         method: "POST",
         data: credentials,
       }),
       invalidatesTags: ["User"],
     }),
 
-    // Login user
+    // Login
     login: builder.mutation({
       query: (credentials) => ({
-        url: `/auth/login`,
+        url: `/api/auth/login`,
+        method: "POST",
+        data: credentials,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Forgot password
+    forgotPassword: builder.mutation({
+      query: (credentials) => ({
+        url: `/api/auth/forgot-password`,
+        method: "POST",
+        data: credentials,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Reset password
+    resetPassword: builder.mutation({
+      query: (credentials) => ({
+        url: `/api/auth/reset-password`,
         method: "POST",
         data: credentials,
       }),
@@ -29,7 +58,7 @@ export const authApi = createApi({
     // Get me
     getCurrentUser: builder.query({
       query: () => ({
-        url: `/auth/me`,
+        url: `/api/auth/user`,
         method: "GET",
       }),
       providesTags: ["User"],
@@ -37,5 +66,11 @@ export const authApi = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useVerifyEmailMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+  useGetCurrentUserQuery,
+} = authApi;

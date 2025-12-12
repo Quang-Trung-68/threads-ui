@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
-import Navigation from "@/components/Navigation";
-import LoginActonCard from "@/components/Modals/LoginActonCard";
+import Navigation from "@/components/Layouts/Navigation";
+import LoginActonCard from "@/components/Common/Modals/LoginActonCard";
 
 export default function DefaultLayout() {
   return (

@@ -1,55 +1,44 @@
-import { loginSchema } from "@/schemas";
-import { useLoginMutation } from "@/services/auth";
+import { useForgotPasswordMutation } from "@/services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
 import { useDebouncedField } from "@/hooks/useDebouncedField";
+import forgotPasswordSchema from "@/schemas/forgotPasswordSchema";
 
-export default function Login() {
+export default function ForgotPassword() {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(forgotPasswordSchema),
     mode: "onChange",
   });
 
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [loginApi, { isError, isLoading }] = useLoginMutation();
+  const [forgotPasswordApi, { isError, isLoading }] =
+    useForgotPasswordMutation();
 
   const onSubmit = async (credentials) => {
     try {
-      const response = await loginApi(credentials);
-      // save response data
-      Cookies.set("access_token", response.data.access_token);
-      Cookies.set("refresh_token", response.data.refresh_token);
-      navigate("/");
-      toast.success("Login successfully!");
+      const response = await forgotPasswordApi(credentials);
+      console.log(response);
+      //   navigate("/");
+      toast.success("Send a email successfully!");
     } catch (error) {
       console.log(error);
-      toast.error("Error to login, please try again");
+      toast.error("Error to send a verified email, please try again");
     }
   };
 
-  const onForgotPassword = (e) => {
-    e.preventDefault();
-    navigate("/forgot-password");
-  };
-
   // Debounced input
-  const loginChange = useDebouncedField(setValue, "login", 800);
-  const passwordChange = useDebouncedField(setValue, "password", 800);
+  const emailChange = useDebouncedField(setValue, "email", 800);
 
   return (
     <div className="mb-8 text-center">
@@ -62,8 +51,8 @@ export default function Login() {
             type="text"
             placeholder="Email..."
             defaultValue={"dt1234@gmail.com"}
-            {...register("login")}
-            onChange={(e) => loginChange(e.target.value)}
+            {...register("email")}
+            onChange={(e) => emailChange(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
           />
           {errors.login && (
@@ -73,44 +62,16 @@ export default function Login() {
           )}
         </div>
 
-        {/* Password */}
-        <div className="text-left">
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password..."
-              {...register("password")}
-              onChange={(e) => passwordChange(e.target.value)}
-              defaultValue={"12345678"}
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </span>
-          </div>
-          {errors.password && (
-            <span className="mt-1 block text-sm text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
         <button
           type="submit"
           className="w-full cursor-pointer rounded-xl bg-black py-3 text-white hover:bg-gray-800"
           disabled={isLoading}
         >
-          Log in
+          Send a link to verified email
         </button>
 
-        <button
-          onClick={onForgotPassword}
-          className="cursor-pointer text-sm text-gray-600 hover:text-gray-800"
-        >
-          Forgot password?
+        <button className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
+          Reset password?
         </button>
       </form>
 

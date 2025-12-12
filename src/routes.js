@@ -2,25 +2,27 @@ import { PATHS } from "@/configs/paths.js";
 import { LAYOUTS } from "@/configs/layouts.js";
 
 import Home from "@/pages/Home";
-import Search from "@pages/Search";
-import Create from "@components/Create";
-import Activity from "@/pages/Activity";
-import NotFound from "@pages/NotFound";
-import Profile from "@pages/Profile";
+import Search from "@pages/DefaultLayout/Search";
+import Create from "@components/Features/Create";
+import Activity from "@/pages/DefaultLayout/Activity";
+import NotFound from "@pages/NoLayout/NotFound";
+import Profile from "@pages/DefaultLayout/Profile";
 import {
   Heart as HeartIcon,
   House as HouseIcon,
   Plus as PlusIcon,
   User as UserIcon,
+  Search as SearchIcon,
 } from "lucide-react";
-import { Search as SearchIcon } from "lucide-react";
-import PostDetail from "@/pages/PostDetailPage";
-import UserProfile from "@/pages/ProfilePage";
-import Following from "./pages/Following/Following";
-import GhostPosts from "./pages/GhostPosts";
-import ForYou from "./pages/ForYou/ForYou";
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
+import PostDetail from "@/pages/DefaultLayout/PostDetail";
+import UserProfile from "@/pages/DefaultLayout/UserProfile";
+import Following from "@/pages/DefaultLayout/Following/Following";
+import GhostPosts from "@/pages/DefaultLayout/GhostPosts";
+import ForYou from "@/pages/DefaultLayout/ForYou/ForYou";
+import Login from "@/pages/Auth/Login";
+import Register from "@/pages/Auth/Register";
+import ForgotPassword from "@/pages/Auth/ForgotPassword";
+import VerifyEmail from "@/pages/Auth/VerifyEmail";
 
 export const ROUTES = [
   {
@@ -125,6 +127,20 @@ export const ROUTES = [
         path: PATHS.REGISTER,
         title: "Register",
         element: Register,
+        isShowInNav: false,
+        private: false,
+      },
+      {
+        path: PATHS.FORGOT_PASSWORD,
+        title: "Forgot password",
+        element: ForgotPassword,
+        isShowInNav: false,
+        private: false,
+      },
+      {
+        path: PATHS.VERIFY_EMAIL,
+        title: "Verify email",
+        element: VerifyEmail,
         isShowInNav: false,
         private: false,
       },

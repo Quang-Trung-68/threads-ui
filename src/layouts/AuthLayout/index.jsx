@@ -24,8 +24,10 @@ export default function AuthLayout() {
       </div>
 
       {/* Main Content Wrapper */}
-      <div className="z-10 w-full max-w-md">
-        <Outlet />
+      <div className="z-10 flex min-h-[90vh] w-full max-w-md flex-col justify-between">
+        <div>
+          <Outlet />
+        </div>
 
         {/* Footer moved here */}
         <div className="space-x-3 text-center text-xs text-gray-500">
