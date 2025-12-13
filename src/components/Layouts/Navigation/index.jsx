@@ -5,20 +5,51 @@ import { ChartBarIncreasing } from "lucide-react";
 import useAuth from "@/hooks/useAuth";
 import { useState } from "react";
 import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
+import { CreatePostModal } from "@/components/Common/Modals/CreatePostModal";
 
 export default function Navigation() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [titleModal, setTitleModal] = useState("");
+  const [descriptionModal, setDescriptionModal] = useState("");
+  const [showIconPost, setShowIconPost] = useState(false);
+
   const navigateToHome = () => {
     navigate("/");
   };
 
   const { user } = useAuth();
-  const handleUserAuth = (event, isPrivate) => {
-    if (isPrivate && !user) {
+  const handleUserAuth = (event, isPrivate, path) => {
+    if (path && isPrivate && !user) {
       event.preventDefault();
-      console.log("Set modal open");
+      setTitleModal("Say more with Threads");
+      setDescriptionModal(
+        "Join Threads to share thoughts, find out what's going on, follow your people and more.",
+      );
       setOpen(true);
+      setShowIconPost(false);
+      return;
+    }
+    if (!path && isPrivate && !user) {
+      event.preventDefault();
+      setTitleModal("Sign up to post");
+      setDescriptionModal(
+        "Join Threads to share ideas, ask questions, post random thoughts and more.",
+      );
+      setOpen(true);
+      setShowIconPost(true);
+      return;
+    }
+    if (!path && isPrivate && user) {
+      event.preventDefault();
+      CreatePostModal.open({
+        title: "Delete post?",
+        content: "This action cannot be undone.",
+        onSave: () => {
+          console.log("Saved!");
+        },
+      });
+      return;
     }
   };
 
@@ -47,6 +78,7 @@ export default function Navigation() {
             return rou.children.map((child, index) => {
               const Icon = child.icon;
               const isPrivate = child.private;
+              const path = child.path;
               return (
                 child.isShowInNav && (
                   <NavLink
@@ -55,7 +87,7 @@ export default function Navigation() {
                     }
                     key={index}
                     to={child.path}
-                    onClick={(event) => handleUserAuth(event, isPrivate)}
+                    onClick={(event) => handleUserAuth(event, isPrivate, path)}
                   >
                     <Icon
                       className={`size-6 group-[.active]:text-black ${
@@ -77,7 +109,13 @@ export default function Navigation() {
           </Button>
         </div>
       </nav>
-      <LoginActionModal open={open} setOpen={setOpen} />
+      <LoginActionModal
+        titleModal={titleModal}
+        descriptionModal={descriptionModal}
+        showIconPost={showIconPost}
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
   );
 }

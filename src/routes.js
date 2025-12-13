@@ -95,6 +95,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: PlusIcon,
         isFill: false,
+        private: true,
       },
       {
         path: PATHS.ACTIVITY,

@@ -2,10 +2,9 @@ import { Outlet } from "react-router";
 import Navigation from "@/components/Layouts/Navigation";
 import LoginActonCard from "@/components/Common/Modals/LoginActonCard";
 import useAuth from "@/hooks/useAuth";
-import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
 
 export default function DefaultLayout() {
-  const { user, isLoading, isError, isSuccess, isFetching } = useAuth();
+  const { user, isLoading } = useAuth();
 
   return (
     <div className="relative flex min-h-screen justify-center">

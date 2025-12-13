@@ -22,8 +22,7 @@ export default function ForgotPassword() {
 
   const navigate = useNavigate();
 
-  const [forgotPasswordApi, { isError, isLoading }] =
-    useForgotPasswordMutation();
+  const [forgotPasswordApi, { isLoading }] = useForgotPasswordMutation();
 
   const onSubmit = async (credentials) => {
     try {
@@ -67,11 +66,7 @@ export default function ForgotPassword() {
           className="w-full cursor-pointer rounded-xl bg-black py-3 text-white hover:bg-gray-800"
           disabled={isLoading}
         >
-          Send a link to verified email
-        </button>
-
-        <button className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
-          Reset password?
+          Send a verified email
         </button>
       </form>
 

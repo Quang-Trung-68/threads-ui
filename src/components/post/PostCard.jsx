@@ -80,7 +80,7 @@ function PostCard({ user, id, content, isPermitDetailPost }) {
 
             {urlImage && (
               <div className="overflow-hidden rounded-lg">
-                <img src={urlImage} className="w-full" alt={""} />
+                <img src={urlImage} className="size-5" alt={""} />
               </div>
             )}
 

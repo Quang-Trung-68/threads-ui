@@ -13,7 +13,7 @@ export const postApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Post"],
     }),
     // Get feed
     getFeed: builder.query({

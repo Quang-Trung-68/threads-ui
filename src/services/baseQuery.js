@@ -1,6 +1,5 @@
 import httpRequest from "../utils/httpRequest";
 
-// Custom baseQuery sử dụng axios instance
 const baseQuery =
   () =>
   async ({ url, method = "GET", data, params }) => {

@@ -21,7 +21,7 @@ export default function Home() {
     data: posts,
     isLoading,
     isError,
-  } = useGetFeedQuery({ type: "for_you", page: 1 });
+  } = useGetFeedQuery({ type: "for_you", page: 1, per_page: 10 });
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -41,7 +41,7 @@ export default function Home() {
     setLoading(true);
     fetchPosts();
   }, []);
-
+  console.log(posts);
   return (
     <div className="relative flex min-h-screen w-full">
       <div className="w-full">
@@ -78,7 +78,7 @@ export default function Home() {
         </div>
 
         {/* Main Content - Flows naturally with window scroll */}
-        <div className="relative z-0 flex min-h-screen w-full flex-col gap-1 bg-white">
+        <div className="relative z-0 flex min-h-screen w-full flex-col bg-white">
           {posts &&
             posts.map((post) => (
               <PostCard {...post} isPermitDetailPost={true} />

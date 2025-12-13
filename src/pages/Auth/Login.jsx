@@ -2,12 +2,12 @@ import { loginSchema } from "@/schemas";
 import { useLoginMutation } from "@/services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDebouncedField } from "@/hooks/useDebouncedField";
 
@@ -21,6 +21,12 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
+
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (state?.message) toast.success(state.message);
+  }, [state]);
 
   const navigate = useNavigate();
 

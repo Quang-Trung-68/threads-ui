@@ -4,7 +4,7 @@ import baseQuery from "./baseQuery";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQuery(),
-  tagTypes: ["User"],
+  tagTypes: ["Auth"],
   endpoints: (builder) => ({
     // Register
     register: builder.mutation({
@@ -13,7 +13,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
     }),
     // Verify email
     verifyEmail: builder.mutation({
@@ -22,7 +22,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
     }),
 
     // Login
@@ -32,7 +32,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
     }),
 
     // Forgot password
@@ -42,7 +42,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
     }),
 
     // Reset password
@@ -52,7 +52,16 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
+    }),
+    // Reset password
+    validateResetToken: builder.query({
+      query: (params) => ({
+        url: `/api/auth/reset-password/validate`,
+        method: "GET",
+        params,
+      }),
+      providesTags: ["Auth"],
     }),
 
     // Get me
@@ -61,7 +70,7 @@ export const authApi = createApi({
         url: `/api/auth/user`,
         method: "GET",
       }),
-      providesTags: ["User"],
+      providesTags: ["Auth"],
     }),
   }),
 });
@@ -72,5 +81,6 @@ export const {
   useVerifyEmailMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useValidateResetTokenQuery,
   useGetCurrentUserQuery,
 } = authApi;
