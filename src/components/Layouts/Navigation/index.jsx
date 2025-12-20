@@ -1,12 +1,13 @@
 import { ROUTES } from "@/routes";
 import { NavLink, useNavigate } from "react-router";
 import { Button } from "@/components/Common/ui/button";
-import { ChartBarIncreasing, Menu, Pin } from "lucide-react";
+import { Menu, Pin } from "lucide-react";
 import useAuth from "@/hooks/useAuth";
 import { useState } from "react";
 import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
 import { CreatePostModal } from "@/components/post/CreatePostModal";
 import UserOptionsDropdown from "@/components/Common/DropdownMenu/UserOptionsDropdown";
+import { PATHS } from "@/configs/paths";
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Navigation() {
   };
 
   const { user } = useAuth();
+
   const handleUserAuth = (event, isPrivate, path) => {
     if (path && isPrivate && !user) {
       event.preventDefault();
@@ -51,6 +53,10 @@ export default function Navigation() {
         },
       });
       return;
+    }
+    if (path === PATHS.USER_PROFILE && user) {
+      event.preventDefault();
+      navigate(`/@${user.username}`);
     }
   };
 

@@ -3,8 +3,6 @@ export const PATHS = {
   FOR_YOU: "/for_you",
   FOLLOWING: "/following",
   GHOST_POSTS: "/ghost-posts",
-  USER_PROFILE: "/:username",
-  POST_DETAIL: "/:username/post/:id",
   SEARCH: "/search",
   ACTIVITY: "/activity",
   PROFILE: "/profile",
@@ -13,5 +11,7 @@ export const PATHS = {
   VERIFY_EMAIL: "/verify-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  USER_PROFILE: "/:username",
+  POST_DETAIL: "/:username/post/:id",
   NOT_FOUND: "*",
 };

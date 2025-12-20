@@ -6,7 +6,6 @@ import Search from "@pages/DefaultLayout/Search";
 import Create from "@components/Features/Create";
 import Activity from "@/pages/DefaultLayout/Activity";
 import NotFound from "@pages/NoLayout/NotFound";
-import Profile from "@pages/DefaultLayout/Profile";
 import {
   Heart as HeartIcon,
   House as HouseIcon,
@@ -15,7 +14,7 @@ import {
   Search as SearchIcon,
 } from "lucide-react";
 import PostDetail from "@/pages/DefaultLayout/PostDetail";
-import UserProfile from "@/pages/DefaultLayout/UserProfile";
+import UserProfile from "@/pages/UserProfile";
 import Following from "@/pages/Following";
 import GhostPosts from "@/pages/DefaultLayout/GhostPosts";
 import ForYou from "@/pages/DefaultLayout/ForYou/ForYou";
@@ -107,9 +106,9 @@ export const ROUTES = [
         private: true,
       },
       {
-        path: PATHS.PROFILE,
-        title: "Profile",
-        element: Profile,
+        path: PATHS.USER_PROFILE,
+        title: "User Profile",
+        element: UserProfile,
         isShowInNav: true,
         icon: UserIcon,
         isFill: true,
