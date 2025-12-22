@@ -27,6 +27,39 @@ export const authApi = createApi({
       invalidatesTags: ["Auth"],
     }),
 
+    //Resend Verification email
+    resendVerificationEmail: builder.mutation({
+      query: () => ({
+        url: `/api/auth/resend-verification-email`,
+        method: "POST",
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ["Auth"],
+    }),
+
+    // Logout
+    logout: builder.mutation({
+      query: () => ({
+        url: `/api/auth/logout`,
+        method: "POST",
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ["Auth"],
+    }),
+
+    // Delete account
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: `/api/auth/account`,
+        method: "POST",
+        data: {
+          _method: "DELETE",
+        },
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ["Auth"],
+    }),
+
     // Login
     login: builder.mutation({
       query: (credentials) => ({
@@ -85,6 +118,9 @@ export const authApi = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useLogoutMutation,
+  useResendVerificationEmailMutation,
+  useDeleteAccountMutation,
   useVerifyEmailMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,

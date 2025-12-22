@@ -7,7 +7,6 @@ export const postApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     // Get feed
-
     getFeed: builder.query({
       query: ({ refreshKey, ...params }) => ({
         url: `/api/posts/feed`,
@@ -54,6 +53,24 @@ export const postApi = createApi({
       }),
       transformResponse: (response) => response.data,
     }),
+    createPost: builder.mutation({
+      query: (data) => ({
+        url: `/api/posts`,
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: ["Post"],
+    }),
+    deletePost: builder.mutation({
+      query: ({ id }) => ({
+        url: `/api/posts/${id}`,
+        method: "POST",
+        data: {
+          _method: "DELETE",
+        },
+      }),
+      invalidatesTags: ["Post"],
+    }),
     likePost: builder.mutation({
       query: ({ id }) => ({
         url: `/api/posts/${id}/like`,
@@ -65,6 +82,7 @@ export const postApi = createApi({
         url: `/api/posts/${id}/repost`,
         method: "POST",
       }),
+      invalidatesTags: ["Post"],
     }),
     savePost: builder.mutation({
       query: ({ id }) => ({
@@ -128,6 +146,8 @@ export const {
   useGetFeedQuery,
   useGetSinglePostQuery,
   useLikePostMutation,
+  useCreatePostMutation,
+  useDeletePostMutation,
   useRepostMutation,
   useSavePostMutation,
   useMuteUserMutation,

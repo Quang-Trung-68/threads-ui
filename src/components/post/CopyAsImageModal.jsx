@@ -23,10 +23,11 @@ import {
   Download as DownloadIcon,
 } from "lucide-react";
 import { toPng, toBlob } from "html-to-image";
-import { toast } from "sonner";
 import threadsIcon from "@assets/threads-icon.svg";
+import { notifySooner } from "@/utils/notifySooner";
 
 // Mock Interaction Bar specifically for the image preview
+// eslint-disable-next-line react-refresh/only-export-components
 const PreviewInteractionBar = ({
   likes_count,
   replies_count,
@@ -98,11 +99,11 @@ const Modal = NiceModal.create(
           await navigator.clipboard.write([
             new ClipboardItem({ "image/png": blob }),
           ]);
-          toast.success("Image copied to clipboard!");
+          notifySooner.success("Image copied to clipboard!");
         }
       } catch (error) {
         console.error("Failed to copy image:", error);
-        toast.error("Failed to copy image.");
+        notifySooner.error("Failed to copy image.");
       } finally {
         setIsCopying(false);
       }
@@ -111,7 +112,6 @@ const Modal = NiceModal.create(
     const handleDownload = async () => {
       if (!previewRef.current) return;
       setIsDownloading(true);
-      console.log(previewRef);
 
       try {
         const dataUrl = await toPng(previewRef.current, {
@@ -123,10 +123,10 @@ const Modal = NiceModal.create(
         link.download = `threads-post-${updated_at}.png`;
         link.href = dataUrl;
         link.click();
-        toast.success("Image downloaded!");
+        notifySooner.success("Image downloaded!");
       } catch (error) {
         console.error("Failed to download image:", error);
-        toast.error("Failed to download image.");
+        notifySooner.error("Failed to download image.");
       } finally {
         setIsDownloading(false);
       }

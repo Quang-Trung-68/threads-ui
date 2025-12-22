@@ -38,7 +38,7 @@ const QuickReplyModal = forwardRef(({ user, content, updated_at }, ref) => {
   return (
     <>
       {isOpen && (
-        <div className={"mt-2 border-0"}>
+        <div className={"mt-2 border-0 text-foreground transition-colors"}>
           <div className="flex gap-2">
             <div>
               <Avatar className="size-9">
@@ -48,7 +48,9 @@ const QuickReplyModal = forwardRef(({ user, content, updated_at }, ref) => {
                     Math.floor(Math.random() * 10)
                   }
                 />
-                <AvatarFallback>{"You"}</AvatarFallback>
+                <AvatarFallback className="bg-muted text-muted-foreground text-xs">
+                  YO
+                </AvatarFallback>
               </Avatar>
             </div>
 
@@ -58,11 +60,11 @@ const QuickReplyModal = forwardRef(({ user, content, updated_at }, ref) => {
                   <div className="username flex items-center gap-2">
                     <div className="flex items-center justify-center gap-2">
                       <span className="font-semibold">You</span>
-                      <span className={"text-gray-500"}>{">"}</span>
+                      <span className={"text-muted-foreground"}>{">"}</span>
                       <Input
                         type={"text"}
                         className={
-                          "border-0 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                          "border-0 text-muted-foreground bg-transparent shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
                         }
                         placeholder={"Add a topic..."}
                       />
@@ -70,35 +72,36 @@ const QuickReplyModal = forwardRef(({ user, content, updated_at }, ref) => {
                   </div>
 
                   <div className="body mt-1 flex items-center justify-between text-sm">
-                    <div>
+                    <div className="flex-1">
                       <Textarea
                         ref={textareaRef}
                         value={replyText}
                         onChange={handleInput}
                         rows={1}
                         className={
-                          "min-h-10 w-100 resize-none border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                          "min-h-10 w-full resize-none border-0 p-0.5 text-foreground bg-transparent shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
                         }
-                        placeholder={`Reply to ${"user..."}...`}
+                        placeholder={`Reply to ${user?.username || "user"}...`}
                       />
                     </div>
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-2 pl-2">
                       <div
                         onClick={handleReplyModal}
-                        className="flex size-8 cursor-pointer items-center justify-center rounded-[50%] bg-gray-100 hover:scale-110"
+                        className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-muted text-foreground hover:scale-110 transition-all shadow-sm"
+                        title="Expand"
                       >
-                        <ExpandIcon className="size-4 stroke-2" />
+                        <ExpandIcon className="size-4 stroke-[2.5]" />
                       </div>
                       {replyText && (
-                        <div className="flex size-8 cursor-pointer items-center justify-center rounded-[50%] bg-black hover:scale-110">
-                          <SendReplyIcon className="size-4 stroke-2 text-white" />
+                        <div className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-foreground text-background hover:scale-110 transition-all shadow-sm">
+                          <SendReplyIcon className="size-4 stroke-[2.5]" />
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
                 <div>
-                  <MoreIcon className="size-5 text-gray-500" />
+                  <MoreIcon className="size-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
                 </div>
               </div>
             </div>

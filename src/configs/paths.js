@@ -9,6 +9,7 @@ export const PATHS = {
   LOGIN: "/login",
   REGISTER: "/register",
   VERIFY_EMAIL: "/verify-email",
+  REQUIRE_VERIFIED_EMAIL: "/require-verified-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   USER_PROFILE: "/:username",

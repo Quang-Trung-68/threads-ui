@@ -14,22 +14,85 @@ import {
 } from "../ui/dropdown-menu";
 import useAuth from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
+import {
+  useDeleteAccountMutation,
+  useLogoutMutation,
+} from "@/services/authService";
+import { useNavigate } from "react-router";
+import { PATHS } from "@/configs/paths";
+import Cookies from "js-cookie";
+import { DeleteAccountModal } from "@/components/Features/auth/DeleteAccountModal";
 
 const UserOptionsDropdown = ({ children }) => {
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
-  const ThemeItem = ({ value, label, icon: Icon }) => (
-    <DropdownMenuItem
-      className={"w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
-      onClick={() => setTheme(value)}
-    >
-      {label}
-      <DropdownMenuShortcut className="flex items-center gap-2">
-        {theme === value && <Check className="size-4 text-primary" />}
-        <Icon className="size-5" />
-      </DropdownMenuShortcut>
-    </DropdownMenuItem>
+  const [deleteAccountApi, { isLoading: isDeleteAccountLoading, isSuccess }] =
+    useDeleteAccountMutation();
+
+  const [logoutApi, { isLoading: isLogoutLoading }] = useLogoutMutation();
+
+  const handleDeleteUserInfo = () => {
+    Cookies.remove("userInfo");
+    Cookies.remove("refresh_token");
+    Cookies.remove("access_token");
+  };
+
+  const handleConfirmDelete = async () => {
+    await deleteAccountApi();
+    navigate(PATHS.LOGIN);
+    handleDeleteUserInfo();
+  };
+
+  const handleDeleteAccount = () => {
+    DeleteAccountModal.open({
+      onDelete: handleConfirmDelete,
+    });
+  };
+
+  const handleLogout = async () => {
+    await logoutApi();
+    navigate(PATHS.LOGIN);
+    handleDeleteUserInfo();
+  };
+
+  const themes = [
+    { value: "light", icon: Sun, label: "Light" },
+    { value: "dark", icon: Moon, label: "Dark" },
+    { value: "system", icon: Monitor, label: "Auto" },
+  ];
+
+  const ThemeSelector = () => (
+    <div className="flex items-center justify-around gap-2 p-1.5 w-55">
+      {themes.map(({ value, icon: Icon, label }) => {
+        const isActive = theme === value;
+        return (
+          <button
+            key={value}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setTheme(value);
+            }}
+            className={`flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl py-3.5 transition-all ${
+              isActive
+                ? "bg-muted text-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-muted/40"
+            }`}
+          >
+            <Icon
+              className={`size-6 ${isActive ? "stroke-[2.5px]" : "stroke-2"}`}
+            />
+            <span
+              className={`text-[11px] ${isActive ? "font-bold" : "font-medium"}`}
+            >
+              {label}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 
   if (!user)
@@ -47,10 +110,8 @@ const UserOptionsDropdown = ({ children }) => {
                 Appearance
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent className={"rounded-3xl"}>
-                  <ThemeItem value="light" label="Light" icon={Sun} />
-                  <ThemeItem value="dark" label="Dark" icon={Moon} />
-                  <ThemeItem value="system" label="Auto" icon={Monitor} />
+                <DropdownMenuSubContent className={"rounded-3xl p-1"}>
+                  <ThemeSelector />
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
@@ -81,10 +142,8 @@ const UserOptionsDropdown = ({ children }) => {
               Appearance
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent className={"rounded-3xl"}>
-                <ThemeItem value="light" label="Light" icon={Sun} />
-                <ThemeItem value="dark" label="Dark" icon={Moon} />
-                <ThemeItem value="system" label="Auto" icon={Monitor} />
+              <DropdownMenuSubContent className={"rounded-3xl p-1"}>
+                <ThemeSelector />
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
@@ -152,8 +211,39 @@ const UserOptionsDropdown = ({ children }) => {
           >
             Report a problem
           </DropdownMenuItem>
+          <DropdownMenuSub className={"rounded-3xl"}>
+            <DropdownMenuSubTrigger
+              className={
+                "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+              }
+            >
+              Account
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className={"rounded-3xl"}>
+                <DropdownMenuItem
+                  className={
+                    "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                >
+                  Change profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className={
+                    "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                  onSelect={handleDeleteAccount}
+                  disable={isDeleteAccountLoading}
+                >
+                  <span className="text-red-500">Delete account</span>
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuItem
             className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
+            onSelect={handleLogout}
+            disable={isLogoutLoading}
           >
             <span className="text-red-500">Log out</span>
           </DropdownMenuItem>

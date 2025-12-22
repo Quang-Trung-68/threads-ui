@@ -22,17 +22,18 @@ import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 
 export default function Home() {
   const [page, setPage] = useState(1);
-  const [refreshKey] = useState(() => Date.now());
+  const [refreshKey, setRefreshKey] = useState(() => Date.now());
 
   const { user } = useAuth();
   const {
     data: postsData,
     isLoading,
     isFetching,
+    isSuccess,
   } = useGetFeedQuery({ type: "for_you", page, per_page: 10, refreshKey });
 
   const onHandlePost = () => {
-    CreatePostModal.open();
+    CreatePostModal.open({ onSuccess: handleRefreshFeed });
   };
 
   const posts = postsData?.data ?? [];
@@ -46,11 +47,16 @@ export default function Home() {
     }
   };
 
+  const handleRefreshFeed = () => {
+    setRefreshKey(Date.now());
+    setPage(1);
+  };
+
   const [sentryRef] = useInfiniteScroll({
     loading: isFetching,
     hasNextPage,
     onLoadMore: loadMore,
-    rootMargin: "0px 0px 800px 0px",
+    rootMargin: "0px 0px 900px 0px",
   });
 
   // Navigation page
@@ -151,11 +157,16 @@ export default function Home() {
               />
             ) : (
               posts.map((post) => (
-                <PostCard key={post.id} {...post} isPermitDetailPost={true} />
+                <PostCard
+                  key={post.id}
+                  {...post}
+                  isPermitDetailPost={true}
+                  onDeleteSuccess={handleRefreshFeed}
+                />
               ))
             )}
           </div>
-          {hasNextPage && (
+          {isSuccess && hasNextPage && (
             <div ref={sentryRef} className="flex justify-center p-4">
               {isFetching && <Spinner />}
             </div>

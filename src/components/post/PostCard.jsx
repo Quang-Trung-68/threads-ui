@@ -26,6 +26,7 @@ function PostCard({
   is_liked_by_auth,
   is_reposted_by_auth,
   is_saved_by_auth,
+  onDeleteSuccess,
 }) {
   const navigate = useNavigate();
   const [isMuted, setIsMuted] = useState(false);
@@ -175,6 +176,7 @@ function PostCard({
                 onHidePostSuccess={handleHidePostSuccess}
                 onRestrictUserSuccess={handleRestrictUserSuccess}
                 onBlockSuccess={handleBlockSuccess}
+                onDeleteSuccess={onDeleteSuccess}
               >
                 <div className="flex size-8 items-center justify-center rounded-2xl hover:bg-muted">
                   <MoreIcon className="size-7 cursor-pointer p-1 text-muted-foreground" />

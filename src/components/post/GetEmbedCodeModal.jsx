@@ -21,8 +21,6 @@ import {
   Copy as CopyIcon,
   Download as DownloadIcon,
 } from "lucide-react";
-import { toPng, toBlob } from "html-to-image";
-import { toast } from "sonner";
 import threadsIcon from "@assets/threads-icon.svg";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { truncateTextByWidth } from "@/utils/truncateTextByWidth";

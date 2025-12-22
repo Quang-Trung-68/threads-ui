@@ -19,7 +19,7 @@ import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 
 export default function Following() {
   const [page, setPage] = useState(1);
-  const [refreshKey] = useState(() => Date.now());
+  const [refreshKey, setRefreshKey] = useState(() => Date.now());
 
   const { user } = useAuth();
   const {
@@ -29,7 +29,7 @@ export default function Following() {
   } = useGetFeedQuery({ type: "following", page, per_page: 10, refreshKey });
 
   const onHandlePost = () => {
-    CreatePostModal.open();
+    CreatePostModal.open({ onSuccess: handleRefreshFeed });
   };
 
   const posts = postsData?.data ?? [];
@@ -41,6 +41,11 @@ export default function Following() {
     if (!isFetching && hasNextPage) {
       setPage((prev) => prev + 1);
     }
+  };
+
+  const handleRefreshFeed = () => {
+    setRefreshKey(Date.now());
+    setPage(1);
   };
 
   const [sentryRef] = useInfiniteScroll({
@@ -143,7 +148,12 @@ export default function Following() {
               />
             ) : (
               posts.map((post) => (
-                <PostCard key={post.id} {...post} isPermitDetailPost={true} />
+                <PostCard
+                  key={post.id}
+                  {...post}
+                  isPermitDetailPost={true}
+                  onDeleteSuccess={handleRefreshFeed}
+                />
               ))
             )}
           </div>

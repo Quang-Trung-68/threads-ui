@@ -6,8 +6,6 @@ import {
 } from "@/services/authService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router";
 
 import { useEffect, useState } from "react";
@@ -15,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useDebouncedField } from "@/hooks/useDebouncedField";
 import { Spinner } from "@/components/Common/ui/spinner";
+import { notifySooner } from "@/utils/notifySooner";
 
 export default function ResetPassword() {
   const {
@@ -68,7 +67,7 @@ export default function ResetPassword() {
         },
       });
     } catch (error) {
-      toast.error("Error to register, please try again");
+      notifySooner.error("Error to register, please try again");
       console.log(error);
     }
   };

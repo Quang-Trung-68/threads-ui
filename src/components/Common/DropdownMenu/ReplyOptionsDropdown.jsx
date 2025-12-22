@@ -35,16 +35,16 @@ const ReplyOptionsDropdown = ({
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               checkedIcon={Check}
-              value="anyone"
+              value="everyone"
             >
-              Anyone
+              Everyone
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem
               className={
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               checkedIcon={Check}
-              value="your_followers"
+              value="followers"
             >
               Your followers
             </DropdownMenuRadioItem>
@@ -53,7 +53,7 @@ const ReplyOptionsDropdown = ({
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               checkedIcon={Check}
-              value="profiles_follow"
+              value="following"
             >
               Profiles you follow
             </DropdownMenuRadioItem>
@@ -62,7 +62,7 @@ const ReplyOptionsDropdown = ({
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               checkedIcon={Check}
-              value="profiles_mention"
+              value="mentions"
             >
               Profiles you mention
             </DropdownMenuRadioItem>

@@ -23,6 +23,7 @@ import Register from "@/pages/Auth/Register";
 import ForgotPassword from "@/pages/Auth/ForgotPassword";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import RequireVerifiedEmail from "@/pages/Auth/RequireVerifiedEmail";
 import Embed from "./pages/Embed";
 
 export const ROUTES = [
@@ -36,7 +37,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: HouseIcon,
         isFill: true,
-        private: false,
+        private: true,
       },
       {
         path: PATHS.POST_DETAIL,
@@ -63,6 +64,7 @@ export const ROUTES = [
         isShowInNav: false,
         icon: null,
         isFill: null,
+        private: true,
       },
       {
         path: PATHS.FOLLOWING,
@@ -71,6 +73,7 @@ export const ROUTES = [
         isShowInNav: false,
         icon: null,
         isFill: null,
+        private: true,
       },
       {
         path: PATHS.GHOST_POSTS,
@@ -79,6 +82,7 @@ export const ROUTES = [
         isShowInNav: false,
         icon: null,
         isFill: null,
+        private: true,
       },
       {
         path: PATHS.SEARCH,
@@ -87,6 +91,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: SearchIcon,
         isFill: false,
+        private: true,
       },
       {
         path: null,
@@ -156,6 +161,13 @@ export const ROUTES = [
         isShowInNav: false,
         private: false,
       },
+      {
+        path: PATHS.REQUIRE_VERIFIED_EMAIL,
+        title: "Require verified email",
+        element: RequireVerifiedEmail,
+        isShowInNav: false,
+        private: false,
+      },
     ],
   },
   {
@@ -166,6 +178,7 @@ export const ROUTES = [
         title: "Embed",
         element: Embed,
         isShowInNav: false,
+        private: false,
       },
     ],
   },
@@ -178,6 +191,7 @@ export const ROUTES = [
         title: "Not Found",
         element: NotFound,
         isShowInNav: false,
+        private: false,
       },
     ],
   },

@@ -3,13 +3,19 @@ import Navigation from "@/components/Layouts/Navigation";
 import LoginActonCard from "@/components/Common/Modals/LoginActonCard";
 import useAuth from "@/hooks/useAuth";
 import AddPostButton from "@/components/Common/AddPostButton";
+import Header from "@/components/Layouts/Header";
 
 export default function DefaultLayout() {
   const { user, isLoading } = useAuth();
 
   return (
     <div className="relative flex min-h-screen justify-center">
-      <div className="flex w-full justify-center gap-3">
+      {/* Mobile Header */}
+      <div className="md:hidden">
+        <Header />
+      </div>
+
+      <div className="flex w-full justify-center gap-3 pt-14 md:pt-0">
         <div className="z-10 w-full max-w-160 min-w-0">
           <Outlet />
         </div>

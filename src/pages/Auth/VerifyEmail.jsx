@@ -1,9 +1,8 @@
 import { Spinner } from "@/components/Common/ui/spinner";
 import { useVerifyEmailMutation } from "@/services/authService";
+import { notifySooner } from "@/utils/notifySooner";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-
-import { toast } from "react-toastify";
 
 export default function VerifyEmail() {
   const navigate = useNavigate();
@@ -16,13 +15,11 @@ export default function VerifyEmail() {
     async function onVerifyEmail() {
       try {
         const response = await verifyEmailApi({ token });
-        console.log(response);
-        console.log({ token });
-        toast.success("Verify your email successfully!");
+        notifySooner.success("Verify your email successfully!");
         setStatus("Verify your email successfully!");
       } catch (error) {
         console.log(error);
-        toast.error("Error to verify email, please try again.");
+        notifySooner.error("Error to verify email, please try again.");
         setStatus("Error to verify email, please try again.");
       }
     },
@@ -38,23 +35,23 @@ export default function VerifyEmail() {
   }, [onVerifyEmail]);
 
   return (
-    <div className="mb-8 flex flex-col items-center justify-between text-center">
+    <div className="text-foreground mb-8 flex flex-col items-center justify-between text-center transition-colors">
       <h1 className="mb-8 text-2xl font-semibold">{status}</h1>
 
       {isLoading ? (
         <Spinner />
       ) : (
-        <div>
+        <div className="w-full">
           <div className="my-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-gray-300"></div>
-            <span className="text-sm text-gray-500">Next step</span>
-            <div className="h-px flex-1 bg-gray-300"></div>
+            <div className="bg-border h-px flex-1"></div>
+            <span className="text-muted-foreground text-sm">Next step</span>
+            <div className="bg-border h-px flex-1"></div>
           </div>
 
           <div className="mt-8">
             <button
               onClick={() => navigate("/")}
-              className={`${isLoading ? "cursor-not-allowed" : "cursor-pointer"} rounded-2xl bg-black px-6 py-4 text-sm text-white hover:text-gray-300`}
+              className={`${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"} bg-primary text-primary-foreground rounded-2xl px-8 py-4 text-sm font-semibold transition-all hover:opacity-90`}
               disabled={isLoading}
             >
               Go to threads now

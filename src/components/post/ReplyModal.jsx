@@ -59,13 +59,13 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
       <DialogContent
         aria-describedby={undefined}
         showCloseButton={false}
-        className="flex h-[90vh] flex-col gap-0 overflow-hidden rounded-2xl bg-white p-0 text-black sm:h-auto sm:max-h-[85vh] sm:max-w-[600px]"
+        className="flex h-[90vh] flex-col gap-0 overflow-hidden rounded-2xl bg-background p-0 text-foreground sm:h-auto sm:max-h-[85vh] sm:max-w-[600px] transition-colors"
       >
         {/* --- Header --- */}
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b border-gray-200 px-4 py-3">
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b border-border px-4 py-3">
           <Button
             variant="ghost"
-            className="h-auto cursor-pointer p-1 text-base font-normal text-black hover:bg-transparent"
+            className="h-auto cursor-pointer p-1 text-base font-normal text-foreground hover:bg-transparent"
             onClick={handleCancel}
           >
             Cancel
@@ -76,7 +76,7 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-auto cursor-pointer p-0 hover:bg-transparent"
+            className="h-auto cursor-pointer p-0 text-muted-foreground hover:text-foreground hover:bg-transparent"
           >
             <MoreHorizontal className="h-6 w-6" />
           </Button>
@@ -98,14 +98,14 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
               </Avatar>
 
               {/* Đường kẻ dọc (Thread Line) - dài hơn */}
-              <div className="my-2 w-0.5 flex-1 bg-gray-300"></div>
+              <div className="my-2 w-0.5 flex-1 bg-border/50"></div>
 
               <Avatar className="h-7 w-7 opacity-50">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
                   alt={usernameAuth}
                 />
-                <AvatarFallback className="bg-gray-200 text-[10px] text-gray-500">
+                <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
                   {usernameAuth?.substring(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -116,29 +116,20 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
               {/* Original Post Header */}
               <div className="mb-2 flex items-center gap-2">
                 <span className="text-[15px] font-semibold">{username}</span>
-                <ChevronRight className="h-3.5 w-3.5 text-gray-400" />
-                <span className="text-sm font-semibold text-gray-600">
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-sm font-semibold text-muted-foreground">
                   工程師日常
                 </span>
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-muted-foreground">
                   {formatTime(updated_at)}
                 </span>
               </div>
 
               {/* Original Post Content */}
               <div className="mb-3">
-                <p className="mb-2 text-[15px] leading-relaxed text-gray-900">
+                <p className="mb-2 text-[15px] leading-relaxed text-foreground">
                   {content}
                 </p>
-
-                {/* Code Block (nếu có)
-                {codeContent && (
-                  <div className="overflow-hidden rounded-lg bg-black p-4">
-                    <pre className="font-mono text-sm leading-relaxed text-green-400">
-                      {codeContent}
-                    </pre>
-                  </div>
-                )} */}
               </div>
 
               {/* Reply Section */}
@@ -148,8 +139,8 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
                   <span className="text-[15px] font-semibold">
                     {usernameAuth}
                   </span>
-                  <ChevronRight className="h-3.5 w-3.5 text-gray-400" />
-                  <button className="text-sm text-gray-400 hover:text-gray-600">
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                  <button className="text-sm text-muted-foreground hover:text-foreground">
                     Add a topic
                   </button>
                 </div>
@@ -162,38 +153,40 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
                     onChange={handleInput}
                     rows={1}
                     className={
-                      "min-h-10 w-100 resize-none border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                      "min-h-10 w-full resize-none border-0 p-0.5 text-foreground bg-transparent shadow-none focus-visible:ring-0 focus-visible:outline-none"
                     }
-                    placeholder={`Reply to ${"user..."}...`}
+                    placeholder={`Reply to ${username}...`}
                   />
                 </div>
 
                 {/* Action Icons */}
-                <div className="flex gap-5 text-gray-400">
-                  <ImageIcon className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                  <FileText className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                  <Smile className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                  <AlignLeft className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                  <Grid3x3 className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                  <MapPin className="h-5 w-5 cursor-pointer hover:text-gray-700" />
+                <div className="flex gap-5 text-muted-foreground">
+                  <ImageIcon className="h-5 w-5 cursor-pointer hover:text-foreground" />
+                  <FileText className="h-5 w-5 cursor-pointer hover:text-foreground" />
+                  <Smile className="h-5 w-5 cursor-pointer hover:text-foreground" />
+                  <AlignLeft className="h-5 w-5 cursor-pointer hover:text-foreground" />
+                  <Grid3x3 className="h-5 w-5 cursor-pointer hover:text-foreground" />
+                  <MapPin className="h-5 w-5 cursor-pointer hover:text-foreground" />
                 </div>
               </div>
 
               {/* Add to thread placeholder */}
               <div className="mt-6 flex items-center gap-2">
                 <Avatar className="h-7 w-7 opacity-50">
-                  <AvatarFallback className="bg-gray-200 text-[10px] text-gray-500">
+                  <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
                     {usernameAuth?.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-sm text-gray-400">Add to thread</span>
+                <span className="text-sm text-muted-foreground">
+                  Add to thread
+                </span>
               </div>
             </div>
           </div>
         </ScrollArea>
 
         {/* --- Footer --- */}
-        <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3">
+        <div className="flex items-center justify-between border-t border-border px-4 py-3">
           <ReplyOptionsDropdown
             replyQuote={replyQuote}
             setReplyQuote={setReplyQuote}
@@ -201,7 +194,7 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
             setReviewApprove={setReviewApprove}
           >
             <button
-              className={`flex cursor-pointer items-center gap-2 text-sm font-semibold ${reviewApprove ? "text-gray-900" : "text-gray-400"}`}
+              className={`flex cursor-pointer items-center gap-2 text-sm font-semibold transition-colors ${reviewApprove ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               <Grid3x3 className="h-4 w-4" />
               <span>Reply options</span>
@@ -209,7 +202,7 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
           </ReplyOptionsDropdown>
 
           <Button
-            className="cursor-pointer rounded-full bg-black px-6 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+            className="cursor-pointer rounded-full bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-colors"
             onClick={handlePost}
           >
             Post

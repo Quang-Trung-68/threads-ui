@@ -3,13 +3,13 @@ import { useRegisterMutation } from "@/services/authService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { toast } from "react-toastify";
+
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
 import { Eye, EyeOff } from "lucide-react";
 import { useDebouncedField } from "@/hooks/useDebouncedField";
-// dt1234@gmail.com 12345678
+import { notifySooner } from "@/utils/notifySooner";
 //
 export default function Register() {
   const {
@@ -38,17 +38,17 @@ export default function Register() {
         setStatus(
           "Register successfully, please check your email to verify your account!",
         );
-        toast.success(
+        notifySooner.success(
           "Register successfully, please check your email to verify your account!",
         );
       } else {
         const entries = Object.entries(response.error.data.errors);
         for (const [_, [key, value]] of Object.entries(entries)) {
-          toast.error(`${value}`);
+          notifySooner.error(`${value}`);
         }
       }
     } catch (error) {
-      toast.error("Error to register, please try again");
+      notifySooner.error("Error to register, please try again");
       console.log(error);
     }
   };
@@ -64,12 +64,14 @@ export default function Register() {
   );
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-transparent">
+    <div className="text-foreground relative flex min-h-screen items-center justify-center overflow-hidden bg-transparent">
       {/* Main register container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-2 text-center">
           <h1 className="mb-8 text-2xl font-semibold">Register an account</h1>
-          <div className="mb-8 text-sm text-blue-400 italic">{status}</div>
+          <div className="mb-8 text-sm text-blue-500 italic dark:text-blue-400">
+            {status}
+          </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
@@ -83,10 +85,10 @@ export default function Register() {
                 {...register("username")}
                 autoComplete={"off"}
                 onChange={(e) => usernameChange(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
+                className="border-border bg-muted focus:ring-ring w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
               />
               {errors.username && (
-                <span className="mt-1 block text-sm text-red-500">
+                <span className="text-destructive mt-1 block text-sm">
                   {errors.username.message}
                 </span>
               )}
@@ -100,10 +102,10 @@ export default function Register() {
                 {...register("email")}
                 autoComplete={"off"}
                 onChange={(e) => emailChange(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
+                className="border-border bg-muted focus:ring-ring w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
               />
               {errors.email && (
-                <span className="mt-1 block text-sm text-red-500">
+                <span className="text-destructive mt-1 block text-sm">
                   {errors.email.message}
                 </span>
               )}
@@ -118,17 +120,17 @@ export default function Register() {
                   {...register("password")}
                   autoComplete={"off"}
                   onChange={(e) => passwordChange(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
+                  className="border-border bg-muted focus:ring-ring w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
                 />
                 <span
-                  className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                  className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
               {errors.password && (
-                <span className="mt-1 block text-sm text-red-500">
+                <span className="text-destructive mt-1 block text-sm">
                   {errors.password.message}
                 </span>
               )}
@@ -143,17 +145,17 @@ export default function Register() {
                   autoComplete={"off"}
                   {...register("password_confirmation")}
                   onChange={(e) => passwordConfirmationChange(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
+                  className="border-border bg-muted focus:ring-ring w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
                 />
                 <span
-                  className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                  className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
               {errors.password_confirmation && (
-                <span className="mt-1 block text-sm text-red-500">
+                <span className="text-destructive mt-1 block text-sm">
                   {errors.password_confirmation.message}
                 </span>
               )}
@@ -161,7 +163,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className="mt-6 w-full cursor-pointer rounded-xl bg-black py-3 font-medium text-white transition-colors hover:bg-gray-800"
+              className="bg-primary text-primary-foreground mt-6 w-full cursor-pointer rounded-xl py-3 font-semibold transition-colors hover:opacity-90 disabled:opacity-50"
               disabled={isLoading}
             >
               Sign up
@@ -169,31 +171,31 @@ export default function Register() {
           </form>
 
           <div className="my-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-gray-300"></div>
-            <span className="text-sm text-gray-500">or</span>
-            <div className="h-px flex-1 bg-gray-300"></div>
+            <div className="bg-border h-px flex-1"></div>
+            <span className="text-muted-foreground text-sm">or</span>
+            <div className="bg-border h-px flex-1"></div>
           </div>
 
-          <button className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 transition-colors hover:bg-gray-50">
+          <button className="border-border bg-card hover:bg-accent group flex w-full items-center justify-between rounded-xl border px-4 py-3 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500">
+              <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 via-pink-500 to-orange-500">
                 <svg
                   className="h-4 w-4 text-white"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 01-1.153 1.772c-.5.509-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 01-1.772-1.153 4.904 4.904 0 01-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 011.153-1.772A4.897 4.897 0 015.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 100 10 5 5 0 000-10zm6.5-.25a1.25 1.25 0 10-2.5 0 1.25 1.25 0 002.5 0zM12 9a3 3 0 110 6 3 3 0 010-6z" />
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.607.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.063 1.366-.333 2.633-1.308 3.608-.975.975-2.242 1.246-3.607 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.063-2.633-.333-3.608-1.308-.975-.975-1.245-2.242-1.308-3.607-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.607-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.28.072-1.689.072-4.947s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.28-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                 </svg>
               </div>
               <div className="text-left">
                 <div className="cursor-pointer text-sm font-medium">
                   Continue with Instagram
                 </div>
-                <div className="text-sm text-gray-600">dqt_2309</div>
+                <div className="text-muted-foreground text-sm">dqt_2309</div>
               </div>
             </div>
             <svg
-              className="h-5 w-5 text-gray-400"
+              className="text-muted-foreground h-5 w-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -210,7 +212,7 @@ export default function Register() {
           <div className="mt-2">
             <button
               onClick={() => navigate("/login")}
-              className="cursor-pointer text-sm text-gray-600 hover:text-gray-800"
+              className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
             >
               <span className="cursor-pointer font-medium">
                 Already have an account? Log in

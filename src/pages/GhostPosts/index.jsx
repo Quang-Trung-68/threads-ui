@@ -10,7 +10,7 @@ import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 
 export default function GhostPosts() {
   const [page, setPage] = useState(1);
-  const [refreshKey] = useState(() => Date.now());
+  const [refreshKey, setRefreshKey] = useState(() => Date.now());
 
   const { user } = useAuth();
   const {
@@ -28,6 +28,11 @@ export default function GhostPosts() {
     if (!isFetching && hasNextPage) {
       setPage((prev) => prev + 1);
     }
+  };
+
+  const handleRefreshFeed = () => {
+    setRefreshKey(Date.now());
+    setPage(1);
   };
 
   const [sentryRef] = useInfiniteScroll({
@@ -95,7 +100,12 @@ export default function GhostPosts() {
               />
             ) : (
               posts.map((post) => (
-                <PostCard key={post.id} {...post} isPermitDetailPost={true} />
+                <PostCard
+                  key={post.id}
+                  {...post}
+                  isPermitDetailPost={true}
+                  onDeleteSuccess={handleRefreshFeed}
+                />
               ))
             )}
           </div>

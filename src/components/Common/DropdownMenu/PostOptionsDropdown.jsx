@@ -28,6 +28,7 @@ import {
   useSavePostMutation,
   useBlockUserMutation,
   useReportPostMutation,
+  useDeletePostMutation,
 } from "@/services/postService";
 import { BlockUserModal } from "@/components/post/BlockUserModal";
 import { ReportPostModal } from "@/components/post/ReportPostModal";
@@ -45,6 +46,7 @@ const PostOptionsDropdown = ({
   onHidePostSuccess,
   onRestrictUserSuccess,
   onBlockSuccess,
+  onDeleteSuccess,
 }) => {
   const [isSaved, setIsSaved] = useState(is_saved_by_auth);
   const [isInterested, setIsInterested] = useState(false);
@@ -59,6 +61,8 @@ const PostOptionsDropdown = ({
     useRestrictUserMutation();
   const [blockApi, { isLoading: isBlockLoading }] = useBlockUserMutation();
   const [reportApi, { isLoading: isReportLoading }] = useReportPostMutation();
+  const [deletePostApi, { isLoading: isDeletePostLoading }] =
+    useDeletePostMutation();
 
   const handleToggleSave = async () => {
     const previousState = isSaved;
@@ -85,6 +89,19 @@ const PostOptionsDropdown = ({
       onHidePostSuccess?.();
     } catch (error) {
       console.error("Hide post failed:", error);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      const deletePromise = deletePostApi({ id }).unwrap();
+      notifySooner.promise(deletePromise, {
+        success: "Deleted",
+      });
+      await deletePromise;
+      onDeleteSuccess?.();
+    } catch (error) {
+      console.error("Delete post failed:", error);
     }
   };
 
@@ -295,6 +312,8 @@ const PostOptionsDropdown = ({
             </span>
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
+            onSelect={handleDeletePost}
+            disabled={isDeletePostLoading}
             className={
               "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
             }
