@@ -50,7 +50,7 @@ const PostOptionsDropdown = ({
   const [isInterested, setIsInterested] = useState(false);
 
   const { user } = useAuth();
-  const isAuth = userId === user.id || false;
+  const isAuth = userId === user?.id || false;
 
   const [saveApi, { isLoading: isSaveLoading }] = useSavePostMutation();
   const [muteApi, { isLoading: isMuteLoading }] = useMuteUserMutation();
