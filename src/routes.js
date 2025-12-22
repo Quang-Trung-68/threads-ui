@@ -16,7 +16,7 @@ import {
 import PostDetail from "@/pages/DefaultLayout/PostDetail";
 import UserProfile from "@/pages/UserProfile";
 import Following from "@/pages/Following";
-import GhostPosts from "@/pages/DefaultLayout/GhostPosts";
+import GhostPosts from "@/pages/GhostPosts";
 import ForYou from "@/pages/DefaultLayout/ForYou/ForYou";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";

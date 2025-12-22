@@ -10,8 +10,6 @@ import {
   Instagram,
   SquareKanban,
   UserPlus,
-  UserMinus,
-  Plus,
   Camera,
   PenLine,
 } from "lucide-react"; // Added icons
@@ -41,6 +39,8 @@ export default function UserProfile() {
     ? paramUsername.slice(1)
     : paramUsername;
   const isAuth = currentUser?.username === targetUsername;
+
+  const userId = isAuth ? currentUser.id : location.state.userId;
 
   // State
   const [userData, setUserData] = useState(null);
@@ -135,7 +135,7 @@ export default function UserProfile() {
             {/* Left Border Line */}
             <div className="bg-border absolute top-0 bottom-0 left-0 z-10 w-px" />
             {/* Right Border Line */}
-            <div className="bg-border absolute top-0 bottom-0 right-0 z-10 w-px" />
+            <div className="bg-border absolute top-0 right-0 bottom-0 z-10 w-px" />
             <div className="flex flex-col gap-4 p-5">
               {/* Header Section */}
               <div className={"flex flex-row items-center justify-between"}>

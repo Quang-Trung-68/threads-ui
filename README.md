@@ -1,8 +1,8 @@
-# Threads Clone - Day 42
+# Threads Clone
 
 ## 🔗 Demo
 
-**Link Vercel:** [https://threads-day-42.vercel.app/](https://threads-day-42.vercel.app/)
+**Link Vercel:**
 
 ## ✅ Tính năng đã hoàn thành
 

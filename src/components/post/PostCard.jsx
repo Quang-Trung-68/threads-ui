@@ -36,7 +36,13 @@ function PostCard({
 
   const handleToPostDetail = () => {};
 
-  const handleToUserProfile = () => {};
+  const handleUserProfile = () => {
+    navigate(`/@${user.username}`, {
+      state: {
+        userId: user_id,
+      },
+    });
+  };
 
   const urlImage =
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
@@ -113,10 +119,7 @@ function PostCard({
     <div className="flex flex-col border-y p-3 md:p-6">
       <div>
         <div className="flex gap-2">
-          <div
-            onClick={handleToUserProfile}
-            className="flex flex-col items-center gap-2"
-          >
+          <div className="flex flex-col items-center gap-2">
             <div className="relative">
               <Avatar className="size-9 cursor-pointer">
                 <AvatarImage
@@ -146,11 +149,11 @@ function PostCard({
               <div
                 className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
               >
-                <div
-                  onClick={handleToUserProfile}
-                  className="username flex items-center gap-2"
-                >
-                  <div className="cursor-pointer font-semibold hover:underline">
+                <div className="flex items-center gap-2">
+                  <div
+                    onClick={handleUserProfile}
+                    className="cursor-pointer font-semibold hover:underline"
+                  >
                     {user.username}
                   </div>
                   <div className="text-sm text-gray-500">
