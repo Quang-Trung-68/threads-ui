@@ -225,6 +225,7 @@ const UserOptionsDropdown = ({ children }) => {
                   className={
                     "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
                   }
+                  onSelect={() => navigate(PATHS.USER_SETTINGS)}
                 >
                   Change profile
                 </DropdownMenuItem>

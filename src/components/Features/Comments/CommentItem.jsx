@@ -1,9 +1,4 @@
-import React, { useRef } from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import {
   Heart as LikeIcon,
   MessageCircle as ReplyIcon,
@@ -14,7 +9,7 @@ import {
 import { Card } from "@/components/Common/ui/card";
 import ReplyModal from "@/components/Common/Modals/QuickReplyModal";
 
-function CommentItem({ postId, userId, id, name, body }) {
+function CommentItem({ postId, userId, id, name, body, avatar_url }) {
   // const navigate = useNavigate();
 
   // const handleToUserProfile = () => {
@@ -33,15 +28,7 @@ function CommentItem({ postId, userId, id, name, body }) {
     <Card className="flex flex-col rounded-none border-b p-3 md:p-6">
       <div className="flex gap-2">
         <div>
-          <Avatar className="size-9">
-            <AvatarImage
-              src={
-                "https://i.pravatar.cc/150?img=" +
-                Math.floor(Math.random() * 10)
-              }
-            />
-            <AvatarFallback>{username}</AvatarFallback>
-          </Avatar>
+          <UserAvatar user={{ username, avatar_url }} className="size-9" />
         </div>
 
         <div className="flex flex-1 flex-col gap-2">

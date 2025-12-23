@@ -6,11 +6,7 @@ import {
 } from "@/components/Common/ui/dialog";
 import { Button } from "@/components/Common/ui/button";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { formatTime } from "@/utils/formatTime";
 import {
   Heart as LikeIcon,
@@ -158,10 +154,7 @@ const Modal = NiceModal.create(
             <div className="w-full rounded-3xl p-6 shadow-sm">
               {/* Header */}
               <div className="mb-3 flex items-center gap-2">
-                <Avatar className="size-9 border border-gray-100">
-                  <AvatarImage src={user?.avatar_url} />
-                  <AvatarFallback>{user?.username?.[0] || "U"}</AvatarFallback>
-                </Avatar>
+                <UserAvatar user={user} className="size-9 border border-gray-100" />
                 <div className="flex items-center gap-1 text-sm">
                   <span className="font-semibold">
                     {user?.username || "username"}

@@ -25,11 +25,21 @@ import VerifyEmail from "@/pages/Auth/VerifyEmail";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import RequireVerifiedEmail from "@/pages/Auth/RequireVerifiedEmail";
 import Embed from "./pages/Embed";
+import UserSettings from "@/pages/UserSettings";
 
 export const ROUTES = [
   {
     layout: LAYOUTS.DEFAULT,
     children: [
+      {
+        path: PATHS.USER_SETTINGS,
+        title: "User Settings",
+        element: UserSettings,
+        isShowInNav: false,
+        icon: null,
+        isFill: null,
+        private: true,
+      },
       {
         path: PATHS.HOME,
         title: "Home",

@@ -112,6 +112,16 @@ export const authApi = createApi({
       transformResponse: (response) => response.data,
       providesTags: ["Auth"],
     }),
+    // Update profile
+    updateProfile: builder.mutation({
+      query: (credentials) => ({
+        url: `/api/auth/profile`,
+        method: "POST",
+        data: credentials,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
@@ -126,4 +136,5 @@ export const {
   useResetPasswordMutation,
   useValidateResetTokenQuery,
   useGetCurrentUserQuery,
+  useUpdateProfileMutation,
 } = authApi;

@@ -12,6 +12,7 @@ export const PATHS = {
   REQUIRE_VERIFIED_EMAIL: "/require-verified-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  USER_SETTINGS: "/user-settings",
   USER_PROFILE: "/:username",
   POST_DETAIL: "/:username/post/:postId",
   EMBED: "/:username/post/:postId/embed",

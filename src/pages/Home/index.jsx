@@ -1,10 +1,6 @@
 import { useState } from "react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Input } from "@/components/Common/ui/input";
 import { Button } from "@/components/Common/ui/button";
 import useAuth from "@/hooks/useAuth";
@@ -116,13 +112,7 @@ export default function Home() {
             <div className="flex items-center justify-between border-2 bg-background p-5">
               <div className="flex flex-1 items-center gap-2">
                 <div>
-                  <Avatar className={"size-9"}>
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@dqt_2309"
-                    />
-                    <AvatarFallback>QT</AvatarFallback>
-                  </Avatar>
+                  <UserAvatar user={user} className={"size-9"} />
                 </div>
                 <div onClick={onHandlePost} className="flex-1">
                   <Input

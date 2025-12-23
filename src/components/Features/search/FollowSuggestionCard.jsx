@@ -1,8 +1,4 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Button } from "@/components/Common/ui/button";
 
 const FollowSuggestionCard = ({
@@ -17,10 +13,10 @@ const FollowSuggestionCard = ({
   return (
     <div className="flex items-start justify-between py-3">
       <div className="flex flex-1 items-start gap-3">
-        <Avatar className="size-10 border border-border mt-0.5">
-          <AvatarImage src={avatar_url} alt={username} />
-          <AvatarFallback>{username?.[0]?.toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <UserAvatar 
+          user={{ username, avatar_url }} 
+          className="size-10 border border-border mt-0.5" 
+        />
         <div className="flex flex-1 flex-col overflow-hidden">
           <div className="flex items-center gap-1 overflow-hidden">
             <span className="truncate text-sm font-semibold text-foreground">

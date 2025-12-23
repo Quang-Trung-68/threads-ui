@@ -1,8 +1,5 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
+import Cookies from "js-cookie";
 import { Input } from "@/components/Common/ui/input";
 import { Textarea } from "@/components/Common/ui/textarea";
 import { ReplyModal } from "@/components/post/ReplyModal";
@@ -35,23 +32,20 @@ const QuickReplyModal = forwardRef(({ user, content, updated_at }, ref) => {
     ReplyModal.open({ user, content, updated_at });
   };
 
+  const userInfo = JSON.parse(Cookies.get("userInfo") || "{}");
+  const usernameAuth = userInfo.username;
+  const avatarUrlAuth = userInfo.avatar_url;
+
   return (
     <>
       {isOpen && (
         <div className={"mt-2 border-0 text-foreground transition-colors"}>
           <div className="flex gap-2">
             <div>
-              <Avatar className="size-9">
-                <AvatarImage
-                  src={
-                    "https://i.pravatar.cc/150?img=" +
-                    Math.floor(Math.random() * 10)
-                  }
-                />
-                <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-                  YO
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                user={{ username: usernameAuth, avatar_url: avatarUrlAuth }}
+                className="size-9"
+              />
             </div>
 
             <div className="flex flex-1 flex-col gap-2">

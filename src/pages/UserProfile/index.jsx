@@ -1,9 +1,4 @@
-import PostCard from "@/components/post/PostCard";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Button } from "@/components/Common/ui/button";
 import { Spinner } from "@/components/Common/ui/spinner";
 import {
@@ -40,7 +35,7 @@ export default function UserProfile() {
     : paramUsername;
   const isAuth = currentUser?.username === targetUsername;
 
-  const userId = isAuth ? currentUser.id : location.state.userId;
+  const userId = isAuth ? currentUser.id : location.state?.userId;
 
   // State
   const [userData, setUserData] = useState(null);
@@ -148,15 +143,13 @@ export default function UserProfile() {
                   </div>
                 </div>
                 <div>
-                  <Avatar className={"size-20"}>
-                    <AvatarImage
-                      src={userData?.avatar || "https://github.com/shadcn.png"}
-                      alt={userData?.username}
-                    />
-                    <AvatarFallback>
-                      {userData?.name?.[0] || "U"}
-                    </AvatarFallback>
-                  </Avatar>
+                  <UserAvatar 
+                    user={{ 
+                      username: userData?.username, 
+                      avatar_url: userData?.avatar_url || userData?.avatar 
+                    }} 
+                    className="size-20" 
+                  />
                 </div>
               </div>
 
@@ -250,16 +243,13 @@ export default function UserProfile() {
                     {/* Create Post Section */}
                     <div className="flex items-center justify-between py-2 pl-1">
                       <div className="flex flex-1 items-center gap-3">
-                        <Avatar className="size-9">
-                          <AvatarImage
-                            src={
-                              userData?.avatar ||
-                              "https://github.com/shadcn.png"
-                            }
-                            alt={userData?.username}
-                          />
-                          <AvatarFallback>{userData?.name?.[0]}</AvatarFallback>
-                        </Avatar>
+                        <UserAvatar 
+                          user={{ 
+                            username: userData?.username, 
+                            avatar_url: userData?.avatar_url || userData?.avatar 
+                          }} 
+                          className="size-9" 
+                        />
                         <div
                           onClick={() => CreatePostModal.open()}
                           className="flex-1 cursor-pointer"

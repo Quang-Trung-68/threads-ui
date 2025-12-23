@@ -6,11 +6,7 @@ import {
   DialogTitle,
 } from "@/components/Common/ui/dialog";
 import { Button } from "@/components/Common/ui/button";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { ScrollArea } from "@/components/Common/ui/scroll-area";
 import {
   MoreHorizontal,
@@ -39,7 +35,9 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
     modal.hide();
   };
 
-  const usernameAuth = JSON.parse(Cookies.get("userInfo")).username;
+  const userInfo = JSON.parse(Cookies.get("userInfo") || "{}");
+  const usernameAuth = userInfo.username;
+  const avatarUrlAuth = userInfo.avatar_url;
   const { username } = user;
 
   const [replyQuote, setReplyQuote] = useState("anyone");
@@ -87,28 +85,21 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
           <div className="flex gap-3">
             {/* Cột trái: Avatar + Đường kẻ nối */}
             <div className="flex shrink-0 flex-col items-center">
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={user?.avatar || "https://github.com/shadcn.png"}
-                  alt={username}
-                />
-                <AvatarFallback className="bg-green-600 text-xs text-white">
-                  {username?.substring(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                user={{
+                  username: user?.username,
+                  avatar_url: user?.avatar_url || user?.avatar,
+                }}
+                className="h-10 w-10"
+              />
 
               {/* Đường kẻ dọc (Thread Line) - dài hơn */}
               <div className="my-2 w-0.5 flex-1 bg-border/50"></div>
 
-              <Avatar className="h-7 w-7 opacity-50">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt={usernameAuth}
-                />
-                <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
-                  {usernameAuth?.substring(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                user={{ username: usernameAuth, avatar_url: avatarUrlAuth }}
+                className="h-7 w-7 opacity-50"
+              />
             </div>
 
             {/* Cột phải: Nội dung chính */}
@@ -172,11 +163,10 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
 
               {/* Add to thread placeholder */}
               <div className="mt-6 flex items-center gap-2">
-                <Avatar className="h-7 w-7 opacity-50">
-                  <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
-                    {usernameAuth?.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  user={{ username: usernameAuth, avatar_url: avatarUrlAuth }}
+                  className="h-7 w-7 opacity-50"
+                />
                 <span className="text-sm text-muted-foreground">
                   Add to thread
                 </span>

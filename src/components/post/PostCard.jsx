@@ -1,9 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Ellipsis as MoreIcon, CirclePlus as FollowIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -122,15 +118,7 @@ function PostCard({
         <div className="flex gap-2">
           <div className="flex flex-col items-center gap-2">
             <div className="relative">
-              <Avatar className="size-9 cursor-pointer">
-                <AvatarImage
-                  src={
-                    "https://i.pravatar.cc/150?img=" +
-                    Math.floor(Math.random() * 10)
-                  }
-                />
-                <AvatarFallback>{user.username}</AvatarFallback>
-              </Avatar>
+              <UserAvatar user={user} className="size-9 cursor-pointer" />
               <div
                 className="absolute -right-1 -bottom-1 flex cursor-pointer items-center justify-center rounded-full border-2 border-background bg-foreground p-[2px] text-background hover:bg-foreground/90"
                 onClick={(e) => {

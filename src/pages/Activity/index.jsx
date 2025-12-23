@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Common/ui/avatar";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Button } from "@/components/Common/ui/button";
 import { Heart, UserPlus, Zap } from "lucide-react";
 import { useState } from "react";
@@ -116,10 +116,13 @@ export default function Activity() {
               >
                 <div className="flex items-start gap-3">
                   <div className="relative">
-                    <Avatar className="size-10 border border-border">
-                      <AvatarImage src={item.user.avatar} />
-                      <AvatarFallback>{item.user.username[0].toUpperCase()}</AvatarFallback>
-                    </Avatar>
+                    <UserAvatar 
+                      user={{ 
+                        username: item.user.username, 
+                        avatar_url: item.user.avatar 
+                      }} 
+                      className="size-10 border border-border" 
+                    />
                     {/* Icon Badge */}
                     <div className={`absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-background text-white ${
                         item.type === 'like' ? 'bg-pink-500' :

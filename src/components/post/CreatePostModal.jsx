@@ -5,22 +5,32 @@ import {
   DialogTitle,
 } from "@/components/Common/ui/dialog";
 import {
-  Image as ImageIcon,
   MapPin,
   AlignLeft,
   MoreHorizontal,
   Copy,
-  Hash,
   Grid3x3,
+  Images,
+  SmilePlus,
+  FileText,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/Common/ui/button";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ReplyOptionsDropdown from "../Common/DropdownMenu/ReplyOptionsDropdown";
 import { useCreatePostMutation } from "@/services/postService";
 import { notifySooner } from "@/utils/notifySooner";
+import UserAvatar from "@/components/Common/ui/UserAvatar";
+import Cookies from "js-cookie";
+import EmojiPicker, { Theme } from "emoji-picker-react";
+import { useTheme } from "next-themes";
 
-const Modal = NiceModal.create(({ username = "dqt_2309", onSuccess }) => {
+const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
   const modal = useModal();
+  const { resolvedTheme } = useTheme();
+  const userInfo = JSON.parse(Cookies.get("userInfo") || "{}");
+  const username = userInfo.username || propUsername;
+  const avatar_url = userInfo.avatar_url;
   const [topic, setTopic] = useState("");
   const [content, setContent] = useState("");
   const [showTopicInput, setShowTopicInput] = useState(false);
@@ -60,13 +70,82 @@ const Modal = NiceModal.create(({ username = "dqt_2309", onSuccess }) => {
     }
   };
 
+  // Upload images
+  const inputRef = useRef(null);
+  const [images, setImages] = useState([]);
+
+  const handlePickImage = () => {
+    inputRef.current.click();
+  };
+
+  const handleChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    const previews = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...previews]);
+
+    // cho phép chọn lại cùng 1 file
+    e.target.value = null;
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages((prev) => {
+      const imgToRemove = prev[index];
+      if (imgToRemove) {
+        URL.revokeObjectURL(imgToRemove.url);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  // Select emoji
+  const [openEmoji, setOpenEmoji] = useState(false);
+
+  const onEmojiClick = (emojiData) => {
+    setContent((prev) => prev + emojiData.emoji);
+    setOpenEmoji(false);
+  };
+
+  // Close emoji picker when click outside or modal close
+  const emojiPickerRef = useRef(null);
+  const emojiButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (!modal.visible) {
+      setOpenEmoji(false);
+    }
+  }, [modal.visible]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        openEmoji &&
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target) &&
+        emojiButtonRef.current &&
+        !emojiButtonRef.current.contains(event.target)
+      ) {
+        setOpenEmoji(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openEmoji]);
+
   return (
     <Dialog open={modal.visible} onOpenChange={handleCancel}>
       {/* max-w-lg để kích thước giống mobile/modal nhỏ gọn hơn */}
       <DialogContent
         aria-describedby={undefined}
         showCloseButton={false}
-        className="bg-background text-foreground max-w-[600px] gap-0 overflow-hidden rounded-2xl border-none p-0 shadow-xl transition-colors"
+        className="bg-background text-foreground max-w-[600px] gap-0 rounded-2xl border-none p-0 shadow-xl transition-colors"
       >
         {/* --- HEADER --- */}
         <div className="flex items-center justify-between px-5 py-4">
@@ -97,30 +176,16 @@ const Modal = NiceModal.create(({ username = "dqt_2309", onSuccess }) => {
           {/* LEFT COLUMN: Avatar & Thread Line */}
           <div className="mr-3 flex flex-col items-center pt-1">
             {/* Main Avatar */}
-            <div className="bg-muted h-9 w-9 overflow-hidden rounded-full">
-              {/* Placeholder Avatar Icon */}
-              <svg
-                className="text-muted-foreground h-full w-full"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </div>
+            <UserAvatar user={{ username, avatar_url }} className="h-9 w-9" />
 
             {/* The Vertical Thread Line */}
             <div className="bg-border my-2 w-[2px] flex-grow rounded-full" />
 
             {/* Small Ghost Avatar (for 'Add to thread') */}
-            <div className="bg-muted h-5 w-5 overflow-hidden rounded-full opacity-50">
-              <svg
-                className="text-muted-foreground h-full w-full"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </div>
+            <UserAvatar
+              user={{ username, avatar_url }}
+              className="h-5 w-5 opacity-50"
+            />
           </div>
 
           {/* RIGHT COLUMN: Content */}
@@ -167,25 +232,93 @@ const Modal = NiceModal.create(({ username = "dqt_2309", onSuccess }) => {
             />
 
             {/* Toolbar Icons */}
-            <div className="mb-6 flex items-center gap-4">
-              <button className="text-muted-foreground hover:text-foreground transition-colors">
-                <ImageIcon size={20} />
+            <div className="relative mb-6 flex items-center gap-4">
+              <button
+                onClick={handlePickImage}
+                className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+              >
+                <Images size={20} />
               </button>
-              <button className="text-muted-foreground hover:text-foreground transition-colors">
-                {/* Giả lập icon GIF bằng border */}
-                <div className="border-muted-foreground flex items-center justify-center rounded border px-1 py-[1px] text-[9px] font-bold">
+              <button className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
+                <div className="border-muted-foreground flex size-5 items-center justify-center rounded border px-1 py-px text-[8px] font-bold">
                   GIF
                 </div>
               </button>
-              <button className="text-muted-foreground hover:text-foreground transition-colors">
-                <Hash size={20} />
+              <button
+                ref={emojiButtonRef}
+                onClick={() => setOpenEmoji((prev) => !prev)}
+                className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+              >
+                <SmilePlus size={20} />
               </button>
-              <button className="text-muted-foreground hover:text-foreground transition-colors">
+              <button className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
+                <FileText size={20} />
+              </button>
+              <button className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
                 <AlignLeft size={20} />
               </button>
-              <button className="text-muted-foreground hover:text-foreground transition-colors">
+              <button className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
                 <MapPin size={20} />
               </button>
+              {/* EMOJI PICKER */}
+              {openEmoji && (
+                <div
+                  ref={emojiPickerRef}
+                  style={{
+                    position: "absolute",
+                    top: "110%",
+                    left: "0",
+                    zIndex: 1000,
+                  }}
+                >
+                  <EmojiPicker
+                    width={350}
+                    height={450}
+                    onEmojiClick={onEmojiClick}
+                    autoFocusSearch={false}
+                    onEmojiStyle="native"
+                    theme={resolvedTheme === "dark" ? Theme.DARK : Theme.LIGHT}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Preview */}
+
+            <div className="w-full">
+              {/* INPUT FILE */}
+              <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                onChange={handleChange}
+              />
+
+              {/* PREVIEW */}
+              <div
+                className="flex w-full flex-wrap"
+                style={{ display: "flex", gap: 8, marginTop: 12 }}
+              >
+                {images.map((img, index) => (
+                  <div key={index} className="group relative">
+                    <img
+                      src={img.url}
+                      alt=""
+                      width={100}
+                      height={100}
+                      className="rounded-lg border object-cover"
+                    />
+                    <button
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-black/60 text-white transition-opacity hover:bg-black/80"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Add to thread text (Aligned with Ghost Avatar) */}
