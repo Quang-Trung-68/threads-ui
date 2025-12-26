@@ -184,9 +184,21 @@ export const ROUTES = [
       },
     ],
   },
-  ,
+
   {
     layout: LAYOUTS.NO_LAYOUT,
+    children: [
+      {
+        path: PATHS.NOT_FOUND,
+        title: "Not Found",
+        element: NotFound,
+        isShowInNav: false,
+        private: false,
+      },
+    ],
+  },
+  {
+    layout: LAYOUTS.DECK,
     children: [
       {
         path: PATHS.DECK,
@@ -194,13 +206,6 @@ export const ROUTES = [
         element: Deck,
         isShowInNav: false,
         private: true,
-      },
-      {
-        path: PATHS.NOT_FOUND,
-        title: "Not Found",
-        element: NotFound,
-        isShowInNav: false,
-        private: false,
       },
     ],
   },

@@ -24,6 +24,8 @@ function PostCard({
   is_reposted_by_auth,
   is_saved_by_auth,
   onDeleteSuccess,
+  onNavigate,
+  state,
 }) {
   const { t } = useTranslation(["post", "common"]);
   const navigate = useNavigate();
@@ -32,21 +34,26 @@ function PostCard({
   const [isRestrictUser, setIsRestrictUser] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [unmuteApi, { isLoading: isUnmuteLoading }] = useUnmuteUserMutation();
+  const username = user.username;
 
   const handlePostDetail = () => {
-    navigate(`/@${user.username}/post/${id}`, {
-      state: {
-        id,
-      },
-    });
+    if (!onNavigate)
+      navigate(`/@${user.username}/post/${id}`, {
+        state: {
+          id,
+        },
+      });
+    onNavigate("PostDetail", { postId: id, isDeck: true });
   };
 
   const handleUserProfile = () => {
-    navigate(`/@${user.username}`, {
-      state: {
-        userId: user_id,
-      },
-    });
+    if (!onNavigate)
+      navigate(`/@${user.username}`, {
+        state: {
+          userId: user_id,
+        },
+      });
+    onNavigate("UserProfile", { username, isDeck: true });
   };
 
   const urlImage =

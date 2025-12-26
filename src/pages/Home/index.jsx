@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CircleEllipsis } from "lucide-react";
+import { CircleEllipsis, Grid2X2Plus } from "lucide-react";
 
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Input } from "@/components/Common/ui/input";
@@ -18,7 +18,7 @@ import EmptyState from "@/components/Common/EmptyState";
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
 
-export default function Home() {
+export default function Home({ onNavigate, state }) {
   const { t } = useTranslation(["feed", "common"]);
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
@@ -55,7 +55,7 @@ export default function Home() {
     loading: isFetching,
     hasNextPage,
     onLoadMore: loadMore,
-    rootMargin: "0px 0px 900px 0px",
+    rootMargin: "0px 0px 1000px 0px",
   });
 
   // Navigation page
@@ -167,6 +167,8 @@ export default function Home() {
                     {...post}
                     isPermitDetailPost={true}
                     onDeleteSuccess={handleRefreshFeed}
+                    onNavigate={onNavigate}
+                    state={state}
                   />
                   {/* Separator */}
                   <div className="bg-border my-2 h-px w-full" />
@@ -181,6 +183,15 @@ export default function Home() {
           )}
         </div>
       </div>
+      <span className="fixed top-[50vh] right-[calc((100%-700px)/2)] size-4">
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
+        >
+          <Grid2X2Plus className="size-4" />
+        </Button>
+      </span>
     </div>
   );
 }

@@ -19,8 +19,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/Common/ui/dropdown-menu";
 import { Button } from "@/components/Common/ui/button";
@@ -30,107 +28,108 @@ import "simplebar-react/dist/simplebar.min.css";
 
 // --- IMPORT CÁC PAGE CỦA BẠN ---
 // TODO: Thay đổi đường dẫn import cho phù hợp với cấu trúc project của bạn
-// import Posts from './pages/Posts';
-// import PostDetail from './pages/PostDetail';
-// import UserProfile from './pages/UserProfile';
-// import Search from './pages/Search';
+import Home from "@pages/Home";
+import PostDetail from "@pages/PostDetail";
+import UserProfile from "@pages/UserProfile";
+import Search from "@pages/Search";
+import { Grid2X2Plus } from "lucide-react";
 // ... các page khác
 
 // --- PLACEHOLDER COMPONENTS (XÓA KHI ĐÃ IMPORT ĐÚNG) ---
-const Posts = ({ onNavigate, state }) => (
-  <div>
-    <h3 className="mb-4 text-lg font-bold">📝 Posts</h3>
-    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((id) => (
-      <div
-        key={id}
-        className="mb-3 cursor-pointer rounded border p-3 hover:bg-gray-50"
-        onClick={() => onNavigate("PostDetail", { postId: id })}
-      >
-        <h4 className="font-semibold">Post Title {id}</h4>
-        <p className="text-sm text-gray-600">Click to view detail...</p>
-      </div>
-    ))}
-  </div>
-);
+// const Posts = ({ onNavigate, state }) => (
+//   <div>
+//     <h3 className="mb-4 text-lg font-bold">📝 Posts</h3>
+//     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((id) => (
+//       <div
+//         key={id}
+//         className="mb-3 cursor-pointer rounded border p-3 hover:bg-gray-50"
+//         onClick={() => onNavigate("PostDetail", { postId: id })}
+//       >
+//         <h4 className="font-semibold">Post Title {id}</h4>
+//         <p className="text-sm text-gray-600">Click to view detail...</p>
+//       </div>
+//     ))}
+//   </div>
+// );
 
-const PostDetail = ({ onNavigate, state }) => (
-  <div>
-    <button
-      onClick={() => onNavigate("Posts")}
-      className="mb-4 text-sm text-blue-600 hover:underline"
-    >
-      ← Back to Posts
-    </button>
-    <h3 className="mb-4 text-lg font-bold">📄 Post Detail #{state?.postId}</h3>
-    <div className="mb-4 rounded border p-3">
-      <p className="mb-2">Post content here...</p>
-      <p className="text-sm text-gray-600">Author: John Doe</p>
-    </div>
-    <button
-      onClick={() =>
-        onNavigate("UserProfile", { userId: 123, userName: "John Doe" })
-      }
-      className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-    >
-      View Author Profile
-    </button>
-  </div>
-);
+// const PostDetail = ({ onNavigate, state }) => (
+//   <div>
+//     <button
+//       onClick={() => onNavigate("Posts")}
+//       className="mb-4 text-sm text-blue-600 hover:underline"
+//     >
+//       ← Back to Posts
+//     </button>
+//     <h3 className="mb-4 text-lg font-bold">📄 Post Detail #{state?.postId}</h3>
+//     <div className="mb-4 rounded border p-3">
+//       <p className="mb-2">Post content here...</p>
+//       <p className="text-sm text-gray-600">Author: John Doe</p>
+//     </div>
+//     <button
+//       onClick={() =>
+//         onNavigate("UserProfile", { userId: 123, userName: "John Doe" })
+//       }
+//       className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+//     >
+//       View Author Profile
+//     </button>
+//   </div>
+// );
 
-const UserProfile = ({ onNavigate, state }) => (
-  <div>
-    <h3 className="mb-4 text-lg font-bold">👤 User Profile</h3>
-    {state && (
-      <div className="mb-4 rounded border border-blue-200 bg-blue-50 p-3">
-        <p className="font-semibold">User ID: {state.userId}</p>
-        <p className="font-semibold">Name: {state.userName}</p>
-      </div>
-    )}
-    <div className="space-y-2">
-      <p>
-        Email: {state?.userName?.toLowerCase().replace(" ", ".")}@example.com
-      </p>
-      <p>Bio: Software developer and content creator</p>
-    </div>
-    <button
-      onClick={() => onNavigate("Posts")}
-      className="mt-4 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
-    >
-      View Posts
-    </button>
-  </div>
-);
+// const UserProfile = ({ onNavigate, state }) => (
+//   <div>
+//     <h3 className="mb-4 text-lg font-bold">👤 User Profile</h3>
+//     {state && (
+//       <div className="mb-4 rounded border border-blue-200 bg-blue-50 p-3">
+//         <p className="font-semibold">User ID: {state.userId}</p>
+//         <p className="font-semibold">Name: {state.userName}</p>
+//       </div>
+//     )}
+//     <div className="space-y-2">
+//       <p>
+//         Email: {state?.userName?.toLowerCase().replace(" ", ".")}@example.com
+//       </p>
+//       <p>Bio: Software developer and content creator</p>
+//     </div>
+//     <button
+//       onClick={() => onNavigate("Posts")}
+//       className="mt-4 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+//     >
+//       View Posts
+//     </button>
+//   </div>
+// );
 
-const Search = ({ onNavigate, state }) => (
-  <div>
-    <h3 className="mb-4 text-lg font-bold">🔍 Search</h3>
-    <input
-      type="text"
-      placeholder="Search..."
-      className="mb-4 w-full rounded border px-3 py-2"
-    />
-    <div className="space-y-2">
-      {[1, 2, 3].map((id) => (
-        <div
-          key={id}
-          className="cursor-pointer rounded border p-2 hover:bg-gray-50"
-          onClick={() => onNavigate("PostDetail", { postId: id + 100 })}
-        >
-          Search Result {id}
-        </div>
-      ))}
-    </div>
-  </div>
-);
+// const Search = ({ onNavigate, state }) => (
+//   <div>
+//     <h3 className="mb-4 text-lg font-bold">🔍 Search</h3>
+//     <input
+//       type="text"
+//       placeholder="Search..."
+//       className="mb-4 w-full rounded border px-3 py-2"
+//     />
+//     <div className="space-y-2">
+//       {[1, 2, 3].map((id) => (
+//         <div
+//           key={id}
+//           className="cursor-pointer rounded border p-2 hover:bg-gray-50"
+//           onClick={() => onNavigate("PostDetail", { postId: id + 100 })}
+//         >
+//           Search Result {id}
+//         </div>
+//       ))}
+//     </div>
+//   </div>
+// );
 // --- END PLACEHOLDER COMPONENTS ---
 
 // --- 1. CONFIG & UTILS ---
 // Định nghĩa các loại column và component khởi tạo của chúng
 const COLUMN_TYPES = [
   {
-    type: "posts",
-    label: "📝 Posts",
-    initialComponent: "Posts", // Component khởi đầu khi tạo column
+    type: "home",
+    label: "📝 Home",
+    initialComponent: "Home", // Component khởi đầu khi tạo column
   },
   {
     type: "search",
@@ -147,7 +146,7 @@ const COLUMN_TYPES = [
 // Registry chứa TẤT CẢ các component có thể render
 // Mỗi column có thể navigate đến bất kỳ component nào trong registry này
 const COMPONENT_REGISTRY = {
-  Posts: Posts,
+  Home: Home,
   PostDetail: PostDetail,
   UserProfile: UserProfile,
   Search: Search,
@@ -157,25 +156,14 @@ const COMPONENT_REGISTRY = {
 const generateId = () =>
   `col-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-// --- 2. COLUMN CONTENT WITH DYNAMIC ROUTING ---
+// --- 2. COLUMN CONTENT (CHỈ RENDER NỘI DUNG) ---
 const InnerColumnContent = ({ navigation, onNavigate }) => {
   const current = navigation.history[navigation.currentIndex];
   const currentComponentName = current.componentName;
   const currentState = current.state;
 
-  const canGoBack = navigation.currentIndex > 0;
-  const canGoForward = navigation.currentIndex < navigation.history.length - 1;
-
   const handleNavigate = (componentName, state = null) => {
     onNavigate("push", componentName, state);
-  };
-
-  const handleBack = () => {
-    if (canGoBack) onNavigate("back");
-  };
-
-  const handleForward = () => {
-    if (canGoForward) onNavigate("forward");
   };
 
   // Lấy component từ registry
@@ -183,37 +171,9 @@ const InnerColumnContent = ({ navigation, onNavigate }) => {
 
   return (
     <div className="flex h-full flex-col bg-white">
-      {/* Navigation Bar - Chỉ hiển thị Back/Forward */}
-      <div className="border-b border-gray-200 bg-gray-50 p-2.5">
-        {/* Back/Forward buttons */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleBack}
-            disabled={!canGoBack}
-            className="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-40"
-            title="Back"
-          >
-            ← Back
-          </button>
-          <button
-            onClick={handleForward}
-            disabled={!canGoForward}
-            className="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-40"
-            title="Forward"
-          >
-            Forward →
-          </button>
-
-          <div className="ml-auto text-xs text-gray-500">
-            {currentComponentName} ({navigation.currentIndex + 1}/
-            {navigation.history.length})
-          </div>
-        </div>
-      </div>
-
       {/* Content Area - Render Component động */}
-      <SimpleBar className="max-h-120 flex-1">
-        <div className="p-4">
+      <SimpleBar className="h-165 w-105 flex-1">
+        <div>
           {CurrentComponent ? (
             <CurrentComponent
               onNavigate={handleNavigate}
@@ -224,13 +184,13 @@ const InnerColumnContent = ({ navigation, onNavigate }) => {
             <div className="text-center text-red-600">
               <h3 className="text-lg font-bold">⚠️ Component not found</h3>
               <p className="mt-2 text-sm">
-                Component "{currentComponentName}" không tồn tại trong registry
+                Component "{currentComponentName}" không tồn tại
               </p>
               <button
-                onClick={() => handleNavigate("Posts")}
+                onClick={() => handleNavigate("Home")}
                 className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
               >
-                Go to Posts
+                Go to Home
               </button>
             </div>
           )}
@@ -240,7 +200,7 @@ const InnerColumnContent = ({ navigation, onNavigate }) => {
   );
 };
 
-// --- 3. SORTABLE COLUMN COMPONENT ---
+// --- 3. SORTABLE COLUMN COMPONENT (CHỨA HEADER MỚI) ---
 const SortableColumn = ({
   id,
   type,
@@ -263,40 +223,92 @@ const SortableColumn = ({
     transition,
   };
 
-  const canRemove = index !== 0;
+  const canRemove = index !== 0; // Cột đầu tiên không được xóa (tùy logic của bạn)
 
-  // Lấy label từ type
-  const columnTypeInfo = COLUMN_TYPES.find((ct) => ct.type === type);
-  const columnLabel = columnTypeInfo?.label || `Widget ${index + 1}`;
+  // --- Logic Navigation (Chuyển từ Inner lên đây) ---
+  const current = navigation.history[navigation.currentIndex];
+  const currentComponentName = current.componentName;
+  const canGoBack = navigation.currentIndex > 0;
+  const canGoForward = navigation.currentIndex < navigation.history.length - 1;
+
+  const handleBack = () => {
+    if (canGoBack) onNavigate(id, "back", null);
+  };
+
+  const handleForward = () => {
+    if (canGoForward) onNavigate(id, "forward", null);
+  };
+  // ------------------------------------------------
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative h-150 max-w-100 min-w-100 flex-1 flex-col gap-2 rounded-lg border border-gray-200 bg-white ${
-        isDragging ? "opacity-80 shadow-2xl" : "shadow-md"
+      className={`relative flex h-full max-w-105 min-w-105 flex-col overflow-hidden bg-[#fafafa] ${
+        isDragging ? "z-50 opacity-80 shadow-2xl" : "shadow-md"
       }`}
     >
+      {/* HEADER / TOOLBAR 
+        - Chứa Back/Forward
+        - Là vùng Drag (handle)
+        - Chứa nút Close
+      */}
       <div
         {...attributes}
         {...listeners}
-        className="flex cursor-grab items-center justify-between bg-linear-to-r from-blue-500 to-blue-600 px-4 py-2.5 text-white select-none"
+        className="flex cursor-grab items-center justify-between bg-gray-100 px-3 py-2 select-none active:cursor-grabbing"
       >
-        <span className="font-bold">:: {columnLabel}</span>
-
-        {canRemove && (
+        {/* Left: Navigation Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            // QUAN TRỌNG: onPointerDown stopPropagation để không kích hoạt Drag khi click nút
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={handleBack}
+            disabled={!canGoBack}
+            className="flex h-6 w-6 items-center justify-center rounded hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-30"
+            title="Back"
+          >
+            ←
+          </button>
           <button
             onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => onRemove(id)}
-            className="cursor-pointer border-none bg-transparent px-1.5 py-0 text-base leading-none text-white transition-colors hover:text-red-200"
-            title="Đóng cột này"
+            onClick={handleForward}
+            disabled={!canGoForward}
+            className="flex h-6 w-6 items-center justify-center rounded hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-30"
+            title="Forward"
           >
-            ✕
+            →
           </button>
-        )}
+        </div>
+
+        {/* Center: Title / Drag Handle Area */}
+        <div className="mx-2 flex-1 truncate text-center text-xs font-semibold text-gray-600">
+          {currentComponentName}
+          <span className="ml-1 font-normal text-gray-400">
+            ({navigation.currentIndex + 1}/{navigation.history.length})
+          </span>
+        </div>
+
+        {/* Right: Close Button */}
+        <div className="flex items-center">
+          {canRemove ? (
+            <button
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={() => onRemove(id)}
+              className="flex h-6 w-6 items-center justify-center rounded text-gray-500 hover:bg-red-100 hover:text-red-600"
+              title="Close Column"
+            >
+              ✕
+            </button>
+          ) : (
+            // Giữ khoảng trống để UI cân đối nếu không có nút close
+            <div className="h-6 w-6" />
+          )}
+        </div>
       </div>
 
-      <div className="relative w-100 flex-1">
+      {/* BODY */}
+      <div className="relative flex-1 bg-[#fafafa]">
         <InnerColumnContent
           navigation={navigation}
           onNavigate={(action, componentName, state) =>
@@ -316,16 +328,12 @@ const AddColumnButton = ({ onAdd }) => {
         <Button
           variant="outline"
           size="icon"
-          className="h-12 w-12 rounded-full border-2 border-dashed border-gray-400 hover:border-blue-600 hover:text-blue-600"
+          className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
         >
-          <span className="text-2xl">+</span>
+          <Grid2X2Plus className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-44">
-        <DropdownMenuLabel className="text-xs text-gray-500">
-          THÊM CỘT
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
         {COLUMN_TYPES.map((item) => (
           <DropdownMenuItem
             key={item.type}
@@ -345,9 +353,9 @@ export default function DragDropDashboard() {
   const [columns, setColumns] = useState([
     {
       id: "col-default",
-      type: "posts",
+      type: "home",
       navigation: {
-        history: [{ componentName: "Posts", state: null }],
+        history: [{ componentName: "Home", state: null }],
         currentIndex: 0,
       },
     },
@@ -374,7 +382,7 @@ export default function DragDropDashboard() {
   const handleAddColumn = (type) => {
     // Tìm component khởi tạo từ config
     const columnConfig = COLUMN_TYPES.find((ct) => ct.type === type);
-    const initialComponent = columnConfig?.initialComponent || "Posts";
+    const initialComponent = columnConfig?.initialComponent || "Home";
 
     const newCol = {
       id: generateId(),
@@ -442,7 +450,7 @@ export default function DragDropDashboard() {
   return (
     <div className="max-h-dvh">
       <SimpleBar>
-        <div className="flex items-center justify-center-safe">
+        <div className="flex items-center justify-center-safe gap-4">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -466,7 +474,7 @@ export default function DragDropDashboard() {
             </SortableContext>
           </DndContext>
 
-          <div className="ml-2.5">
+          <div className="ml-1.5">
             <AddColumnButton onAdd={handleAddColumn} />
           </div>
         </div>
