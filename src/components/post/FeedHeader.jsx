@@ -3,8 +3,9 @@ import { PATHS } from "@/configs/paths";
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 import { CircleEllipsis } from "lucide-react";
+import MoreAtFeedHeader from "../Common/DropdownMenu/MoreAtFeedHeader";
 
-export default function FeedHeader() {
+export default function FeedHeader({ onRemoveColumn, idColumn, canRemove }) {
   const { t } = useTranslation(["feed", "common"]);
 
   return (
@@ -20,7 +21,7 @@ export default function FeedHeader() {
               variant={"ghost"}
               className={`h-auto w-full cursor-pointer rounded-none bg-transparent px-4 py-3 text-[15px] font-bold transition-all hover:bg-transparent md:w-auto ${
                 isActive
-                  ? "border-b-2 border-foreground text-foreground md:border-0"
+                  ? "border-foreground text-foreground border-b-2 md:border-0"
                   : "text-muted-foreground/60 hover:text-foreground"
               }`}
             >
@@ -37,7 +38,7 @@ export default function FeedHeader() {
               variant={"ghost"}
               className={`h-auto w-full cursor-pointer rounded-none bg-transparent px-4 py-3 text-[15px] font-bold transition-all hover:bg-transparent md:w-auto ${
                 isActive
-                  ? "border-b-2 border-foreground text-foreground md:border-0"
+                  ? "border-foreground text-foreground border-b-2 md:border-0"
                   : "text-muted-foreground/60 hover:text-foreground"
               }`}
             >
@@ -53,7 +54,9 @@ export default function FeedHeader() {
             <Button
               variant={"ghost"}
               className={`h-auto cursor-pointer bg-transparent px-4 py-3 text-[15px] font-bold hover:bg-transparent ${
-                isActive ? "text-foreground" : "text-muted-foreground/60 hover:text-foreground"
+                isActive
+                  ? "text-foreground"
+                  : "text-muted-foreground/60 hover:text-foreground"
               }`}
             >
               {t("feed:ghostPosts")}
@@ -61,12 +64,18 @@ export default function FeedHeader() {
           )}
         </NavLink>
       </div>
-      <div className="flex w-10 justify-center">
-        <CircleEllipsis
-          className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-          strokeWidth={1.1}
-        />
-      </div>
+      <MoreAtFeedHeader
+        onRemoveColumn={onRemoveColumn}
+        canRemove={canRemove}
+        idColumn={idColumn}
+      >
+        <div className="flex w-10 justify-center">
+          <CircleEllipsis
+            className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+            strokeWidth={1.1}
+          />
+        </div>
+      </MoreAtFeedHeader>
     </div>
   );
 }

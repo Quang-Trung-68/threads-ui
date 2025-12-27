@@ -30,8 +30,15 @@ import {
 } from "@/components/Common/ui/dropdown-menu";
 import { useLocation, useNavigate } from "react-router";
 import { PATHS } from "@/configs/paths";
+import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 
-export default function Home({ dragHandleProps, onNavigate, state }) {
+export default function Home({
+  dragHandleProps,
+  onNavigate,
+  state,
+  canRemove,
+  onRemoveColumn,
+}) {
   const { pathname } = useLocation();
   const { t } = useTranslation(["feed", "common"]);
   const [page, setPage] = useState(1);
@@ -83,18 +90,18 @@ export default function Home({ dragHandleProps, onNavigate, state }) {
 
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">
-      <div
-        // Props de drag and drop
-        {...dragHandleProps.attributes}
-        {...dragHandleProps.listeners}
-        className="flex w-full cursor-grabbing flex-col"
-      >
+      <div className="flex w-full flex-col">
         {/* Sticky Header Container */}
         {/* The entire block is sticky to create the 'Fixed Frame' effect while keeping native scroll */}
-        <div className="bg-background sticky top-0 z-50">
+        <div
+          // Props de drag and drop
+          {...dragHandleProps?.attributes}
+          {...dragHandleProps?.listeners}
+          className="bg-background sticky top-0 z-50 cursor-grab active:cursor-grabbing"
+        >
           {/* Visible Header Navigation */}
           {user ? (
-            <FeedHeader />
+            <FeedHeader canRemove={canRemove} onRemoveColumn={onRemoveColumn} />
           ) : (
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="w-10 px-4 py-3"></div>
@@ -103,12 +110,14 @@ export default function Home({ dragHandleProps, onNavigate, state }) {
                   {t("feed:home")}
                 </span>
               </div>
-              <div className="flex w-10 justify-center">
-                <CircleEllipsis
-                  className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                  strokeWidth={1.1}
-                />
-              </div>
+              <MoreAtFeedHeader canRemove={canRemove}>
+                <div className="flex w-10 justify-center">
+                  <CircleEllipsis
+                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                    strokeWidth={1.1}
+                  />
+                </div>
+              </MoreAtFeedHeader>
             </div>
           )}
 

@@ -18,8 +18,15 @@ import { Input } from "@/components/Common/ui/input";
 import { useTranslation } from "react-i18next";
 import { useFollowUserMutation } from "@/services/authService";
 import { notifySooner } from "@/utils/notifySooner";
+import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 
-export default function UserProfile({ onNavigate, state }) {
+export default function UserProfile({
+  dragHandleProps,
+  onNavigate,
+  onRemoveColumn,
+  state,
+  canRemove,
+}) {
   const { t } = useTranslation(["user", "common", "post"]);
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,7 +113,12 @@ export default function UserProfile({ onNavigate, state }) {
           {/* Sticky Header + Card Top Cap */}
           {/* The entire block is sticky to create the 'Fixed Frame' effect while keeping native scroll */}
           {/* Sticky Header Container */}
-          <div className="bg-background sticky top-0 z-50">
+          <div
+            // Props de drag and drop
+            {...dragHandleProps?.attributes}
+            {...dragHandleProps?.listeners}
+            className="bg-background sticky top-0 z-50 cursor-grab active:cursor-grabbing"
+          >
             {/* 1. Header Title Bar */}
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="flex w-10 justify-center transition ease-in">
@@ -123,12 +135,17 @@ export default function UserProfile({ onNavigate, state }) {
               <span className="text-foreground flex items-center justify-center px-4 py-3 text-[15px] font-bold">
                 {t("common:profile")}
               </span>
-              <div className="flex w-10 justify-center">
-                <CircleEllipsis
-                  className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                  strokeWidth={1.1}
-                />
-              </div>
+              <MoreAtFeedHeader
+                canRemove={canRemove}
+                onRemoveColumn={onRemoveColumn}
+              >
+                <div className="flex w-10 justify-center">
+                  <CircleEllipsis
+                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                    strokeWidth={1.1}
+                  />
+                </div>
+              </MoreAtFeedHeader>
             </div>
 
             {/* Visible Border connecting the masks */}

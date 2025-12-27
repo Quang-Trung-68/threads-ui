@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CircleEllipsis } from "lucide-react";
+import { CircleEllipsis, MinusCircle } from "lucide-react";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Input } from "@/components/Common/ui/input";
 import { Button } from "@/components/Common/ui/button";
@@ -15,7 +15,13 @@ import EmptyState from "@/components/Common/EmptyState";
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
 
-export default function Following() {
+import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
+
+export default function Following({
+  dragHandleProps,
+  onRemoveColumn,
+  canRemove,
+}) {
   const { t } = useTranslation(["feed", "common"]);
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
@@ -56,13 +62,18 @@ export default function Following() {
 
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">
-      <div className="flex w-full flex-col">
+      <div
+        // Props de drag and drop
+        {...dragHandleProps?.attributes}
+        {...dragHandleProps?.listeners}
+        className="flex w-full cursor-grab flex-col active:cursor-grabbing"
+      >
         {/* Sticky Header Container */}
         {/* The entire block is sticky to create the 'Fixed Frame' effect while keeping native scroll */}
         <div className="bg-background sticky top-0 z-50">
           {/* Visible Header Navigation */}
           {user ? (
-            <FeedHeader />
+            <FeedHeader onRemoveColumn={onRemoveColumn} />
           ) : (
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="w-10 px-4 py-3"></div>
@@ -71,12 +82,17 @@ export default function Following() {
                   {t("feed:following")}
                 </span>
               </div>
-              <div className="flex w-10 justify-center">
-                <CircleEllipsis
-                  className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                  strokeWidth={1.1}
-                />
-              </div>
+              <MoreAtFeedHeader
+                onRemoveColumn={onRemoveColumn}
+                canRemove={canRemove}
+              >
+                <div className="flex w-10 justify-center">
+                  <CircleEllipsis
+                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                    strokeWidth={1.1}
+                  />
+                </div>
+              </MoreAtFeedHeader>
             </div>
           )}
 

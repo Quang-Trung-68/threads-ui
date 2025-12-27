@@ -10,7 +10,7 @@ import EmptyState from "@/components/Common/EmptyState";
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
 
-export default function GhostPosts() {
+export default function GhostPosts({ dragHandleProps }) {
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
   const { t } = useTranslation(["feed"]);
@@ -46,10 +46,15 @@ export default function GhostPosts() {
   });
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-background">
+    <div className="bg-background relative flex min-h-screen w-full flex-col">
       <div className="flex w-full flex-col">
         {/* Sticky Header Container */}
-        <div className="sticky top-0 z-50 bg-background">
+        <div
+          // Props de drag and drop
+          {...dragHandleProps?.attributes}
+          {...dragHandleProps?.listeners}
+          className="bg-background sticky top-0 z-50 cursor-grab active:cursor-grabbing"
+        >
           {/* Visible Header Navigation */}
           {user ? (
             <FeedHeader />
@@ -96,11 +101,11 @@ export default function GhostPosts() {
         </div>
 
         {/* Main Content - Flows naturally with window scroll */}
-        <div className="relative z-0 flex min-h-screen w-full flex-col bg-background">
+        <div className="bg-background relative z-0 flex min-h-screen w-full flex-col">
           {/* Left Border Line */}
           <div className="bg-border absolute top-0 bottom-0 left-0 z-10 w-px" />
           {/* Right Border Line */}
-          <div className="bg-border absolute top-0 bottom-0 right-0 z-10 w-px" />
+          <div className="bg-border absolute top-0 right-0 bottom-0 z-10 w-px" />
 
           <div className="relative flex flex-col">
             {isLoading && posts.length === 0 ? (

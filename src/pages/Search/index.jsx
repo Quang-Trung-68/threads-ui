@@ -1,4 +1,3 @@
-import { Button } from "@/components/Common/ui/button";
 import { Input } from "@/components/Common/ui/input";
 import { useGetFollowSuggestionQuery } from "@/services/searchService";
 import { Search as SearchIcon, CircleEllipsis } from "lucide-react";
@@ -8,8 +7,9 @@ import FollowSuggestionCard from "@/components/Features/search/FollowSuggestionC
 import { Spinner } from "@/components/Common/ui/spinner";
 import EmptyState from "@/components/Common/EmptyState";
 import { useTranslation } from "react-i18next";
+import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 
-export default function Search() {
+export default function Search({ dragHandleProps, onRemoveColumn, canRemove }) {
   const { t } = useTranslation(["feed", "user", "common"]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -46,22 +46,34 @@ export default function Search() {
   });
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-background">
+    <div className="bg-background relative flex min-h-screen w-full flex-col">
       <div className="flex w-full flex-col">
         {/* Sticky Header Container */}
-        <div className="sticky top-0 z-50 bg-background">
+        <div className="bg-background sticky top-0 z-50">
           {/* Header Title Bar */}
-          <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
+          <div
+            // Props de drag and drop
+            {...dragHandleProps?.attributes}
+            {...dragHandleProps?.listeners}
+            className="flex cursor-grab items-center justify-between px-2 py-2 text-lg font-bold active:cursor-grabbing"
+          >
             <div className="w-10 px-4 py-3"></div>
-             <div className="flex items-center justify-center px-4 py-3">
-               <span className="text-[15px] font-bold text-foreground">{t("feed:search")}</span>
-             </div>
-            <div className="flex w-10 justify-center">
+            <div className="flex items-center justify-center px-4 py-3">
+              <span className="text-foreground text-[15px] font-bold">
+                {t("feed:search")}
+              </span>
+            </div>
+            <MoreAtFeedHeader
+              canRemove={canRemove}
+              onRemoveColumn={onRemoveColumn}
+            >
+              <div className="flex w-10 justify-center">
                 <CircleEllipsis
                   className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
                   strokeWidth={1.1}
                 />
-            </div>
+              </div>
+            </MoreAtFeedHeader>
           </div>
 
           {/* Visible Border connecting the masks */}
@@ -90,7 +102,7 @@ export default function Search() {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-0 flex min-h-screen w-full flex-col bg-background">
+        <div className="bg-background relative z-0 flex min-h-screen w-full flex-col">
           {/* Left Border Line */}
           <div className="bg-border absolute top-0 bottom-0 left-0 z-10 w-px" />
           {/* Right Border Line */}
@@ -99,10 +111,10 @@ export default function Search() {
           <div className="flex flex-col p-4 px-6">
             {/* Search Bar */}
             <div className="relative mb-2">
-              <SearchIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <Input
                 placeholder={t("feed:searchPlaceholder")}
-                className="h-11 rounded-xl border-0 bg-muted pl-10 text-[15px] focus-visible:ring-0"
+                className="bg-muted h-11 rounded-xl border-0 pl-10 text-[15px] focus-visible:ring-0"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -110,12 +122,12 @@ export default function Search() {
 
             <div className="mt-2 flex flex-col">
               {suggestions.length > 0 && (
-                <h3 className="mb-3 text-lg font-semibold text-muted-foreground">
+                <h3 className="text-muted-foreground mb-3 text-lg font-semibold">
                   {t("user:followSuggestions")}
                 </h3>
               )}
               {isLoading && suggestions.length === 0 ? (
-                <div className="flex flex-1 items-center justify-center min-h-[50vh]">
+                <div className="flex min-h-[50vh] flex-1 items-center justify-center">
                   <Spinner size="lg" />
                 </div>
               ) : suggestions.length === 0 && !isFetching ? (
@@ -124,7 +136,7 @@ export default function Search() {
                   description={t("user:trySearchingSomethingElse")}
                 />
               ) : (
-                <div className="flex flex-col divide-y divide-border">
+                <div className="divide-border flex flex-col divide-y">
                   {suggestions.map((user) => (
                     <FollowSuggestionCard key={user.id} {...user} />
                   ))}
@@ -143,4 +155,3 @@ export default function Search() {
     </div>
   );
 }
-

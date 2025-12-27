@@ -186,7 +186,14 @@ const generateId = () =>
   `col-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 // --- 2. COLUMN CONTENT (CHỈ RENDER NỘI DUNG) ---
-const InnerColumnContent = ({ navigation, onNavigate, dragHandleProps }) => {
+const InnerColumnContent = ({
+  navigation,
+  onNavigate,
+  dragHandleProps,
+  onRemoveColumn,
+  idColumn,
+  canRemove,
+}) => {
   const current = navigation.history[navigation.currentIndex];
   const currentComponentName = current.componentName;
   const currentState = current.state;
@@ -201,7 +208,7 @@ const InnerColumnContent = ({ navigation, onNavigate, dragHandleProps }) => {
   return (
     <div className="flex h-full flex-col bg-white">
       {/* Content Area - Render Component động */}
-      <SimpleBar className="h-[94vh] max-w-160 min-w-105 flex-1">
+      <SimpleBar className="h-screen max-w-160 min-w-105 flex-1">
         <div>
           {CurrentComponent ? (
             <CurrentComponent
@@ -209,6 +216,9 @@ const InnerColumnContent = ({ navigation, onNavigate, dragHandleProps }) => {
               state={currentState}
               navigation={navigation}
               dragHandleProps={dragHandleProps}
+              onRemoveColumn={onRemoveColumn}
+              idColumn={idColumn}
+              canRemove={canRemove}
             />
           ) : (
             <div className="text-center text-red-600">
@@ -289,12 +299,12 @@ const SortableColumn = ({
         - Chứa nút Close
       */}
       <div
-        // {...attributes}
-        // {...listeners}
-        className="flex cursor-grab items-center justify-between bg-gray-100 px-3 py-2 select-none active:cursor-grabbing"
+      // {...attributes}
+      // {...listeners}
+      // className="flex cursor-grab items-center justify-between bg-gray-100 px-3 py-2 select-none active:cursor-grabbing"
       >
         {/* Left: Navigation Controls */}
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <button
             // QUAN TRỌNG: onPointerDown stopPropagation để không kích hoạt Drag khi click nút
             onPointerDown={(e) => e.stopPropagation()}
@@ -305,10 +315,10 @@ const SortableColumn = ({
           >
             ←
           </button>
-        </div>
+        </div> */}
 
         {/* Right: Close Button */}
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           {canRemove ? (
             <button
               onPointerDown={(e) => e.stopPropagation()}
@@ -322,7 +332,7 @@ const SortableColumn = ({
             // Giữ khoảng trống để UI cân đối nếu không có nút close
             <div className="h-6 w-6" />
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* BODY */}
@@ -332,6 +342,8 @@ const SortableColumn = ({
           onNavigate={(action, componentName, state) =>
             onNavigate(id, action, componentName, state)
           }
+          canRemove={canRemove}
+          onRemoveColumn={() => onRemove(id)}
           dragHandleProps={dragHandleProps}
         />
       </div>
