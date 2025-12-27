@@ -18,10 +18,16 @@ import { CSS } from "@dnd-kit/utilities";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/Common/ui/dropdown-menu";
 import { Button } from "@/components/Common/ui/button";
+import { CircleEllipsis, Grid2X2Plus } from "lucide-react";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
@@ -32,7 +38,12 @@ import Home from "@pages/Home";
 import PostDetail from "@pages/PostDetail";
 import UserProfile from "@pages/UserProfile";
 import Search from "@pages/Search";
-import { Grid2X2Plus } from "lucide-react";
+import Activity from "@/pages/Activity";
+import Following from "@/pages/Following";
+import GhostPosts from "@/pages/GhostPosts";
+import { useTranslation } from "react-i18next";
+import { PATHS } from "@/configs/paths";
+import { NavLink } from "react-router";
 // ... các page khác
 
 // --- PLACEHOLDER COMPONENTS (XÓA KHI ĐÃ IMPORT ĐÚNG) ---
@@ -129,12 +140,27 @@ const COLUMN_TYPES = [
   {
     type: "home",
     label: "📝 Home",
-    initialComponent: "Home", // Component khởi đầu khi tạo column
+    initialComponent: "Home",
+  },
+  {
+    type: "following",
+    label: "📝 Following",
+    initialComponent: "Following",
+  },
+  {
+    type: "ghostPosts",
+    label: "📝 Ghost posts",
+    initialComponent: "GhostPosts",
   },
   {
     type: "search",
     label: "🔍 Search",
     initialComponent: "Search",
+  },
+  {
+    type: "activity",
+    label: "🔍 Activity",
+    initialComponent: "Activity",
   },
   {
     type: "profile",
@@ -147,9 +173,12 @@ const COLUMN_TYPES = [
 // Mỗi column có thể navigate đến bất kỳ component nào trong registry này
 const COMPONENT_REGISTRY = {
   Home: Home,
-  PostDetail: PostDetail,
-  UserProfile: UserProfile,
-  Search: Search,
+  PostDetail,
+  UserProfile,
+  Search,
+  Activity,
+  Following,
+  GhostPosts,
   // Thêm các component khác ở đây
 };
 
@@ -157,7 +186,7 @@ const generateId = () =>
   `col-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 // --- 2. COLUMN CONTENT (CHỈ RENDER NỘI DUNG) ---
-const InnerColumnContent = ({ navigation, onNavigate }) => {
+const InnerColumnContent = ({ navigation, onNavigate, dragHandleProps }) => {
   const current = navigation.history[navigation.currentIndex];
   const currentComponentName = current.componentName;
   const currentState = current.state;
@@ -172,13 +201,14 @@ const InnerColumnContent = ({ navigation, onNavigate }) => {
   return (
     <div className="flex h-full flex-col bg-white">
       {/* Content Area - Render Component động */}
-      <SimpleBar className="h-165 w-105 flex-1">
+      <SimpleBar className="h-[94vh] max-w-160 min-w-105 flex-1">
         <div>
           {CurrentComponent ? (
             <CurrentComponent
               onNavigate={handleNavigate}
               state={currentState}
               navigation={navigation}
+              dragHandleProps={dragHandleProps}
             />
           ) : (
             <div className="text-center text-red-600">
@@ -200,7 +230,7 @@ const InnerColumnContent = ({ navigation, onNavigate }) => {
   );
 };
 
-// --- 3. SORTABLE COLUMN COMPONENT (CHỨA HEADER MỚI) ---
+// --- 3. SORTABLE COLUMN COMPONENT ---
 const SortableColumn = ({
   id,
   type,
@@ -223,7 +253,7 @@ const SortableColumn = ({
     transition,
   };
 
-  const canRemove = index !== 0; // Cột đầu tiên không được xóa (tùy logic của bạn)
+  const canRemove = index !== 0; // Cột đầu tiên không được xóa
 
   // --- Logic Navigation (Chuyển từ Inner lên đây) ---
   const current = navigation.history[navigation.currentIndex];
@@ -239,12 +269,17 @@ const SortableColumn = ({
     if (canGoForward) onNavigate(id, "forward", null);
   };
   // ------------------------------------------------
+  // Tao props drag n drop de truyen vao Current component
+  const dragHandleProps = {
+    attributes,
+    listeners,
+  };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative flex h-full max-w-105 min-w-105 flex-col overflow-hidden bg-[#fafafa] ${
+      className={`relative flex h-full max-w-160 min-w-105 flex-col overflow-hidden bg-[#fafafa] ${
         isDragging ? "z-50 opacity-80 shadow-2xl" : "shadow-md"
       }`}
     >
@@ -254,8 +289,8 @@ const SortableColumn = ({
         - Chứa nút Close
       */}
       <div
-        {...attributes}
-        {...listeners}
+        // {...attributes}
+        // {...listeners}
         className="flex cursor-grab items-center justify-between bg-gray-100 px-3 py-2 select-none active:cursor-grabbing"
       >
         {/* Left: Navigation Controls */}
@@ -270,23 +305,6 @@ const SortableColumn = ({
           >
             ←
           </button>
-          <button
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={handleForward}
-            disabled={!canGoForward}
-            className="flex h-6 w-6 items-center justify-center rounded hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-30"
-            title="Forward"
-          >
-            →
-          </button>
-        </div>
-
-        {/* Center: Title / Drag Handle Area */}
-        <div className="mx-2 flex-1 truncate text-center text-xs font-semibold text-gray-600">
-          {currentComponentName}
-          <span className="ml-1 font-normal text-gray-400">
-            ({navigation.currentIndex + 1}/{navigation.history.length})
-          </span>
         </div>
 
         {/* Right: Close Button */}
@@ -314,6 +332,7 @@ const SortableColumn = ({
           onNavigate={(action, componentName, state) =>
             onNavigate(id, action, componentName, state)
           }
+          dragHandleProps={dragHandleProps}
         />
       </div>
     </div>
@@ -322,34 +341,92 @@ const SortableColumn = ({
 
 // --- 4. COMPONENT NÚT THÊM (+) & MENU ---
 const AddColumnButton = ({ onAdd }) => {
+  const { t } = useTranslation(["common"]);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
-        >
-          <Grid2X2Plus className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-44">
-        {COLUMN_TYPES.map((item) => (
-          <DropdownMenuItem
-            key={item.type}
-            onClick={() => onAdd(item.type)}
-            className="cursor-pointer"
+        <span className="size-4">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
           >
-            {item.label}
+            <Grid2X2Plus className="size-4" />
+          </Button>
+        </span>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className={"mr-47 w-fit rounded-3xl border-2 p-2"}>
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
+            onClick={() => onAdd("search")}
+          >
+            {t("common:search")}
           </DropdownMenuItem>
-        ))}
+          <DropdownMenuItem
+            className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
+            onClick={() => onAdd("activity")}
+          >
+            {t("common:activity")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
+            onClick={() => onAdd("profile")}
+          >
+            {t("common:profile")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
+          >
+            {t("common:insights")}
+          </DropdownMenuItem>
+
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger
+              className={
+                "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+              }
+            >
+              {t("common:feeds")}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  className={
+                    "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                  onClick={() => onAdd("home")}
+                >
+                  {t("common:forYou")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className={
+                    "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                  onClick={() => onAdd("following")}
+                >
+                  {t("common:following")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className={
+                    "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                  onClick={() => onAdd("ghostPosts")}
+                >
+                  {t("common:ghostPosts")}
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
 // --- 5. COMPONENT CHÍNH (APP) ---
-export default function DragDropDashboard() {
+export default function DragDropDashboard({ pageType }) {
   const [columns, setColumns] = useState([
     {
       id: "col-default",
@@ -359,10 +436,26 @@ export default function DragDropDashboard() {
         currentIndex: 0,
       },
     },
+    {
+      id: "col-default-2",
+      type: pageType,
+      navigation: {
+        history: [
+          {
+            componentName:
+              COLUMN_TYPES[
+                COLUMN_TYPES.findIndex((col) => col.type === pageType)
+              ].initialComponent,
+            state: null,
+          },
+        ],
+        currentIndex: 0,
+      },
+    },
   ]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),

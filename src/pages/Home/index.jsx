@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { CircleEllipsis, Grid2X2Plus } from "lucide-react";
 
 import UserAvatar from "@/components/Common/ui/UserAvatar";
@@ -17,8 +17,22 @@ import EmptyState from "@/components/Common/EmptyState";
 
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/Common/ui/dropdown-menu";
+import { useLocation, useNavigate } from "react-router";
+import { PATHS } from "@/configs/paths";
 
-export default function Home({ onNavigate, state }) {
+export default function Home({ dragHandleProps, onNavigate, state }) {
+  const { pathname } = useLocation();
   const { t } = useTranslation(["feed", "common"]);
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
@@ -58,14 +72,23 @@ export default function Home({ onNavigate, state }) {
     rootMargin: "0px 0px 1000px 0px",
   });
 
-  // Navigation page
-  // const handleToForYou = () => {};
-  // const handleToFollowing = () => {};
-  // const handleToGhostPosts = () => {};
+  const navigate = useNavigate();
+  const handleDeckPage = ({ pageType }) => {
+    navigate(PATHS.DECK, {
+      state: { pageType },
+    });
+  };
+
+  const isShowAddColumnsHome = pathname === PATHS.HOME;
 
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">
-      <div className="flex w-full flex-col">
+      <div
+        // Props de drag and drop
+        {...dragHandleProps.attributes}
+        {...dragHandleProps.listeners}
+        className="flex w-full cursor-grabbing flex-col"
+      >
         {/* Sticky Header Container */}
         {/* The entire block is sticky to create the 'Fixed Frame' effect while keeping native scroll */}
         <div className="bg-background sticky top-0 z-50">
@@ -161,9 +184,8 @@ export default function Home({ onNavigate, state }) {
               />
             ) : (
               posts.map((post) => (
-                <>
+                <React.Fragment key={post.id}>
                   <PostCard
-                    key={post.id}
                     {...post}
                     isPermitDetailPost={true}
                     onDeleteSuccess={handleRefreshFeed}
@@ -172,7 +194,7 @@ export default function Home({ onNavigate, state }) {
                   />
                   {/* Separator */}
                   <div className="bg-border my-2 h-px w-full" />
-                </>
+                </React.Fragment>
               ))
             )}
           </div>
@@ -183,15 +205,96 @@ export default function Home({ onNavigate, state }) {
           )}
         </div>
       </div>
-      <span className="fixed top-[50vh] right-[calc((100%-700px)/2)] size-4">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
-        >
-          <Grid2X2Plus className="size-4" />
-        </Button>
-      </span>
+      {isShowAddColumnsHome && (
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <span className="fixed top-[50vh] right-[calc((100%-700px)/2)] size-4">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-300 text-gray-300 hover:border-black hover:text-black"
+              >
+                <Grid2X2Plus className="size-4" />
+              </Button>
+            </span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className={"mt-3 mr-43 w-fit rounded-3xl border-2 p-2"}
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className={
+                  "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                }
+                onClick={() => handleDeckPage({ pageType: "search" })}
+              >
+                {t("common:search")}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={
+                  "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                }
+                onClick={() => handleDeckPage({ pageType: "activity" })}
+              >
+                {t("common:activity")}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={
+                  "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                }
+                onClick={() => handleDeckPage({ pageType: "profile" })}
+              >
+                {t("common:profile")}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={
+                  "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                }
+              >
+                {t("common:insights")}
+              </DropdownMenuItem>
+
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger
+                  className={
+                    "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                  }
+                >
+                  {t("common:feeds")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem
+                      className={
+                        "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                      }
+                      onClick={() => handleDeckPage({ pageType: "home" })}
+                    >
+                      {t("common:forYou")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className={
+                        "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                      }
+                      onClick={() => handleDeckPage({ pageType: "following" })}
+                    >
+                      {t("common:following")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className={
+                        "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+                      }
+                      onClick={() => handleDeckPage({ pageType: "ghostPosts" })}
+                    >
+                      {t("common:ghostPosts")}
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 }

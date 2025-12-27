@@ -1,6 +1,10 @@
 import React, { useRef, useState } from "react";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
-import { Ellipsis as MoreIcon, CirclePlus as FollowIcon } from "lucide-react";
+import {
+  Ellipsis as MoreIcon,
+  CirclePlus as FollowIcon,
+  Plus,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import InteractionBar from "./InteractionBar";
@@ -28,7 +32,6 @@ function PostCard({
   state,
 }) {
   const { t } = useTranslation(["post", "common"]);
-  const navigate = useNavigate();
   const [isMuted, setIsMuted] = useState(false);
   const [isHidePost, setIsHidePost] = useState(false);
   const [isRestrictUser, setIsRestrictUser] = useState(false);
@@ -36,6 +39,7 @@ function PostCard({
   const [unmuteApi, { isLoading: isUnmuteLoading }] = useUnmuteUserMutation();
   const username = user.username;
 
+  const navigate = useNavigate();
   const handlePostDetail = () => {
     if (!onNavigate)
       navigate(`/@${user.username}/post/${id}`, {
@@ -55,9 +59,6 @@ function PostCard({
       });
     onNavigate("UserProfile", { username, isDeck: true });
   };
-
-  const urlImage =
-    "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
 
   const ReplyModalRef = useRef(null);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
@@ -132,13 +133,13 @@ function PostCard({
             <div className="relative">
               <UserAvatar user={user} className="size-9 cursor-pointer" />
               <div
-                className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex cursor-pointer items-center justify-center rounded-full border-2 p-[2px]"
+                className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // TODO: Implement follow/unfollow logic
+                  // TODO: follow / unfollow
                 }}
               >
-                <FollowIcon size={10} strokeWidth={4} />
+                <Plus size={12} strokeWidth={3} />
               </div>
             </div>
 
@@ -184,11 +185,9 @@ function PostCard({
               </PostOptionsDropdown>
             </div>
 
-            {urlImage && (
-              <div className="overflow-hidden rounded-lg">
+            {/* <div className="overflow-hidden rounded-lg">
                 <img src={urlImage} className="size-5" alt={""} />
-              </div>
-            )}
+              </div> */}
 
             {/* Interaction Bar */}
             <div>

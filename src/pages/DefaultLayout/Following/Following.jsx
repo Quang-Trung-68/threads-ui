@@ -40,15 +40,15 @@ export default function Following() {
             </div>
           ) : (
             <div>
-            <div className="flex flex-col gap-4">
-              {posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  isPermitDetailPost={true}
-                  {...post}
-                />
-              ))}
-            </div>
+              <div className="flex flex-col gap-4">
+                {posts.map((post) => (
+                  <React.Fragment key={post.id}>
+                    <PostCard isPermitDetailPost={true} {...post} />
+                    {/* Separator */}
+                    <div className="bg-border my-2 h-px w-full" />
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -25,12 +25,12 @@ export function NavigationModal() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           className={
-            "flex text-[15px] w-25 items-center justify-between gap-4 border-none bg-transparent font-bold text-black shadow-none hover:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none active:bg-transparent"
+            "flex w-25 items-center justify-between gap-4 border-none bg-transparent text-[15px] font-bold text-black shadow-none hover:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none active:bg-transparent"
           }
         >
           {dataMap[isRouting]}
@@ -50,7 +50,7 @@ export function NavigationModal() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
-          className={"p-3 cursor-pointer font-semibold"}
+          className={"cursor-pointer p-3 font-semibold"}
           checked={isRouting === "for_you"}
           onCheckedChange={() => {
             setIsRouting("for_you");
@@ -60,7 +60,7 @@ export function NavigationModal() {
           For you
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          className={"p-3 cursor-pointer font-semibold"}
+          className={"cursor-pointer p-3 font-semibold"}
           checked={isRouting === "following"}
           onCheckedChange={() => {
             setIsRouting("following");
@@ -70,7 +70,9 @@ export function NavigationModal() {
           Following
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          className={"flex cursor-pointer items-center justify-between p-3 font-semibold"}
+          className={
+            "flex cursor-pointer items-center justify-between p-3 font-semibold"
+          }
         >
           Ghost posts
           <span>

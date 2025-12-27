@@ -50,7 +50,7 @@ const ShareDropdown = ({
 
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
         <DropdownMenuContent className={"w-fit rounded-3xl border-2 p-2"}>
           <DropdownMenuRadioGroup>

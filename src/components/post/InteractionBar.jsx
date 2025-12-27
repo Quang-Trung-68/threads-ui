@@ -136,10 +136,10 @@ const InteractionBar = ({
 
   return (
     <>
-      <div className="flex gap-4 text-muted-foreground">
+      <div className="text-muted-foreground flex gap-4">
         <div
           onClick={handleLikeCount}
-          className={`likes_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-accent ${
+          className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
             interactionsCount.is_liked_by_auth
               ? "text-red-500"
               : "hover:bg-accent"
@@ -156,14 +156,14 @@ const InteractionBar = ({
             e.stopPropagation();
             toggleReplyModal();
           }}
-          className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-accent hover:text-blue-500"
+          className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
         >
           <ReplyIcon className="size-4.5" />
           <span className="text-sm">{interactionsCount.replies_count}</span>
         </div>
 
-        <div className="replies_count rounded-2xl p-1 hover:bg-accent">
-          <DropdownMenu>
+        <div className="replies_count hover:bg-accent rounded-2xl p-1">
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <span
                 className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
@@ -209,7 +209,7 @@ const InteractionBar = ({
           </DropdownMenu>
         </div>
 
-        <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-accent hover:text-purple-500">
+        <div className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500">
           <ShareDropdown
             id={id}
             user={user}

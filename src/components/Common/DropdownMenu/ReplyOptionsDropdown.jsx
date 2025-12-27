@@ -20,7 +20,7 @@ const ReplyOptionsDropdown = ({
 }) => {
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit p-2">
           <DropdownMenuLabel className={"text-[13px] text-gray-500"}>

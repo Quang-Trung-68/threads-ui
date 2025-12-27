@@ -24,16 +24,20 @@ const AuthMenu = ({ children }) => {
     >
       {label}
       <DropdownMenuShortcut className="flex items-center gap-2">
-        {theme === value && <Check className="size-4 text-primary" />}
+        {theme === value && <Check className="text-primary size-4" />}
         <Icon className="size-5" />
       </DropdownMenuShortcut>
     </DropdownMenuItem>
   );
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className={"w-fit rounded-3xl border-2 p-2 shadow-xl bg-card text-foreground"}>
+      <DropdownMenuContent
+        className={
+          "bg-card text-foreground w-fit rounded-3xl border-2 p-2 shadow-xl"
+        }
+      >
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger
@@ -44,7 +48,9 @@ const AuthMenu = ({ children }) => {
               Appearance
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent className={"rounded-3xl border-2 p-2 bg-card text-foreground"}>
+              <DropdownMenuSubContent
+                className={"bg-card text-foreground rounded-3xl border-2 p-2"}
+              >
                 <ThemeItem value="light" label="Light" icon={Sun} />
                 <ThemeItem value="dark" label="Dark" icon={Moon} />
                 <ThemeItem value="system" label="Auto" icon={Monitor} />
@@ -53,9 +59,7 @@ const AuthMenu = ({ children }) => {
           </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className={
-              "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
-            }
+            className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
           >
             Report a problem
           </DropdownMenuItem>
