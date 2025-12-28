@@ -34,6 +34,7 @@ import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader"
 import { useTitle } from "react-use";
 
 export default function Home({
+  type,
   dragHandleProps,
   onNavigate,
   state,
@@ -49,6 +50,7 @@ export default function Home({
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
 
   const { user } = useAuth();
+
   const {
     data: postsData,
     isLoading,
@@ -105,7 +107,12 @@ export default function Home({
         >
           {/* Visible Header Navigation */}
           {user ? (
-            <FeedHeader canRemove={canRemove} onRemoveColumn={onRemoveColumn} />
+            <FeedHeader
+              type={type}
+              canRemove={canRemove}
+              onRemoveColumn={onRemoveColumn}
+              onNavigate={onNavigate}
+            />
           ) : (
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="w-10 px-4 py-3"></div>
@@ -218,7 +225,7 @@ export default function Home({
           )}
         </div>
       </div>
-      {isShowAddColumnsHome && (
+      {isShowAddColumnsHome && user && (
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <span className="fixed top-[50vh] right-[calc((100%-700px)/2)] size-4">

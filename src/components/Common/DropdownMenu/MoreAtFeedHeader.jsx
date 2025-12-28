@@ -7,9 +7,14 @@ import {
 } from "../ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
 import { MinusCircle, PlusCircle } from "lucide-react";
+import { CreatePostModal } from "@/components/post/CreatePostModal";
 
 function MoreAtFeedHeader({ onRemoveColumn, children, canRemove }) {
   const { t } = useTranslation(["common"]);
+
+  const handleCreateNewPost = () => {
+    CreatePostModal.open();
+  };
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -33,7 +38,7 @@ function MoreAtFeedHeader({ onRemoveColumn, children, canRemove }) {
             "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
           }
           onPointerDown={(e) => e.stopPropagation()}
-          onClick={() => {}}
+          onClick={handleCreateNewPost}
         >
           <span>{t("common:createNewFeed")}</span>
           <span className="flex items-center justify-center">

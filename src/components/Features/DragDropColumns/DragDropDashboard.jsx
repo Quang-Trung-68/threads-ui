@@ -187,11 +187,12 @@ const generateId = () =>
 
 // --- 2. COLUMN CONTENT (CHỈ RENDER NỘI DUNG) ---
 const InnerColumnContent = ({
+  type,
+  idColumn,
   navigation,
   onNavigate,
   dragHandleProps,
   onRemoveColumn,
-  idColumn,
   canRemove,
 }) => {
   const current = navigation.history[navigation.currentIndex];
@@ -212,12 +213,13 @@ const InnerColumnContent = ({
         <div>
           {CurrentComponent ? (
             <CurrentComponent
+              idColumn={idColumn}
+              type={type}
               onNavigate={handleNavigate}
               state={currentState}
               navigation={navigation}
               dragHandleProps={dragHandleProps}
               onRemoveColumn={onRemoveColumn}
-              idColumn={idColumn}
               canRemove={canRemove}
             />
           ) : (
@@ -345,6 +347,7 @@ const SortableColumn = ({
           canRemove={canRemove}
           onRemoveColumn={() => onRemove(id)}
           dragHandleProps={dragHandleProps}
+          type={type}
         />
       </div>
     </div>
@@ -368,7 +371,7 @@ const AddColumnButton = ({ onAdd }) => {
           </Button>
         </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={"mr-47 w-fit rounded-3xl border-2 p-2"}>
+      <DropdownMenuContent className={"w-fit rounded-3xl border-2 p-2"}>
         <DropdownMenuGroup>
           <DropdownMenuItem
             className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}

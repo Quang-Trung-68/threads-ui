@@ -9,8 +9,18 @@ import FeedHeader from "@/components/post/FeedHeader";
 import EmptyState from "@/components/Common/EmptyState";
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "react-use";
 
-export default function GhostPosts({ dragHandleProps }) {
+export default function GhostPosts({
+  dragHandleProps,
+  onNavigate,
+  onRemoveColumn,
+  canRemove,
+  type,
+}) {
+  // Title
+  useTitle("Ghost posts");
+
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
   const { t } = useTranslation(["feed"]);
@@ -57,7 +67,12 @@ export default function GhostPosts({ dragHandleProps }) {
         >
           {/* Visible Header Navigation */}
           {user ? (
-            <FeedHeader />
+            <FeedHeader
+              type={type}
+              canRemove={canRemove}
+              onRemoveColumn={onRemoveColumn}
+              onNavigate={onNavigate}
+            />
           ) : (
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="w-10 px-4 py-3"></div>
@@ -66,12 +81,14 @@ export default function GhostPosts({ dragHandleProps }) {
                   {t("feed:ghostPosts")}
                 </span>
               </div>
-              <div className="flex w-10 justify-center">
-                <CircleEllipsis
-                  className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                  strokeWidth={1.1}
-                />
-              </div>
+              <MoreAtFeedHeader canRemove={canRemove}>
+                <div className="flex w-10 justify-center">
+                  <CircleEllipsis
+                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                    strokeWidth={1.1}
+                  />
+                </div>
+              </MoreAtFeedHeader>
             </div>
           )}
 

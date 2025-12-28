@@ -8,7 +8,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import InteractionBar from "./InteractionBar";
-import { formatTime } from "@/utils/formatTime";
 import QuickReplyModal from "@/components/Common/Modals/QuickReplyModal";
 import PostOptionsDropdown from "../Common/DropdownMenu/PostOptionsDropdown";
 import { useUnmuteUserMutation } from "@/services/postService";
@@ -163,7 +162,6 @@ function PostCard({
                     </div>
                   </UserHoverCard>
                   <div className="text-muted-foreground text-sm">
-                    {/* {formatTime(updated_at)} */}
                     <TimeTooltip dateString={updated_at} />
                   </div>
                 </div>

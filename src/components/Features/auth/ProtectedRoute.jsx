@@ -4,13 +4,13 @@ import useAuth from "@/hooks/useAuth";
 import { PATHS } from "@/configs/paths";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, isLoading, isError, isSuccess, isFetching } = useAuth();
+  const { user, isLoading, isError } = useAuth();
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (isError || !isSuccess || !user) return <Navigate to={PATHS.LOGIN} />;
+  if (isError || !user) return <Navigate to={PATHS.HOME} />;
 
   if (user && !user.verified)
     return <Navigate to={PATHS.REQUIRE_VERIFIED_EMAIL} />;

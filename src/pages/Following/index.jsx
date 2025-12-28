@@ -19,9 +19,11 @@ import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader"
 import { useTitle } from "react-use";
 
 export default function Following({
+  type,
   dragHandleProps,
   onRemoveColumn,
   canRemove,
+  onNavigate,
 }) {
   // Title
   useTitle("Threads");
@@ -77,7 +79,12 @@ export default function Following({
         <div className="bg-background sticky top-0 z-50">
           {/* Visible Header Navigation */}
           {user ? (
-            <FeedHeader onRemoveColumn={onRemoveColumn} />
+            <FeedHeader
+              type={type}
+              canRemove={canRemove}
+              onRemoveColumn={onRemoveColumn}
+              onNavigate={onNavigate}
+            />
           ) : (
             <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
               <div className="w-10 px-4 py-3"></div>
