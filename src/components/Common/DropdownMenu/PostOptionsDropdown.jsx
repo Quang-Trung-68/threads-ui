@@ -154,6 +154,28 @@ const PostOptionsDropdown = ({
     copyToClipboard(postLink);
   };
 
+  if (!user)
+    return (
+      <>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+          <DropdownMenuContent className={"w-fit rounded-3xl border-2 p-2"}>
+            <DropdownMenuCheckboxItem
+              className={
+                "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
+              }
+              onSelect={handleCopyLink}
+            >
+              <span>{t("post:copyLink")}</span>
+              <span className="flex items-center justify-center">
+                <Link className="size-5" />
+              </span>
+            </DropdownMenuCheckboxItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </>
+    );
+
   if (!isAuth)
     return (
       <>

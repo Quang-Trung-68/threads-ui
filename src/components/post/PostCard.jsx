@@ -14,6 +14,7 @@ import { useUnmuteUserMutation } from "@/services/postService";
 import { useTranslation } from "react-i18next";
 import TimeTooltip from "../Common/TimeTooltip";
 import UserHoverCard from "../Common/UserHoverCard";
+import useAuth from "@/hooks/useAuth";
 
 function PostCard({
   user,
@@ -33,6 +34,7 @@ function PostCard({
   state,
 }) {
   const { t } = useTranslation(["post", "common"]);
+  const { user: userAuth } = useAuth();
   const [isMuted, setIsMuted] = useState(false);
   const [isHidePost, setIsHidePost] = useState(false);
   const [isRestrictUser, setIsRestrictUser] = useState(false);
@@ -92,6 +94,106 @@ function PostCard({
       console.error("Unmute failed:", error);
     }
   };
+
+  const handleRequireAuth = () => {
+    alert("Need auth");
+  };
+
+  if (!userAuth)
+    return (
+      <div className="border-border flex flex-col p-3 md:p-6">
+        <div>
+          <div className="flex gap-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="relative">
+                <UserAvatar user={user} className="size-9 cursor-pointer" />
+                <div
+                  className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // TODO: follow / unfollow
+                  }}
+                >
+                  <Plus size={12} strokeWidth={3} />
+                </div>
+              </div>
+
+              {isReplyOpen && <div className="bg-border w-[3px] flex-1" />}
+            </div>
+
+            <div className="flex flex-1 flex-col gap-2">
+              <div className="content flex items-start justify-between">
+                <div
+                  className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <UserHoverCard {...user}>
+                      <div
+                        onClick={handleRequireAuth}
+                        className="text-foreground cursor-pointer font-semibold hover:underline"
+                      >
+                        {user.username}
+                      </div>
+                    </UserHoverCard>
+                    <div className="text-muted-foreground text-sm">
+                      <TimeTooltip dateString={updated_at} />
+                    </div>
+                  </div>
+                  {content && (
+                    <div onClick={handleRequireAuth} className="body mt-1">
+                      {content}
+                    </div>
+                  )}
+                </div>
+                <PostOptionsDropdown
+                  id={id}
+                  userId={user_id}
+                  username={user.username}
+                  is_saved_by_auth={is_saved_by_auth}
+                  onMuteSuccess={handleMuteSuccess}
+                  onHidePostSuccess={handleHidePostSuccess}
+                  onRestrictUserSuccess={handleRestrictUserSuccess}
+                  onBlockSuccess={handleBlockSuccess}
+                  onDeleteSuccess={onDeleteSuccess}
+                >
+                  <div className="hover:bg-muted flex size-8 items-center justify-center rounded-2xl">
+                    <MoreIcon className="text-muted-foreground size-7 cursor-pointer p-1" />
+                  </div>
+                </PostOptionsDropdown>
+              </div>
+
+              {/* <div className="overflow-hidden rounded-lg">
+                <img src={urlImage} className="size-5" alt={""} />
+              </div> */}
+
+              {/* Interaction Bar */}
+              <div>
+                <InteractionBar
+                  id={id}
+                  user={user}
+                  content={content}
+                  updated_at={updated_at}
+                  likes_count={likes_count}
+                  replies_count={replies_count}
+                  reposts_and_quotes_count={reposts_and_quotes_count}
+                  toggleReplyModal={toggleReplyModal}
+                  is_liked_by_auth={is_liked_by_auth}
+                  is_reposted_by_auth={is_reposted_by_auth}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <QuickReplyModal
+          id={id}
+          user={user}
+          content={content}
+          updated_at={updated_at}
+          ref={ReplyModalRef}
+        />
+      </div>
+    );
 
   if (isBlocked) {
     return (

@@ -28,7 +28,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/Common/ui/dropdown-menu";
-import { useLocation, useNavigate } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import { PATHS } from "@/configs/paths";
 import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 import { useTitle } from "react-use";
@@ -93,7 +93,8 @@ export default function Home({
   };
 
   const isShowAddColumnsHome = pathname === PATHS.HOME;
-
+  if (user && !user.verified)
+    return <Navigate to={PATHS.REQUIRE_VERIFIED_EMAIL} />;
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">
       <div className="flex w-full flex-col">
