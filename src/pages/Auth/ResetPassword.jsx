@@ -52,9 +52,7 @@ export default function ResetPassword() {
         setStatus(t("auth:enterNewPassword"));
       } else if (!validTokenData.valid || isErrorValidToken) {
         setIsValidToken(false);
-        setStatus(
-          t("auth:tokenInvalid"),
-        );
+        setStatus(t("auth:tokenInvalid"));
       }
     }
   }, [validTokenData, isSuccessValidToken, isErrorValidToken]);
@@ -83,12 +81,14 @@ export default function ResetPassword() {
   );
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background text-foreground">
+    <div className="bg-background text-foreground relative flex min-h-screen items-center justify-center overflow-hidden">
       {/* Main register container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-2 min-h-[80vh] text-center">
-          <h1 className="mb-8 text-2xl font-semibold">{t("auth:resetPassword")}</h1>
-          <div className="mb-8 text-sm text-primary italic">{status}</div>
+          <h1 className="mb-8 text-2xl font-semibold">
+            {t("auth:resetPassword")}
+          </h1>
+          <div className="text-primary mb-8 text-sm italic">{status}</div>
           {isLoadingValidToken && (
             <div className="flex flex-col items-center justify-center gap-4">
               <span>{t("auth:checkingInfo")}</span>
@@ -105,7 +105,7 @@ export default function ResetPassword() {
                     hidden
                     {...register("token")}
                     defaultValue={token}
-                    className="w-full rounded-xl border border-border bg-muted px-4 py-3 transition-colors focus:border-ring focus:outline-none"
+                    className="border-border bg-muted focus:border-ring w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none"
                   />
                   {errors.token && (
                     <span className="mt-1 block text-sm text-red-500">
@@ -122,7 +122,7 @@ export default function ResetPassword() {
                       placeholder={t("auth:password")}
                       {...register("password")}
                       onChange={(e) => passwordChange(e.target.value)}
-                      className="w-full rounded-xl border border-border bg-muted px-4 py-3 transition-colors focus:border-ring focus:outline-none"
+                      className="border-border bg-muted focus:border-ring w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none"
                     />
                     <span
                       className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
@@ -148,7 +148,7 @@ export default function ResetPassword() {
                       onChange={(e) =>
                         passwordConfirmationChange(e.target.value)
                       }
-                      className="w-full rounded-xl border border-border bg-muted px-4 py-3 transition-colors focus:border-ring focus:outline-none"
+                      className="border-border bg-muted focus:border-ring w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none"
                     />
                     <span
                       className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
@@ -166,23 +166,25 @@ export default function ResetPassword() {
 
                 <button
                   type="submit"
-                  className="mt-6 w-full cursor-pointer rounded-xl bg-primary py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 mt-6 w-full cursor-pointer rounded-xl py-3 font-medium transition-colors"
                   disabled={isLoading || isSuccess}
                 >
-                  {t("auth:resetPassword")}
+                  {isLoading ? t("common:loading") : t("auth:resetPassword")}
                 </button>
               </form>
 
               <div className="my-6 flex items-center gap-4">
-                <div className="h-px flex-1 bg-border"></div>
-                <span className="text-sm text-muted-foreground">{t("auth:or")}</span>
-                <div className="h-px flex-1 bg-border"></div>
+                <div className="bg-border h-px flex-1"></div>
+                <span className="text-muted-foreground text-sm">
+                  {t("auth:or")}
+                </span>
+                <div className="bg-border h-px flex-1"></div>
               </div>
 
               <div className="mt-2">
                 <button
                   onClick={() => navigate("/login")}
-                  className="cursor-pointer text-sm text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
                 >
                   <span className="cursor-pointer font-medium">
                     {t("auth:backToLogin")}
@@ -196,7 +198,7 @@ export default function ResetPassword() {
               <div className="mt-2">
                 <button
                   onClick={() => navigate("/login")}
-                  className="w-full cursor-pointer rounded-2xl bg-primary py-3 text-sm text-primary-foreground hover:bg-primary/90"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-2xl py-3 text-sm"
                 >
                   <span className="cursor-pointer font-medium">
                     {t("auth:backToLogin")}

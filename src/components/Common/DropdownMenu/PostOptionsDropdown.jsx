@@ -71,8 +71,13 @@ const PostOptionsDropdown = ({
     setIsSaved(!isSaved);
     try {
       await saveApi({ id }).unwrap();
+      notifySooner.success(
+        !previousState ? t("post:saved") : t("post:unsaved"),
+      );
     } catch (error) {
       setIsSaved(previousState);
+      notifySooner.error(t("common:error"));
+      console.error("Save/Unsave failed:", error);
     }
   };
 
@@ -80,7 +85,9 @@ const PostOptionsDropdown = ({
     try {
       await muteApi({ userId }).unwrap();
       onMuteSuccess?.();
+      notifySooner.success(t("post:muted"));
     } catch (error) {
+      notifySooner.error(t("common:error"));
       console.error("Mute failed:", error);
     }
   };
@@ -89,7 +96,9 @@ const PostOptionsDropdown = ({
     try {
       await hidePostApi({ id }).unwrap();
       onHidePostSuccess?.();
+      notifySooner.success(t("post:postHidden"));
     } catch (error) {
+      notifySooner.error(t("common:error"));
       console.error("Hide post failed:", error);
     }
   };
@@ -104,6 +113,7 @@ const PostOptionsDropdown = ({
       onDeleteSuccess?.();
     } catch (error) {
       console.error("Delete post failed:", error);
+      notifySooner.error(t("common:error"));
     }
   };
 
@@ -111,8 +121,10 @@ const PostOptionsDropdown = ({
     try {
       await restrictUserApi({ userId }).unwrap();
       onRestrictUserSuccess?.();
+      notifySooner.success(t("post:restricted"));
     } catch (error) {
       console.error("Restrict user failed:", error);
+      notifySooner.error(t("common:error"));
     }
   };
 
@@ -120,8 +132,10 @@ const PostOptionsDropdown = ({
     try {
       await blockApi({ userId }).unwrap();
       onBlockSuccess?.();
+      notifySooner.success(t("post:blocked"));
     } catch (error) {
       console.error("Block failed:", error);
+      notifySooner.error(t("common:error"));
     }
   };
 
@@ -135,6 +149,7 @@ const PostOptionsDropdown = ({
   const handleReportAction = async (data) => {
     try {
       await reportApi({ id, data }).unwrap();
+      notifySooner.success(t("post:reported"));
     } catch (error) {
       console.error("Report failed:", error);
       const { data } = error;

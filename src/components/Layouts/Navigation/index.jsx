@@ -96,7 +96,7 @@ export default function Navigation() {
                 child.isShowInNav && (
                   <NavLink
                     className={
-                      "group text-muted-foreground/60 hover:bg-accent m-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 md:mt-[6px] md:mb-[6px] md:h-15 md:w-12 md:w-15 md:flex-none md:gap-1"
+                      "group text-muted-foreground/60 hover:bg-accent mt-1 mb-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 md:h-12 md:w-15 md:flex-none md:gap-1"
                     }
                     key={index}
                     to={renderPath}

@@ -13,9 +13,12 @@ import {
   DropdownMenuSubContent,
 } from "../../Common/ui/dropdown-menu";
 import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 
 const AuthMenu = ({ children }) => {
   const { theme, setTheme } = useTheme();
+
+  const { t } = useTranslation(["common"]);
 
   const ThemeItem = ({ value, label, icon: Icon }) => (
     <DropdownMenuItem
@@ -47,7 +50,7 @@ const AuthMenu = ({ children }) => {
                 "w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
             >
-              Appearance
+              {t("common:appearance")}
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent
@@ -78,7 +81,7 @@ const AuthMenu = ({ children }) => {
           <DropdownMenuItem
             className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
           >
-            Report a problem
+            {t("common:reportAProblem")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

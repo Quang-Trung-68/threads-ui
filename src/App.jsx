@@ -14,7 +14,7 @@ function App() {
         position="bottom-center"
         toastOptions={{
           classNames: {
-            title: "text-lg font-medium",
+            title: "text-[15px] font-medium",
             description: "text-lg text-muted-foreground",
           },
         }}

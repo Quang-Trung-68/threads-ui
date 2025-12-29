@@ -167,7 +167,7 @@ export default function Login() {
           onClick={() => navigate(PATHS.REGISTER)}
           className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
         >
-          {t("auth:donNotHaveAccount")}{" "}
+          {t("auth:doNotHaveAccount")}{" "}
           <span className="cursor-pointer font-medium">
             {t("auth:register")}
           </span>
