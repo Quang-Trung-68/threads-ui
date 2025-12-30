@@ -26,11 +26,10 @@ export default function Following({
   canRemove,
   onNavigate,
 }) {
+  const { t } = useTranslation(["feed", "common"]);
   useScrollToTop();
   // Title
-  useTitle("Threads");
-
-  const { t } = useTranslation(["feed", "common"]);
+  useTitle(t("common:followingTitle"));
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
 

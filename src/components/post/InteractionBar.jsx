@@ -19,6 +19,7 @@ import ShareDropdown from "../Common/DropdownMenu/ShareDropdown";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import MotionButton from "../Common/MotionButon";
+import useAuth from "@/hooks/useAuth";
 
 const InteractionBar = ({
   id,
@@ -33,6 +34,7 @@ const InteractionBar = ({
   is_reposted_by_auth,
 }) => {
   const { t } = useTranslation();
+  const { user: userAuth } = useAuth();
 
   const [likePostApi, { isLoading: isLoadingLike }] = useLikePostMutation();
   const [repostApi, { isLoading: isLoadingRepost }] = useRepostMutation();
@@ -143,6 +145,114 @@ const InteractionBar = ({
   const handleQuote = () => {
     QuoteModal.open({ user, content, updated_at });
   };
+
+  const handleRequireAuth = () => {
+    alert("Need auth");
+  };
+
+  if (!userAuth)
+    return (
+      <>
+        <div className="text-muted-foreground flex gap-4">
+          <div
+            onClick={handleRequireAuth}
+            className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
+              interactionsCount.is_liked_by_auth
+                ? "text-red-500"
+                : "hover:bg-accent"
+            }`}
+          >
+            <MotionButton>
+              <LikeIcon
+                className={`size-4.5 ${interactionsCount.is_liked_by_auth ? "fill-current" : ""}`}
+              />
+              <span className="text-sm">{interactionsCount.likes_count}</span>
+            </MotionButton>
+          </div>
+
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRequireAuth();
+            }}
+            className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
+          >
+            <MotionButton>
+              <ReplyIcon className="size-4.5" />
+              <span className="text-sm">{interactionsCount.replies_count}</span>
+            </MotionButton>
+          </div>
+
+          <div className="replies_count hover:bg-accent rounded-2xl p-1">
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <span
+                  className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
+                    interactionsCount.is_reposted_by_auth
+                      ? "text-green-500"
+                      : "hover:bg-accent"
+                  }`}
+                >
+                  <MotionButton>
+                    <Repeat2Icon className="size-4.5" />
+                    <span className="text-sm">
+                      {interactionsCount.reposts_and_quotes_count}
+                    </span>
+                  </MotionButton>
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className={"rounded-3xl border-2 p-2"}>
+                <DropdownMenuCheckboxItem
+                  onClick={handleRequireAuth}
+                  className={
+                    "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                  }
+                >
+                  {interactionsCount.is_reposted_by_auth ? (
+                    <span className="text-red-500">Remove</span>
+                  ) : (
+                    <span>Reposts</span>
+                  )}
+                  <span
+                    className={`${interactionsCount.is_reposted_by_auth ? "text-red-500" : ""}`}
+                  >
+                    <Repeat2Icon className="size-4.5" />
+                  </span>
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  className={
+                    "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                  }
+                  onClick={handleRequireAuth}
+                >
+                  <span>Quote</span>
+                  <QuoteIcon className="size-4.5 font-normal" />
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <div
+            onClick={handleRequireAuth}
+            className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500"
+          >
+            <MotionButton>
+              <ShareDropdown
+                id={id}
+                user={user}
+                content={content}
+                updated_at={updated_at}
+                likes_count={likes_count}
+                replies_count={replies_count}
+                reposts_and_quotes_count={reposts_and_quotes_count}
+              >
+                <SendIcon className="size-4.5" />
+              </ShareDropdown>
+            </MotionButton>
+          </div>
+        </div>
+      </>
+    );
 
   return (
     <>

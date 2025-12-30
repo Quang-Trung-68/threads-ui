@@ -7,12 +7,12 @@ import {
   useLogoutMutation,
   useResendVerificationEmailMutation,
 } from "@/services/authService";
-// Assume there's a logout and resend function in authService
-// import { useLogoutMutation, useResendVerifyEmailMutation } from "@/services/authService";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "react-use";
 
 export default function RequireVerifiedEmail() {
   const { t } = useTranslation(["auth"]);
+  useTitle(t("auth:requireVerifiedEmailTitle"));
   const navigate = useNavigate();
   const { user } = useAuth();
   const [logoutApi, { isLoading: isLoggingOut }] = useLogoutMutation();
@@ -24,6 +24,7 @@ export default function RequireVerifiedEmail() {
       await logoutApi().unwrap();
       navigate(PATHS.LOGIN);
     } catch (error) {
+      console.log(error);
       notifySooner.error(t("auth:logoutFailed"));
     }
   };
@@ -33,6 +34,7 @@ export default function RequireVerifiedEmail() {
       await resendApi().unwrap();
       notifySooner.success(t("auth:verificationEmailSent"));
     } catch (error) {
+      console.log(error);
       notifySooner.error(t("auth:resendFailed"));
     }
   };

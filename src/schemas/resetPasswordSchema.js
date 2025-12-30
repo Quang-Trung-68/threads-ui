@@ -7,8 +7,11 @@ const resetPasswordSchema = zod
     password_confirmation: zod.string().min(8),
   })
   .refine((data) => data.password === data.password_confirmation, {
-    error: "Password do not match with password confirmation",
+    message: "password_mismatch",
+
+
     path: ["password_confirmation"],
   });
+
 
 export default resetPasswordSchema;

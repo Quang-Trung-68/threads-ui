@@ -83,5 +83,11 @@
   "replied": "Replied!",
   "error": "Error",
   "expand": "Expand",
-  "continueWithUsernameOrEmail": "Continue with username or email"
+  "continueWithUsernameOrEmail": "Continue with username or email",
+  "homeTitle": "Home • Threads",
+  "searchTitle": "Search • Threads",
+  "activityTitle": "Activity • Threads",
+  "followingTitle": "Threads",
+  "ghostPostsTitle": "Ghost posts",
+  "userProfileTitle": "{{username}} • Threads, Say more"
 }

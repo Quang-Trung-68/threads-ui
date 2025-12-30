@@ -13,6 +13,9 @@ import viAuth from "../locales/vi/auth.json";
 import viPost from "../locales/vi/post.json";
 import viUser from "../locales/vi/user.json";
 import viFeed from "../locales/vi/feed.json";
+import enValidation from "../locales/en/validation.json";
+import viValidation from "../locales/vi/validation.json";
+
 
 const resources = {
   en: {
@@ -21,6 +24,8 @@ const resources = {
     post: enPost,
     user: enUser,
     feed: enFeed,
+    validation: enValidation,
+
   },
   vi: {
     common: viCommon,
@@ -28,6 +33,8 @@ const resources = {
     post: viPost,
     user: viUser,
     feed: viFeed,
+    validation: viValidation,
+
   },
 };
 
@@ -39,7 +46,8 @@ i18n.use(initReactI18next).init({
   lng: savedLanguage, // Use saved language or default
   fallbackLng: "en", // Fallback language
   defaultNS: "common", // Default namespace
-  ns: ["common", "auth", "post", "user", "feed"], // Available namespaces
+  ns: ["common", "auth", "post", "user", "feed", "validation"], // Available namespaces
+
   fallbackNS: "common", // Fallback to common namespace if key not found
 
   interpolation: {

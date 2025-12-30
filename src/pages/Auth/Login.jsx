@@ -12,10 +12,11 @@ import { useDebouncedField } from "@/hooks/useDebouncedField";
 import { notifySooner } from "@/utils/notifySooner";
 import { PATHS } from "@/configs/paths";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "react-use";
 
 export default function Login() {
   const { t } = useTranslation(["auth", "common"]);
-
+  useTitle(t("auth:loginTitle"));
   const {
     register,
     handleSubmit,

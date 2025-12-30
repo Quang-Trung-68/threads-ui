@@ -12,11 +12,11 @@ export default function Activity({
   onRemoveColumn,
   canRemove,
 }) {
+  const { t } = useTranslation(["common"]);
   useScrollToTop();
   // Title
-  useTitle("Activity • Threads");
+  useTitle(t("common:activityTitle"));
 
-  const { t } = useTranslation(["common"]);
   const [loading, setLoading] = useState(false);
 
   // Mock Data

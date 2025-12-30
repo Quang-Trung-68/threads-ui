@@ -42,12 +42,12 @@ export default function Home({
   canRemove,
   onRemoveColumn,
 }) {
+  const { t } = useTranslation(["feed", "common"]);
   useScrollToTop();
   // Title
-  useTitle("Home • Threads");
+  useTitle(t("common:homeTitle"));
 
   const { pathname } = useLocation();
-  const { t } = useTranslation(["feed", "common"]);
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
 

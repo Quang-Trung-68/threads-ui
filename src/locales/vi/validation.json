@@ -1,0 +1,19 @@
+{
+  "zod": {
+    "required": "Trường này là bắt buộc",
+    "invalid_type": "Sai kiểu dữ liệu",
+    "string": {
+      "email": "Email không hợp lệ",
+      "min": "Ít nhất {{count}} ký tự",
+      "max": "Tối đa {{count}} ký tự"
+    },
+    "number": {
+      "min": "Phải lớn hơn {{count}}"
+    },
+    "custom": {
+      "password_mismatch": "Mật khẩu không khớp"
+    }
+  },
+  "password_mismatch": "Mật khẩu không khớp"
+}
+

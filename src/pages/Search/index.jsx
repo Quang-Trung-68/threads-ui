@@ -12,11 +12,11 @@ import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function Search({ dragHandleProps, onRemoveColumn, canRemove }) {
+  const { t } = useTranslation(["feed", "user", "common"]);
   useScrollToTop();
   // Title
-  useTitle("Search • Threads");
+  useTitle(t("common:searchTitle"));
 
-  const { t } = useTranslation(["feed", "user", "common"]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [refreshKey] = useState(() => Date.now());

@@ -11,9 +11,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { useDebouncedField } from "@/hooks/useDebouncedField";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "react-use";
 
 export default function Register() {
   const { t } = useTranslation(["auth", "common"]);
+  useTitle(t("auth:registerTitle"));
   const {
     register,
     handleSubmit,
@@ -66,7 +68,9 @@ export default function Register() {
       {/* Main register container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-2 text-center">
-          <h1 className="mb-8 text-2xl font-semibold">{t("auth:registerAccount")}</h1>
+          <h1 className="mb-8 text-2xl font-semibold">
+            {t("auth:registerAccount")}
+          </h1>
           <div className="mb-8 text-sm text-blue-500 italic dark:text-blue-400">
             {status}
           </div>
@@ -170,7 +174,9 @@ export default function Register() {
 
           <div className="my-6 flex items-center gap-4">
             <div className="bg-border h-px flex-1"></div>
-            <span className="text-muted-foreground text-sm">{t("auth:or")}</span>
+            <span className="text-muted-foreground text-sm">
+              {t("auth:or")}
+            </span>
             <div className="bg-border h-px flex-1"></div>
           </div>
 

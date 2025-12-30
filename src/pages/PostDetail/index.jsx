@@ -13,6 +13,7 @@ import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function PostDetail({ onNavigate, state }) {
+  const { t } = useTranslation(["user"]);
   useScrollToTop();
 
   const params = useParams();
@@ -26,12 +27,15 @@ export default function PostDetail({ onNavigate, state }) {
     postId,
   });
 
-  useTitle(post?.content ? `${post.content.slice(0, 20)}...` : "Threads");
+  useTitle(
+    post?.content
+      ? `${post.content.slice(0, 20)}...`
+      : t("common:followingTitle")
+  );
 
   const repliesData = replies?.data;
   const pagination = replies?.pagination;
 
-  const { t } = useTranslation(["user"]);
 
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">

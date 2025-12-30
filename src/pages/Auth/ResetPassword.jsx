@@ -15,9 +15,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { useDebouncedField } from "@/hooks/useDebouncedField";
 import { Spinner } from "@/components/Common/ui/spinner";
 import { notifySooner } from "@/utils/notifySooner";
+import { useTitle } from "react-use";
 
 export default function ResetPassword() {
   const { t } = useTranslation(["auth"]);
+  useTitle(t("auth:resetPasswordTitle"));
   const {
     register,
     handleSubmit,

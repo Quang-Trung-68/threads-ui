@@ -7,9 +7,11 @@ import { useDebouncedField } from "@/hooks/useDebouncedField";
 import forgotPasswordSchema from "@/schemas/forgotPasswordSchema";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "react-use";
 
 export default function ForgotPassword() {
   const { t } = useTranslation(["auth", "common"]);
+  useTitle(t("auth:forgotPasswordTitle"));
   const {
     register,
     handleSubmit,
@@ -40,7 +42,9 @@ export default function ForgotPassword() {
 
   return (
     <div className="text-foreground mb-8 text-center">
-      <h1 className="mb-8 text-2xl font-semibold">{t("auth:forgotPassword")}</h1>
+      <h1 className="mb-8 text-2xl font-semibold">
+        {t("auth:forgotPassword")}
+      </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Login */}
@@ -48,7 +52,6 @@ export default function ForgotPassword() {
           <input
             type="text"
             placeholder={t("auth:email")}
-            defaultValue={"dt1234@gmail.com"}
             {...register("email")}
             onChange={(e) => emailChange(e.target.value)}
             className="border-border bg-muted focus:ring-ring w-full rounded-xl border px-4 py-3 focus:ring-1 focus:outline-none"
@@ -88,7 +91,9 @@ export default function ForgotPassword() {
             </svg>
           </div>
           <div className="text-left">
-            <div className="text-sm font-medium">{t("auth:continueWithInstagram")}</div>
+            <div className="text-sm font-medium">
+              {t("auth:continueWithInstagram")}
+            </div>
             <div className="text-muted-foreground text-sm">dqt_2309</div>
           </div>
         </div>
@@ -112,7 +117,7 @@ export default function ForgotPassword() {
           onClick={() => navigate("/register")}
           className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
         >
-          {t("auth:dontHaveAccount")}{" "}
+          {t("auth:doNotHaveAccount")}{" "}
           <span className="cursor-pointer font-medium">{t("auth:signUp")}</span>
         </button>
       </div>

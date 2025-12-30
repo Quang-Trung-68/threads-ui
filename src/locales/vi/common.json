@@ -83,5 +83,11 @@
   "replied": "Đã trả lời!",
   "error": "Lỗi",
   "expand": "Mở rộng",
-  "continueWithUsernameOrEmail": "Tiếp tục với tên người dùng hoặc email"
+  "continueWithUsernameOrEmail": "Tiếp tục với tên người dùng hoặc email",
+  "homeTitle": "Trang chủ • Threads",
+  "searchTitle": "Tìm kiếm • Threads",
+  "activityTitle": "Hoạt động • Threads",
+  "followingTitle": "Threads",
+  "ghostPostsTitle": "Bài viết ẩn danh",
+  "userProfileTitle": "{{username}} • Threads, Chia sẻ thêm"
 }

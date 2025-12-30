@@ -29,9 +29,8 @@ export default function UserProfile({
   state,
   canRemove,
 }) {
-  useScrollToTop();
-
   const { t } = useTranslation(["user", "common", "post"]);
+  useScrollToTop();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -94,7 +93,7 @@ export default function UserProfile({
   };
 
   // Title
-  useTitle(`${targetUsername} • Threads, Say more`);
+  useTitle(t("common:userProfileTitle", { username: targetUsername }));
 
   useEffect(() => {
     // Simulate data loading or setting

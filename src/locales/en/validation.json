@@ -1,0 +1,19 @@
+{
+  "zod": {
+    "required": "This field is required",
+    "invalid_type": "Invalid type",
+    "string": {
+      "email": "Invalid email address",
+      "min": "Must be at least {{count}} characters",
+      "max": "Must be at most {{count}} characters"
+    },
+    "number": {
+      "min": "Must be greater than {{count}}"
+    },
+    "custom": {
+      "password_mismatch": "Password does not match confirmation"
+    }
+  },
+  "password_mismatch": "Password does not match confirmation"
+}
+

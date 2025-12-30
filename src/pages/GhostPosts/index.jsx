@@ -19,13 +19,13 @@ export default function GhostPosts({
   canRemove,
   type,
 }) {
+  const { t } = useTranslation(["feed"]);
   useScrollToTop();
   // Title
-  useTitle("Ghost posts");
+  useTitle(t("common:ghostPostsTitle"));
 
   const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(() => Date.now());
-  const { t } = useTranslation(["feed"]);
 
   const { user } = useAuth();
   const {
