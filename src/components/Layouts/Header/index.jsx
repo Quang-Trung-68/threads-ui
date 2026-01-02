@@ -2,16 +2,17 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/Common/ui/button";
 import { useNavigate } from "react-router";
 import UserOptionsDropdown from "@/components/Common/DropdownMenu/UserOptionsDropdown";
+import { PATHS } from "@/configs/paths";
 
 export default function Header() {
   const navigate = useNavigate();
 
   const navigateToHome = () => {
-    navigate("/");
+    navigate(PATHS.HOME);
   };
 
   return (
-    <div className="fixed top-0 right-0 left-0 z-50 flex h-14 items-center justify-between bg-background px-4">
+    <div className="bg-background fixed top-0 right-0 left-0 z-50 flex h-14 items-center justify-between px-4">
       {/* Left spacer to center the logo */}
       <div className="flex-1"></div>
 
@@ -22,7 +23,7 @@ export default function Header() {
       >
         <svg
           aria-label="Threads"
-          className="size-8 cursor-pointer transition-all hover:scale-110 text-foreground"
+          className="text-foreground size-8 cursor-pointer transition-all hover:scale-110"
           fill="currentColor"
           height="100%"
           role="img"
@@ -37,8 +38,11 @@ export default function Header() {
       {/* Right User Options */}
       <div className="flex flex-1 items-center justify-end">
         <UserOptionsDropdown>
-          <Button variant={"ghost"} className={"group size-10 cursor-pointer p-2"}>
-            <Menu className="size-6 text-muted-foreground transition-colors group-hover:text-foreground" />
+          <Button
+            variant={"ghost"}
+            className={"group size-10 cursor-pointer p-2"}
+          >
+            <Menu className="text-muted-foreground group-hover:text-foreground size-6 transition-colors" />
           </Button>
         </UserOptionsDropdown>
       </div>

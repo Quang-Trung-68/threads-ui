@@ -134,7 +134,7 @@ export default function Search({ dragHandleProps, onRemoveColumn, canRemove }) {
               )}
               {isLoading && suggestions.length === 0 ? (
                 <div className="flex min-h-[50vh] flex-1 items-center justify-center">
-                  <Spinner size="lg" />
+                  <Spinner />
                 </div>
               ) : suggestions.length === 0 && !isFetching ? (
                 <EmptyState

@@ -16,6 +16,7 @@ import { useDebouncedField } from "@/hooks/useDebouncedField";
 import { Spinner } from "@/components/Common/ui/spinner";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTitle } from "react-use";
+import { PATHS } from "@/configs/paths";
 
 export default function ResetPassword() {
   const { t } = useTranslation(["auth"]);
@@ -63,7 +64,7 @@ export default function ResetPassword() {
     try {
       await resetPasswordApi(credentials);
       setStatus(t("auth:resetSuccess"));
-      navigate("/login", {
+      navigate(PATHS.LOGIN, {
         state: {
           message: t("auth:createNewPasswordSuccess"),
         },
@@ -109,7 +110,7 @@ export default function ResetPassword() {
                     hidden
                     {...register("token")}
                     defaultValue={token}
-                    className="border-border bg-muted focus:border-ring mx-auto block h-[55px] w-full md:w-[370px] rounded-xl border px-4 py-3 transition-colors focus:outline-none"
+                    className="border-border bg-muted focus:border-ring mx-auto block h-[55px] w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none md:w-[370px]"
                   />
                   {errors.token && (
                     <div className="mx-auto w-full md:w-[370px]">
@@ -176,7 +177,7 @@ export default function ResetPassword() {
 
                 <button
                   type="submit"
-                  className={`bg-primary text-primary-foreground hover:bg-primary/90 mt-6 mx-auto block w-full md:w-[370px] rounded-xl py-3 font-medium transition-colors ${isButtonDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                  className={`bg-primary text-primary-foreground hover:bg-primary/90 mx-auto mt-6 block w-full rounded-xl py-3 font-medium transition-colors md:w-[370px] ${isButtonDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                   disabled={isButtonDisabled}
                 >
                   {isLoading ? t("common:loading") : t("auth:resetPassword")}
@@ -193,7 +194,7 @@ export default function ResetPassword() {
 
               <div className="mt-2">
                 <button
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate(PATHS.LOGIN)}
                   className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
                 >
                   <span className="cursor-pointer font-medium">
@@ -207,8 +208,8 @@ export default function ResetPassword() {
             <div>
               <div className="mt-2">
                 <button
-                  onClick={() => navigate("/login")}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 mx-auto block w-full md:w-[370px] cursor-pointer rounded-2xl py-3 text-sm"
+                  onClick={() => navigate(PATHS.LOGIN)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 mx-auto block w-full cursor-pointer rounded-2xl py-3 text-sm md:w-[370px]"
                 >
                   <span className="cursor-pointer font-medium">
                     {t("auth:backToLogin")}

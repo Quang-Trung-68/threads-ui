@@ -12,11 +12,13 @@ import { useNavigate } from "react-router";
 import { useUpdateProfileMutation } from "@/services/authService";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
+import useAuth from "@/hooks/useAuth";
 
 export default function UserSettings() {
   const { t } = useTranslation(["user", "common"]);
-
-    const [updateProfile, { isLoading: isUpdateProfileLoading }] = useUpdateProfileMutation();
+  const { user } = useAuth();
+  const [updateProfile, { isLoading: isUpdateProfileLoading }] =
+    useUpdateProfileMutation();
 
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
@@ -30,10 +32,10 @@ export default function UserSettings() {
   } = useForm({
     resolver: zodResolver(userSettingsSchema),
     defaultValues: {
-      name: "",
-      username: "",
-      bio: "",
-      is_private: false,
+      name: user?.name || "",
+      username: user?.username || "",
+      bio: user?.bio || "",
+      is_private: user?.is_private || false,
     },
   });
 
@@ -45,25 +47,19 @@ export default function UserSettings() {
     formData.append("username", data.username);
     formData.append("bio", data.bio || "");
     formData.append("is_private", data.is_private);
-    
+
     // Check if avatar is a File object (set manually in handleAvatarChange)
     if (data.avatar instanceof File) {
-       formData.append("avatar", data.avatar);
+      formData.append("avatar", data.avatar);
     } else if (data.avatar instanceof FileList && data.avatar.length > 0) {
       formData.append("avatar", data.avatar[0]);
     }
 
-    console.log("Form Data submitted:", data);
-    // For demonstration of multipart readiness
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + (pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]));
-    }
-    
-   notifySooner.promise(updateProfile(formData), {
-    loading: t("common:updatingProfile"),
-    success: t("common:profileUpdatedSuccess"),
-    error: t("common:profileUpdateError")
-   })
+    notifySooner.promise(updateProfile(formData), {
+      loading: t("common:updatingProfile"),
+      success: t("common:profileUpdatedSuccess"),
+      error: t("common:profileUpdateError"),
+    });
   };
 
   const handleAvatarChange = (e) => {
@@ -92,16 +88,18 @@ export default function UserSettings() {
             <ChevronLeft size={24} />
           </Button>
         )}
-        <h1 className="text-2xl font-bold text-foreground">{t("user:editProfile")}</h1>
+        <h1 className="text-foreground text-2xl font-bold">
+          {t("user:editProfile")}
+        </h1>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* Avatar Section */}
         <div className="flex flex-col items-center gap-4">
           <div className="group relative">
-            <UserAvatar 
-              user={{ avatar_url: preview }} 
-              className="h-28 w-28 border-2 border-border transition-opacity group-hover:opacity-80" 
+            <UserAvatar
+              user={{ avatar_url: preview }}
+              className="border-border h-28 w-28 border-2 transition-opacity group-hover:opacity-80"
             />
             <label className="absolute inset-0 flex cursor-pointer items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
               <input
@@ -114,37 +112,43 @@ export default function UserSettings() {
           </div>
           <button
             type="button"
-            className="text-sm font-medium text-blue-500 hover:underline cursor-pointer"
+            className="cursor-pointer text-sm font-medium text-blue-500 hover:underline"
             onClick={() => document.querySelector('input[type="file"]').click()}
           >
             {t("user:changePhoto")}
           </button>
         </div>
 
-        <div className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="border-border bg-card space-y-6 rounded-2xl border p-6 shadow-sm">
           {/* Name */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground">{t("user:name")}</label>
+            <label className="text-foreground text-sm font-semibold">
+              {t("user:name")}
+            </label>
             <Input
               {...register("name")}
               placeholder={t("user:yourName")}
-              className="rounded-xl border border-border bg-muted/30 focus:bg-background"
+              className="border-border bg-muted/30 focus:bg-background rounded-xl border"
             />
             {errors.name && (
-              <p className="text-xs font-medium text-destructive">{errors.name.message}</p>
+              <p className="text-destructive text-xs font-medium">
+                {errors.name.message}
+              </p>
             )}
           </div>
 
           {/* Username */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground">{t("user:username")}</label>
+            <label className="text-foreground text-sm font-semibold">
+              {t("user:username")}
+            </label>
             <Input
               {...register("username")}
               placeholder={t("user:username").toLowerCase()}
-              className="rounded-xl border border-border bg-muted/30 focus:bg-background"
+              className="border-border bg-muted/30 focus:bg-background rounded-xl border"
             />
             {errors.username && (
-              <p className="text-xs font-medium text-destructive">
+              <p className="text-destructive text-xs font-medium">
                 {errors.username.message}
               </p>
             )}
@@ -152,20 +156,24 @@ export default function UserSettings() {
 
           {/* Bio */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground">{t("user:bio")}</label>
+            <label className="text-foreground text-sm font-semibold">
+              {t("user:bio")}
+            </label>
             <Textarea
               {...register("bio")}
               placeholder={t("user:tellUsAboutYourself")}
-              className="min-h-[120px] rounded-xl border border-border bg-muted/30 focus:bg-background"
+              className="border-border bg-muted/30 focus:bg-background min-h-[120px] rounded-xl border"
             />
           </div>
         </div>
 
         {/* Account Privacy */}
-        <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="border-border bg-card flex items-center justify-between rounded-2xl border p-6 shadow-sm">
           <div className="space-y-1">
-            <h3 className="font-semibold text-foreground">{t("user:privateProfile")}</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-foreground font-semibold">
+              {t("user:privateProfile")}
+            </h3>
+            <p className="text-muted-foreground text-sm">
               {t("user:privateProfileDesc")}
             </p>
           </div>
@@ -173,10 +181,7 @@ export default function UserSettings() {
             name="is_private"
             control={control}
             render={({ field }) => (
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
+              <Switch checked={field.value} onCheckedChange={field.onChange} />
             )}
           />
         </div>
@@ -185,6 +190,7 @@ export default function UserSettings() {
           type="submit"
           size="lg"
           className="w-full cursor-pointer rounded-xl py-6 text-base font-bold transition-all active:scale-[0.98]"
+          disabled={isUpdateProfileLoading}
         >
           {t("common:done")}
         </Button>

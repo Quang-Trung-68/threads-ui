@@ -81,9 +81,9 @@ export default function Login() {
             placeholder={t("auth:emailPlaceholder")}
             {...register("login")}
             onChange={(e) => loginChange(e.target.value)}
-            className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full md:w-[370px] rounded-xl border px-4 py-3 focus:ring-1 focus:outline-none"
+            className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full rounded-xl border px-4 py-3 focus:ring-1 focus:outline-none md:w-[370px]"
           />
-          <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+          <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
             <span
               className={`text-destructive block ${errors.login ? "" : "invisible"}`}
             >
@@ -109,7 +109,7 @@ export default function Login() {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           </div>
-          <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+          <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
             <span
               className={`text-destructive block ${errors.password ? "" : "invisible"}`}
             >
@@ -120,7 +120,7 @@ export default function Login() {
 
         <button
           type="submit"
-          className={`bg-primary text-primary-foreground mx-auto block w-full md:w-[370px] rounded-xl py-3 font-semibold hover:opacity-90 disabled:opacity-50 ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+          className={`bg-primary text-primary-foreground mx-auto block w-full rounded-xl py-3 font-semibold hover:opacity-90 disabled:opacity-50 md:w-[370px] ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
           disabled={isButtonDisabled}
         >
           {isLoading ? t("common:loading") : t("auth:login")}
@@ -141,7 +141,7 @@ export default function Login() {
       </div>
 
       {/* Instagram login */}
-      <button className="border-border bg-card hover:bg-accent mx-auto flex w-full md:w-[370px] items-center justify-between rounded-xl border px-4 py-3 transition-colors">
+      <button className="border-border bg-card hover:bg-accent mx-auto flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-3 transition-colors md:w-[370px]">
         <div className="flex items-center gap-3">
           <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 via-pink-500 to-orange-500">
             <svg

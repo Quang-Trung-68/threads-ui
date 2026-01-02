@@ -15,7 +15,7 @@ export default function Navigation() {
   const { t } = useTranslation(["auth"]);
 
   const navigateToHome = () => {
-    navigate("/");
+    navigate(PATHS.HOME);
   };
 
   const { user } = useAuth();
@@ -99,8 +99,9 @@ export default function Navigation() {
                     onClick={(event) => handleUserAuth(event, isPrivate, path)}
                   >
                     <Icon
-                      className={`group-[.active]:text-foreground size-6 ${child.isFill ? "group-[.active]:fill-foreground" : ""
-                        } `}
+                      className={`group-[.active]:text-foreground size-6 ${
+                        child.isFill ? "group-[.active]:fill-foreground" : ""
+                      } `}
                     />
                   </NavLink>
                 )

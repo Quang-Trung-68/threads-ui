@@ -1,126 +1,125 @@
 # Threads Clone
 
-## 🔗 Demo
+## 📖 1. Project Overview
+This project is a mid-level clone of the popular social media application **Threads**, built to replicate its core functionality and user interface. It demonstrates a modern full-stack approach using the latest React ecosystem.
 
-**Link Vercel:**
+**Purpose:**
+-   **Education:** To deeply understand advanced React patterns, state management, and modern CSS techniques.
+-   **Portfolio:** To showcase proficiency in building complex, interactive web applications.
 
-## ✅ Tính năng đã hoàn thành
+## 📸 2. Demo / Preview
 
-### 1. Xây dựng trang Register (`/register`)
+-   **Demo Link:** [threads-ui-eta.vercel.app](https://threads-ui-eta.vercel.app)
+-   **Test Account:**
+    -   Email: `trungdang.dqt@gmail.com`
+    -   Password: `12345678`
 
-- ✅ Form đăng ký với 4 trường: First Name, Last Name, Email, Password, Confirm Password
-- ✅ Validation sử dụng `react-hook-form` + `zod`
-- ✅ Schema validation tại `/src/schemas/registerSchema.js`:
-  - Email đúng định dạng
-  - Password tối thiểu 8 ký tự
-  - Password confirmation phải khớp
-  - Tất cả field bắt buộc
-- ✅ Hiển thị lỗi validation dưới mỗi input
-- ✅ Button submit với loading state khi đang gửi request
-- ✅ RTK Query mutation `useRegisterMutation` tại `/src/services/auth.js`
-- ✅ Endpoint: `POST /auth/register`
-- ✅ Toast notification khi thành công/lỗi
-- ✅ Redirect về `/` khi đăng ký thành công
-- ✅ Link "Already have an account? Log in" dẫn đến `/login`
-- ✅ Toggle hiển thị/ẩn password
+![App Screenshot](https://via.placeholder.com/800x400?text=App+Screenshot+Placeholder)
 
-### 2. Xây dựng trang Login (`/login`)
+## ✨ 3. Features
+-   **Authentication:** specialized Login & Register flows with Form Validation (Zod) and JWT handling.
+-   **Social Feed:** Infinite scrolling feed with posts, replies, and dynamic interactions.
+-   **User System:** User profiles, follow/unfollow mechanisms, and suggested users.
+-   **Interactions:** Like, Reply, Repost, and Quote functionality with optimistic UI updates.
+-   **Media Support:** Image uploads and responsive media grids.
+-   **Search & Discovery:** Search functionality to find users and content.
+-   **Theme & Localization:** Dark/Light mode support and Internationalization (English/Vietnamese).
+-   **Responsive Design:** Fully adaptive UI mimicking the native mobile app experience on all devices.
 
-- ✅ Form login với 2 trường: Email và Password
-- ✅ Schema validation `loginSchema` sử dụng `zod`
-- ✅ Integration với API endpoint `POST /auth/login`
-- ✅ Lưu access_token và refresh_token vào Cookie
-- ✅ Redirect về `/` sau khi login thành công
-- ✅ Toast notification cho thành công/lỗi
-- ✅ Toggle hiển thị/ẩn password
-- ✅ Link "Forgot password?" và "Sign up"
+## 🛠️ 4. Tech Stack
 
-### 3. Trang Home (`/`)
+### Frontend
+-   **Framework:** React 19, Vite
+-   **Routing:** React Router v7
+-   **Styling:** Tailwind CSS v4, Radix UI (Headless UI), Class Variance Authority (CVA), Lucide React (Icons)
+-   **Animations:** Framer Motion
 
-- ✅ Protected route - yêu cầu đăng nhập
-- ✅ Hiển thị feed với posts từ API
-- ✅ Input tạo post mới với avatar và placeholder động
-- ✅ Tích hợp `useAuth` hook để lấy thông tin user
+### State Management & Data Fetching
+-   **Redux Toolkit** (Global State)
+-   **RTK Query** (Data Fetching & Caching)
+-   **Axios** (HTTP Client with Interceptors)
 
-### 4. Authentication Flow
+### Utilities
+-   **Forms:** React Hook Form + Zod (Validation)
+-   **I18n:** i18next + react-i18next
+-   **Date/Time:** Day.js
+-   **Helpers:** Lodash, clsx, tailwind-merge
 
-- ✅ `ProtectedRoute` component bảo vệ các route private
-- ✅ Hook `useAuth` sử dụng RTK Query `useGetCurrentUserQuery`
-- ✅ API endpoint `GET /auth/me` để lấy thông tin user hiện tại
-- ✅ Lưu user info vào Cookie
-- ✅ Loading state trong khi fetch user data
-- ✅ Auto redirect về `/login` nếu chưa authenticated
-
-### 5. UI/UX
-
-- ✅ AuthLayout với decorative Threads logos
-- ✅ Responsive design
-- ✅ Smooth transitions và hover effects
-- ✅ Toast notifications với `react-toastify`
-- ✅ Loading spinners
-- ✅ Error handling toàn diện
-
-## 🛠️ Tech Stack
-
-- **React 19** + **Vite**
-- **React Router v7** - Routing
-- **Redux Toolkit + RTK Query** - State management & API calls
-- **React Hook Form + Zod** - Form validation
-- **Tailwind CSS v4** - Styling
-- **Axios** - HTTP client
-- **js-cookie** - Cookie management
-- **react-toastify** - Notifications
-- **shadcn/ui** - UI components
-
-## 📁 Cấu trúc File chính
-
-```
-src/
-├── pages/
-│   └── Auth/
-│       ├── Login.jsx          # Trang đăng nhập
-│       └── Register.jsx       # Trang đăng ký
-├── schemas/
-│   ├── loginSchema.js         # Validation schema cho login
-│   └── registerSchema.js      # Validation schema cho register
-├── services/
-│   ├── auth.js               # RTK Query API endpoints
-│   └── baseQuery.js          # Custom base query với axios
-├── hooks/
-│   └── useAuth.js            # Hook lấy thông tin user
-├── components/
-│   └── auth/
-│       └── ProtectedRoute.jsx # HOC bảo vệ private routes
-└── utils/
-    └── httpRequest.js        # Axios instance với interceptors
-```
-
-## 🔑 API Integration
-
-**Base URL:** `https://api01.f8team.dev/api`
-
-| Endpoint         | Method | Mô tả                       |
-| ---------------- | ------ | --------------------------- |
-| `/auth/register` | POST   | Đăng ký tài khoản mới       |
-| `/auth/login`    | POST   | Đăng nhập                   |
-| `/auth/me`       | GET    | Lấy thông tin user hiện tại |
-
-## 🚀 Cách chạy project
-
+## 📂 5. Folder Structure
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
+src/
+├── components/      # Reusable UI components & feature-specific widgets
+│   ├── Common/      # Shared components (Modals, UI primitives)
+│   ├── Features/    # Business logic components (Auth, Post, User)
+│   └── Layouts/     # Page layouts (MainLayout, AuthLayout)
+├── configs/         # App constants and configuration (Paths, Environment)
+├── hooks/           # Custom React hooks (useAuth, useDebounce)
+├── locales/         # i18n translation JSON files (en, vi)
+├── pages/           # Route components (Home, Search, Profile, Login)
+├── schemas/         # Zod validation schemas
+├── services/        # API endpoints definitions (RTK Query / Axios)
+├── store/           # Redux store configuration
+└── utils/           # Helper functions and formatters
 ```
 
-## 📝 Notes
+## 🚀 6. Installation & Setup
 
-- Sử dụng Cookie để lưu trữ tokens (access_token, refresh_token)
-- Axios interceptor tự động thêm Bearer token vào headers
-- Protected routes tự động redirect về `/login` nếu chưa authenticated
-- Form validation real-time với error messages rõ ràng
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Quang-Trung-68/threads-ui.git
+    cd threads-ui
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Build for production**
+    ```bash
+    npm run build
+    ```
+
+## 🔑 7. Environment Variables
+Create a `.env` file in the root directory and add the following:
+
+```env
+VITE_API_URL=https://api01.f8team.dev/api
+```
+
+## 📱 8. Key Screens / Pages
+-   **Login / Register:** Secure authentication screens.
+-   **Home Feed:** The main timeline with posts.
+-   **Post Detail:** Navigation to view single post threads and replies.
+-   **Search:** User discovery interface.
+-   **User Profile:** Personal profile page with user's threads, replies, and reposts.
+-   **Activity:** Notification center (Likes, Replies, Mentions).
+-   **User Settings:** Account configuration and preferences.
+
+## 💡 9. What I Learned
+-   Implementing **Authentication flows** using RTK Query and managing JWT tokens securely in Cookies.
+-   Building complex **Forms** with robust validation using React Hook Form and Zod.
+-   Structuring a large-scale React application for **scalability and maintainability**.
+-   Handling **Global State** effectively with Redux Toolkit.
+-   Implementing **Dark Mode** and **Multi-language** support from scratch.
+-   Optimizing performance with **Infinite Scroll** and lazy loading.
+
+## 🔮 10. Future Improvements
+-   [ ] Real-time notifications using WebSockets (Socket.io).
+-   [ ] Direct Messaging (DM) feature.
+-   [ ] Advanced media editing before upload.
+-   [ ] Improved accessibility (a11y) across components.
+-   [ ] Unit and Integration Tests (Vitest, React Testing Library).
+
+## 📬 11. License & Contact
+Distributed under the MIT License. See `LICENSE` for more information.
+
+**Contact:**
+-   **Name:** [Dang Quang Trung]
+-   **Email:** [trungdang.dqt@gmail.com]
+-   **GitHub:** [github.com/Quang-Trung-68]

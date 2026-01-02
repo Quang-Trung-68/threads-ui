@@ -13,6 +13,7 @@ import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import { useTitle } from "react-use";
 import { useZodI18n } from "@/hooks/useZodI18n";
+import { PATHS } from "@/configs/paths";
 
 export default function Register() {
   const { t } = useTranslation(["auth", "common"]);
@@ -35,7 +36,7 @@ export default function Register() {
 
   const navigate = useNavigate();
 
-  const [registerApi, { isError, isLoading }] = useRegisterMutation();
+  const [registerApi, { isLoading }] = useRegisterMutation();
 
   const onSubmit = async (credentials) => {
     try {
@@ -93,9 +94,9 @@ export default function Register() {
                 {...register("username")}
                 autoComplete={"off"}
                 onChange={(e) => usernameChange(e.target.value)}
-                className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full md:w-[370px] rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
+                className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none md:w-[370px]"
               />
-              <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+              <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
                 <span
                   className={`text-destructive block ${errors.username ? "" : "invisible"}`}
                 >
@@ -112,9 +113,9 @@ export default function Register() {
                 {...register("email")}
                 autoComplete={"off"}
                 onChange={(e) => emailChange(e.target.value)}
-                className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full md:w-[370px] rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none"
+                className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full rounded-xl border px-4 py-3 transition-colors focus:ring-1 focus:outline-none md:w-[370px]"
               />
-              <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+              <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
                 <span
                   className={`text-destructive block ${errors.email ? "" : "invisible"}`}
                 >
@@ -141,7 +142,7 @@ export default function Register() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
-              <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+              <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
                 <span
                   className={`text-destructive block ${errors.password ? "" : "invisible"}`}
                 >
@@ -168,7 +169,7 @@ export default function Register() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
-              <div className="mx-auto mt-1 min-h-[1.25rem] w-full text-sm md:w-[370px]">
+              <div className="mx-auto mt-1 min-h-5 w-full text-sm md:w-[370px]">
                 <span
                   className={`text-destructive block ${errors.password_confirmation ? "" : "invisible"}`}
                 >
@@ -179,7 +180,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`bg-primary text-primary-foreground mt-6 mx-auto block w-full md:w-[370px] rounded-xl py-3 font-semibold transition-colors hover:opacity-90 disabled:opacity-50 ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+              className={`bg-primary text-primary-foreground mx-auto mt-6 block w-full rounded-xl py-3 font-semibold transition-colors hover:opacity-90 disabled:opacity-50 md:w-[370px] ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
               disabled={isButtonDisabled}
             >
               {isLoading ? t("common:loading") : t("auth:signUp")}
@@ -194,7 +195,7 @@ export default function Register() {
             <div className="bg-border h-px flex-1"></div>
           </div>
 
-          <button className="border-border bg-card hover:bg-accent group mx-auto flex w-full md:w-[370px] items-center justify-between rounded-xl border px-4 py-3 transition-colors">
+          <button className="border-border bg-card hover:bg-accent group mx-auto flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-3 transition-colors md:w-[370px]">
             <div className="flex items-center gap-3">
               <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 via-pink-500 to-orange-500">
                 <svg
@@ -229,11 +230,12 @@ export default function Register() {
 
           <div className="mt-2">
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate(PATHS.LOGIN)}
               className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
             >
+              {t("auth:alreadyHaveAccount")}{" "}
               <span className="cursor-pointer font-medium">
-                {t("auth:alreadyHaveAccount")} {t("auth:signIn")}
+                {t("auth:signIn")}
               </span>
             </button>
           </div>

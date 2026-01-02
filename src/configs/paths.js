@@ -1,6 +1,5 @@
 export const PATHS = {
   HOME: "/",
-  FOR_YOU: "/for_you",
   FOLLOWING: "/following",
   GHOST_POSTS: "/ghost-posts",
   SEARCH: "/search",

@@ -52,7 +52,7 @@ function PostCard({
           id,
         },
       });
-    onNavigate("PostDetail", { postId: id, isDeck: true });
+    else onNavigate("PostDetail", { postId: id, isDeck: true });
   };
 
   const handleUserProfile = () => {
@@ -62,7 +62,7 @@ function PostCard({
           userId: user_id,
         },
       });
-    onNavigate("UserProfile", { username, isDeck: true });
+    else onNavigate("UserProfile", { username, isDeck: true });
   };
 
   const ReplyModalRef = useRef(null);

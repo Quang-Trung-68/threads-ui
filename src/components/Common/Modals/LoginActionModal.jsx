@@ -11,66 +11,76 @@ import postIcon from "@assets/post-icon.svg";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import { PATHS } from "@/configs/paths";
 
-const LoginActionModal = NiceModal.create(({
-  titleModal,
-  descriptionModal,
-  showIconPost,
-}) => {
-  const { t } = useTranslation(["common"]);
-  const navigate = useNavigate();
-  const modal = useModal();
+const LoginActionModal = NiceModal.create(
+  ({ titleModal, descriptionModal, showIconPost }) => {
+    const { t } = useTranslation(["common"]);
+    const navigate = useNavigate();
+    const modal = useModal();
 
-  const handleContinueLogin = () => {
-    modal.hide();
-    navigate("/login");
-  };
+    const handleContinueLogin = () => {
+      modal.hide();
+      navigate(PATHS.LOGIN);
+    };
 
-  return (
-    <Dialog open={modal.visible} onOpenChange={modal.hide} className={"p-0"}>
-      <DialogContent showCloseButton={false} className={"p-0 bg-background text-foreground transition-colors"}>
-        <DialogHeader
-          className={
-            "flex flex-col items-center justify-center gap-0 p-14 pt-12"
-          }
+    return (
+      <Dialog open={modal.visible} onOpenChange={modal.hide} className={"p-0"}>
+        <DialogContent
+          showCloseButton={false}
+          className={"bg-background text-foreground p-0 transition-colors"}
         >
-          {showIconPost && (
-            <div className="mb-5 filter dark:invert dark:opacity-80 transition-all">
-              <img src={postIcon} alt="Post Icon" />
-            </div>
-          )}
-          <DialogTitle
-            className={"mb-3 w-full text-center text-[2rem] font-extrabold text-foreground"}
+          <DialogHeader
+            className={
+              "flex flex-col items-center justify-center gap-0 p-14 pt-12"
+            }
           >
-            {titleModal}
-          </DialogTitle>
-          <DialogDescription
-            className={"mb-8 w-[80%] text-center text-[15px] text-muted-foreground"}
-          >
-            {descriptionModal}
-          </DialogDescription>
-          <DialogDescription asChild>
-            <div
-              onClick={handleContinueLogin}
+            {showIconPost && (
+              <div className="mb-5 filter transition-all dark:opacity-80 dark:invert">
+                <img src={postIcon} alt="Post Icon" />
+              </div>
+            )}
+            <DialogTitle
               className={
-                "flex w-full cursor-pointer items-center justify-between rounded-xl border border-border p-5 hover:border-muted-foreground hover:shadow-xl transition-all"
+                "text-foreground mb-3 w-full text-center text-[2rem] font-extrabold"
               }
             >
-              <div>
-                <img className="size-11" src={threadsIcon} alt="Threads Icon" />
+              {titleModal}
+            </DialogTitle>
+            <DialogDescription
+              className={
+                "text-muted-foreground mb-8 w-[80%] text-center text-[15px]"
+              }
+            >
+              {descriptionModal}
+            </DialogDescription>
+            <DialogDescription asChild>
+              <div
+                onClick={handleContinueLogin}
+                className={
+                  "border-border hover:border-muted-foreground flex w-full cursor-pointer items-center justify-between rounded-xl border p-5 transition-all hover:shadow-xl"
+                }
+              >
+                <div>
+                  <img
+                    className="size-11"
+                    src={threadsIcon}
+                    alt="Threads Icon"
+                  />
+                </div>
+                <div className="text-muted-foreground text-[15px]">
+                  {t("common:continueWithUsernameOrEmail")}
+                </div>
+                <div>
+                  <ArrowRightIcon className="text-muted-foreground" />
+                </div>
               </div>
-              <div className="text-[15px] text-muted-foreground">
-                {t("common:continueWithUsernameOrEmail")}
-              </div>
-              <div>
-                <ArrowRightIcon className="text-muted-foreground" />
-              </div>
-            </div>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
-});
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  },
+);
 
 export default LoginActionModal;

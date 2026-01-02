@@ -26,6 +26,11 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 const UserOptionsDropdown = ({ children }) => {
+
+  // i18n for language change
+  const { i18n, t } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -60,14 +65,12 @@ const UserOptionsDropdown = ({ children }) => {
   };
 
   const themes = [
-    { value: "light", icon: Sun, label: "Light" },
-    { value: "dark", icon: Moon, label: "Dark" },
-    { value: "system", icon: Monitor, label: "Auto" },
+    { value: "light", icon: Sun, label: t("common:light") },
+    { value: "dark", icon: Moon, label: t("common:dark") },
+    { value: "system", icon: Monitor, label: t("common:auto") },
   ];
 
-  // i18n for language change
-  const { i18n, t } = useTranslation();
-  const [language, setLanguage] = useState(i18n.language);
+  
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -208,6 +211,7 @@ const UserOptionsDropdown = ({ children }) => {
                   className={
                     "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
                   }
+                  onSelect={() => navigate(PATHS.HOME)}
                 >
                   {t("common:forYou")}
                 </DropdownMenuItem>
@@ -215,6 +219,7 @@ const UserOptionsDropdown = ({ children }) => {
                   className={
                     "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
                   }
+                  onSelect={() => navigate(PATHS.FOLLOWING)}
                 >
                   {t("common:following")}
                 </DropdownMenuItem>
@@ -222,6 +227,7 @@ const UserOptionsDropdown = ({ children }) => {
                   className={
                     "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
                   }
+                  onSelect={() => navigate(PATHS.GHOST_POSTS)}
                 >
                   {t("common:ghostPosts")}
                   <DropdownMenuShortcut>
@@ -270,7 +276,7 @@ const UserOptionsDropdown = ({ children }) => {
                     "w-40 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
                   }
                   onSelect={handleDeleteAccount}
-                  disable={isDeleteAccountLoading}
+                  disabled={isDeleteAccountLoading}
                 >
                   <span className="text-red-500">
                     {t("common:deleteAccount")}
@@ -282,7 +288,7 @@ const UserOptionsDropdown = ({ children }) => {
           <DropdownMenuItem
             className={"w-50 rounded-xl px-3 py-3.5 text-[15px] font-semibold"}
             onSelect={handleLogout}
-            disable={isLogoutLoading}
+            disabled={isLogoutLoading}
           >
             <span className="text-red-500">{t("auth:logout")}</span>
           </DropdownMenuItem>

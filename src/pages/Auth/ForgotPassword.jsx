@@ -8,6 +8,7 @@ import forgotPasswordSchema from "@/schemas/forgotPasswordSchema";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import { useTitle } from "react-use";
+import { PATHS } from "@/configs/paths";
 
 export default function ForgotPassword() {
   const { t } = useTranslation(["auth", "common"]);
@@ -43,9 +44,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="text-foreground mb-8 text-center">
-      <h1 className="mb-4 text-base font-bold">
-        {t("auth:forgotPassword")}
-      </h1>
+      <h1 className="mb-4 text-base font-bold">{t("auth:forgotPassword")}</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Email */}
@@ -55,7 +54,7 @@ export default function ForgotPassword() {
             placeholder={t("auth:email")}
             {...register("email")}
             onChange={(e) => emailChange(e.target.value)}
-            className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full md:w-[370px] rounded-xl border px-4 py-3 focus:ring-1 focus:outline-none"
+            className="border-border bg-muted focus:ring-ring mx-auto block h-[55px] w-full rounded-xl border px-4 py-3 focus:ring-1 focus:outline-none md:w-[370px]"
           />
           {errors.email && (
             <div className="mx-auto w-full md:w-[370px]">
@@ -68,7 +67,7 @@ export default function ForgotPassword() {
 
         <button
           type="submit"
-          className={`bg-primary text-primary-foreground mx-auto block w-full md:w-[370px] rounded-xl py-3 font-semibold hover:opacity-90 disabled:opacity-50 ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+          className={`bg-primary text-primary-foreground mx-auto block w-full rounded-xl py-3 font-semibold hover:opacity-90 disabled:opacity-50 md:w-[370px] ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
           disabled={isButtonDisabled}
         >
           {isLoading ? t("common:loading") : t("auth:sendVerifiedEmail")}
@@ -82,7 +81,7 @@ export default function ForgotPassword() {
       </div>
 
       {/* Instagram login */}
-      <button className="border-border bg-card hover:bg-accent mx-auto flex w-full md:w-[370px] items-center justify-between rounded-xl border px-4 py-3 transition-colors">
+      <button className="border-border bg-card hover:bg-accent mx-auto flex w-full items-center justify-between rounded-xl border px-4 py-3 transition-colors md:w-[370px]">
         <div className="flex items-center gap-3">
           <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 via-pink-500 to-orange-500">
             <svg
@@ -117,7 +116,7 @@ export default function ForgotPassword() {
 
       <div className="mt-6">
         <button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate(PATHS.REGISTER)}
           className="text-muted-foreground hover:text-foreground cursor-pointer text-sm"
         >
           {t("auth:doNotHaveAccount")}{" "}

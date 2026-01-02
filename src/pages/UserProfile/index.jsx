@@ -21,6 +21,7 @@ import { notifySooner } from "@/utils/notifySooner";
 import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { PATHS } from "@/configs/paths";
 
 export default function UserProfile({
   dragHandleProps,
@@ -188,7 +189,7 @@ export default function UserProfile({
 
             {loading ? (
               <div className="flex min-h-[50vh] flex-1 items-center justify-center">
-                <Spinner size="lg" />
+                <Spinner  />
               </div>
             ) : (
               <div className="flex flex-col gap-4 p-5">
@@ -250,6 +251,7 @@ export default function UserProfile({
                     <Button
                       variant="outline"
                       className="border-border text-foreground hover:bg-accent w-full cursor-pointer rounded-xl border py-2 text-[15px]"
+                      onClick={() => navigate(PATHS.USER_SETTINGS)}
                     >
                       {t("user:editProfile")}
                     </Button>

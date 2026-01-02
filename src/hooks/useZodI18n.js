@@ -10,5 +10,5 @@ export const useZodI18n = (trigger, errors) => {
         if (Object.keys(errors).length > 0) {
             trigger();
         }
-    }, [i18n.language, trigger, errors]);
+    }, [i18n.language, trigger]);
 };

@@ -10,6 +10,7 @@ function App() {
     <>
       <SplashScreen duration={1000} />
       <Toaster
+      expand={true}
         richColors
         position="bottom-center"
         toastOptions={{

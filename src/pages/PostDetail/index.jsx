@@ -96,7 +96,7 @@ export default function PostDetail({ onNavigate, state }) {
           {/* Post Content */}
           {isPostLoading || isRepliesLoading ? (
             <div className="flex min-h-[50vh] flex-1 items-center justify-center">
-              <Spinner size="lg" />
+              <Spinner />
             </div>
           ) : (
             <div className="flex flex-col">

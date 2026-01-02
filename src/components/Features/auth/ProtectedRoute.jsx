@@ -5,7 +5,6 @@ import { PATHS } from "@/configs/paths";
 
 const ProtectedRoute = ({ children }) => {
   const { user, isLoading, isError } = useAuth();
-  console.log(user);
 
   if (isLoading) {
     return <Loading />;
