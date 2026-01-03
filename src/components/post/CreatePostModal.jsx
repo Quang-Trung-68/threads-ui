@@ -26,6 +26,7 @@ import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
 import { ScrollArea } from "@/components/Common/ui/scroll-area";
+import { useNavigate } from "react-router";
 
 const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
   const { t } = useTranslation(["common", "post"]);
@@ -46,6 +47,16 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
   };
   const [replyQuote, setReplyQuote] = useState("everyone");
   const [reviewApprove, setReviewApprove] = useState(false);
+
+  const navigate = useNavigate();
+  const handlePostDetail = (user, id) => {
+    navigate(`/@${user.username}/post/${id}`, {
+      state: {
+        id,
+      },
+    });
+  };
+
   const handlePost = async () => {
     if (content.trim()) {
       try {
@@ -55,13 +66,21 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
           requires_reply_approval: reviewApprove,
         }).unwrap();
 
+        const createPostResponse = await createPromise;
+        const { data } = createPostResponse;
+        const { id, user } = data;
+
         notifySooner.promise(createPromise, {
           loading: t("common:loading"),
-          success: t("post:postCreated"),
           error: t("common:error"),
+          success: () => ({
+            message: t("post:postCreated"),
+            action: {
+              label: t("post:view"),
+              onClick: () => handlePostDetail(user, id),
+            },
+          }),
         });
-
-        await createPromise;
 
         setTopic("");
         setContent("");

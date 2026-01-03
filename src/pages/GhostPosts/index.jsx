@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CircleEllipsis } from "lucide-react";
 import useAuth from "@/hooks/useAuth";
 import PostCard from "@/components/post/PostCard";
@@ -11,6 +11,7 @@ import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 import { useTranslation } from "react-i18next";
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useLocation, useNavigate } from "react-router";
 
 export default function GhostPosts({
   dragHandleProps,
@@ -25,14 +26,32 @@ export default function GhostPosts({
   useTitle(t("common:ghostPostsTitle"));
 
   const [page, setPage] = useState(1);
-  const [refreshKey, setRefreshKey] = useState(() => Date.now());
+  const { state: locationState } = useLocation();
+  const navigate = useNavigate();
 
   const { user } = useAuth();
   const {
     data: postsData,
     isLoading,
     isFetching,
-  } = useGetFeedQuery({ type: "ghost", page, per_page: 10, refreshKey });
+    refetch,
+  } = useGetFeedQuery({ type: "ghost", page, per_page: 10 });
+
+  // Re-fetch feed on mount
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    if (locationState?.refresh) {
+      if (page === 1) {
+        refetch();
+      } else {
+        setPage(1);
+      }
+      navigate(".", { replace: true, state: {} });
+    }
+  }, [locationState, refetch, navigate, page]);
 
   const posts = postsData?.data ?? [];
   const pagination = postsData?.pagination;
@@ -46,8 +65,11 @@ export default function GhostPosts({
   };
 
   const handleRefreshFeed = () => {
-    setRefreshKey(Date.now());
-    setPage(1);
+    if (page === 1) {
+      refetch();
+    } else {
+      setPage(1);
+    }
   };
 
   const [sentryRef] = useInfiniteScroll({

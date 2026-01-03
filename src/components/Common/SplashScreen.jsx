@@ -13,24 +13,23 @@ const SplashScreen = ({ duration = 1500 }) => {
   const logoSrc = isDark ? threadsWhiteLogo : threadsBlackLogo;
   const metaLogoSrc = isDark ? metaWhiteLogo : metaBlackLogo;
 
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !sessionStorage.getItem("hasVisited");
+    }
+    return true;
+  });
 
   useEffect(() => {
-    const hasVisited = sessionStorage.getItem("hasVisited");
-
-    // Reset visit state on mount for debugging/development if needed,
-    // but per requirements we just check it.
-    // For now, to ensure we see the changes, I'll rely on the user clearing storage or opening a new tab.
-    
-    if (hasVisited) {
-      setShowSplash(false);
-    } else {
+    if (showSplash) {
       sessionStorage.setItem("hasVisited", "true");
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setShowSplash(false);
       }, duration);
+
+      return () => clearTimeout(timer);
     }
-  }, [duration]);
+  }, [duration, showSplash]);
 
   return (
     <AnimatePresence>

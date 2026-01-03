@@ -8,7 +8,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   const navigateToHome = () => {
-    navigate(PATHS.HOME);
+    navigate(PATHS.HOME, { state: { refresh: true } });
   };
 
   return (

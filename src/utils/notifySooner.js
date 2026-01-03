@@ -21,7 +21,20 @@ export const notifySooner = {
       ...options,
     });
   },
-
+  action(
+    message,
+    action, // { label, onClick }
+    options = {},
+  ) {
+    toast(message, {
+      duration: 2500,
+      ...options,
+      action: {
+        label: action.label,
+        onClick: action.onClick,
+      },
+    });
+  },
   promise(promiseFn, options = {}) {
     return toast.promise(promiseFn, {
       loading: options.loading || "Loading...",

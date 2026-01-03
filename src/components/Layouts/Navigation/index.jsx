@@ -15,7 +15,7 @@ export default function Navigation() {
   const { t } = useTranslation(["auth"]);
 
   const navigateToHome = () => {
-    navigate(PATHS.HOME);
+    navigate(PATHS.HOME, { state: { refresh: true } });
   };
 
   const { user } = useAuth();

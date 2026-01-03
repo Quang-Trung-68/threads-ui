@@ -17,6 +17,7 @@ import UserHoverCard from "../Common/UserHoverCard";
 import useAuth from "@/hooks/useAuth";
 import NiceModal from "@ebay/nice-modal-react";
 import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
+import { PATHS } from "@/configs/paths";
 
 function PostCard({
   user,
@@ -41,6 +42,7 @@ function PostCard({
   const [isHidePost, setIsHidePost] = useState(false);
   const [isRestrictUser, setIsRestrictUser] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [unmuteApi, { isLoading: isUnmuteLoading }] = useUnmuteUserMutation();
   const username = user.username;
 
@@ -86,6 +88,15 @@ function PostCard({
 
   const handleBlockSuccess = () => {
     setIsBlocked(true);
+  };
+
+  const handleDeleteSuccess = () => {
+    setIsDeleted(true);
+    setTimeout(() => {
+      if (!isPermitDetailPost) {
+        navigate(PATHS.HOME, { state: { refresh: true } });
+      }
+    }, 1500);
   };
 
   const handleUnmute = async () => {
@@ -160,7 +171,6 @@ function PostCard({
                   onHidePostSuccess={handleHidePostSuccess}
                   onRestrictUserSuccess={handleRestrictUserSuccess}
                   onBlockSuccess={handleBlockSuccess}
-                  onDeleteSuccess={onDeleteSuccess}
                 >
                   <div className="hover:bg-muted flex size-8 items-center justify-center rounded-2xl">
                     <MoreIcon className="text-muted-foreground size-7 cursor-pointer p-1" />
@@ -232,6 +242,12 @@ function PostCard({
         <span>{t("post:userRestricted")}</span>
       </div>
     );
+  } else if (isDeleted) {
+    return (
+      <div className="bg-muted text-muted-foreground m-3 flex items-center justify-between rounded-2xl border-y p-3 text-sm md:p-6">
+        <span>{t("post:postDeleted")}</span>
+      </div>
+    );
   }
 
   return (
@@ -288,7 +304,7 @@ function PostCard({
                 onHidePostSuccess={handleHidePostSuccess}
                 onRestrictUserSuccess={handleRestrictUserSuccess}
                 onBlockSuccess={handleBlockSuccess}
-                onDeleteSuccess={onDeleteSuccess}
+                onDeleteSuccess={handleDeleteSuccess}
               >
                 <div className="hover:bg-muted flex size-8 items-center justify-center rounded-2xl">
                   <MoreIcon className="text-muted-foreground size-7 cursor-pointer p-1" />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CircleEllipsis, MinusCircle } from "lucide-react";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Input } from "@/components/Common/ui/input";
@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useLocation, useNavigate } from "react-router";
 
 export default function Following({
   type,
@@ -31,14 +32,34 @@ export default function Following({
   // Title
   useTitle(t("common:followingTitle"));
   const [page, setPage] = useState(1);
-  const [refreshKey, setRefreshKey] = useState(() => Date.now());
+  const { state: locationState } = useLocation();
+  const navigate = useNavigate();
 
   const { user } = useAuth();
   const {
     data: postsData,
     isLoading,
     isFetching,
-  } = useGetFeedQuery({ type: "following", page, per_page: 10, refreshKey });
+    refetch,
+  } = useGetFeedQuery({ type: "following", page, per_page: 10 });
+
+  // Re-fetch feed on mount
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+
+  useEffect(() => {
+    if (locationState?.refresh) {
+      if (page === 1) {
+        refetch();
+      } else {
+        setPage(1);
+      }
+      navigate(".", { replace: true, state: {} });
+    }
+  }, [locationState, refetch, navigate, page]);
+
 
   const onHandlePost = () => {
     CreatePostModal.open({ onSuccess: handleRefreshFeed });
@@ -56,8 +77,11 @@ export default function Following({
   };
 
   const handleRefreshFeed = () => {
-    setRefreshKey(Date.now());
-    setPage(1);
+    if (page === 1) {
+      refetch();
+    } else {
+      setPage(1);
+    }
   };
 
   const [sentryRef] = useInfiniteScroll({

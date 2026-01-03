@@ -8,7 +8,7 @@ export const postApi = createApi({
   endpoints: (builder) => ({
     // Get feed
     getFeed: builder.query({
-      query: ({ refreshKey, ...params }) => ({
+      query: (params) => ({
         url: `/api/posts/feed`,
         method: "GET",
         params,
@@ -16,11 +16,7 @@ export const postApi = createApi({
 
       // tất cả page dùng chung cache
       serializeQueryArgs: ({ queryArgs }) => {
-        const newQueryArgs = { ...queryArgs };
-        if (newQueryArgs.refreshKey) {
-          delete newQueryArgs.refreshKey;
-        }
-        return `getFeed_${newQueryArgs.type}_${queryArgs.refreshKey ?? "default"}`;
+        return `getFeed_${queryArgs.type}`;
       },
 
       // merge data giữa các page
@@ -33,7 +29,7 @@ export const postApi = createApi({
 
         if (response.pagination.current_page === 1) {
           // If page 1, strictly replace the data to support "fresh start" logic
-          currentCache.data = newPosts;
+          currentCache.data = response.data;
         } else {
           currentCache.data.push(...newPosts);
         }
@@ -59,7 +55,6 @@ export const postApi = createApi({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["Post"],
     }),
     deletePost: builder.mutation({
       query: ({ id }) => ({
@@ -69,7 +64,6 @@ export const postApi = createApi({
           _method: "DELETE",
         },
       }),
-      invalidatesTags: ["Post"],
     }),
     likePost: builder.mutation({
       query: ({ id }) => ({

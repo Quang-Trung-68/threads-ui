@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CircleEllipsis, Grid2X2Plus } from "lucide-react";
 
 import UserAvatar from "@/components/Common/ui/UserAvatar";
@@ -47,9 +47,8 @@ export default function Home({
   // Title
   useTitle(t("common:homeTitle"));
 
-  const { pathname } = useLocation();
+  const { pathname, state: locationState } = useLocation();
   const [page, setPage] = useState(1);
-  const [refreshKey, setRefreshKey] = useState(() => Date.now());
 
   const { user } = useAuth();
 
@@ -58,10 +57,30 @@ export default function Home({
     isLoading,
     isFetching,
     isSuccess,
-  } = useGetFeedQuery({ type: "for_you", page, per_page: 10, refreshKey });
+    refetch,
+  } = useGetFeedQuery({ type: "for_you", page, per_page: 10 });
+
+  const navigate = useNavigate();
+
+  // Re-fetch feed on mount to ensure fresh data
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    if (locationState?.refresh) {
+      if (page === 1) {
+        refetch();
+      } else {
+        setPage(1);
+      }
+      // Clear the state to avoid indefinite refreshes if the user stays on the page or navigates back
+      navigate(".", { replace: true, state: {} });
+    }
+  }, [locationState, refetch, navigate, page]);
 
   const onHandlePost = () => {
-    CreatePostModal.open({ onSuccess: handleRefreshFeed });
+    CreatePostModal.open();
   };
 
   const posts = postsData?.data ?? [];
@@ -75,19 +94,16 @@ export default function Home({
     }
   };
 
-  const handleRefreshFeed = () => {
-    setRefreshKey(Date.now());
-    setPage(1);
-  };
+  const canLoadMore = hasNextPage && !isFetching && !isLoading;
 
   const [sentryRef] = useInfiniteScroll({
     loading: isFetching,
     hasNextPage,
     onLoadMore: loadMore,
-    rootMargin: "0px 0px 1000px 0px",
+    rootMargin: "0px 0px 800px 0px",
+    canLoadMore,
   });
 
-  const navigate = useNavigate();
   const handleDeckPage = ({ pageType }) => {
     navigate(PATHS.DECK, {
       state: { pageType },
@@ -204,7 +220,6 @@ export default function Home({
                   <PostCard
                     {...post}
                     isPermitDetailPost={true}
-                    onDeleteSuccess={handleRefreshFeed}
                     onNavigate={onNavigate}
                     state={state}
                   />
