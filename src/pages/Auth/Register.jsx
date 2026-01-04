@@ -2,7 +2,6 @@ import { registerSchema } from "@/schemas";
 import { useRegisterMutation } from "@/services/authService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
 
 import { useNavigate } from "react-router";
 import { useState } from "react";
@@ -39,21 +38,27 @@ export default function Register() {
   const [registerApi, { isLoading }] = useRegisterMutation();
 
   const onSubmit = async (credentials) => {
+    setStatus("");
     try {
       const response = await registerApi(credentials);
       if (!response.error) {
-        Cookies.set("access_token", response.data.access_token);
-        Cookies.set("refresh_token", response.data.refresh_token);
         setStatus(t("auth:registerSuccess"));
         notifySooner.success(t("auth:registerSuccess"));
       } else {
-        const entries = Object.entries(response.error.data.errors);
-        for (const [_, [key, value]] of Object.entries(entries)) {
-          notifySooner.error(`${value}`);
+        if (response.error.status === 422) {
+          notifySooner.error(t("auth:duplicateUsernameOrEmail"));
+          setStatus(t("auth:duplicateUsernameOrEmail"));
+        } else {
+          const entries = Object.entries(response.error.data.errors);
+          for (const [_, [key, value]] of Object.entries(entries)) {
+            notifySooner.error(`${value}`);
+            throw new Error(`${value}`);
+          }
         }
       }
     } catch (error) {
       notifySooner.error(t("auth:registerError"));
+      setStatus(t("auth:registerError"));
       console.log(error);
     }
   };

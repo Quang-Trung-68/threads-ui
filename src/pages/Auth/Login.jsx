@@ -33,6 +33,7 @@ export default function Login() {
   useZodI18n(trigger, errors);
 
   const { state } = useLocation();
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     if (state?.message) notifySooner.success(state.message);
@@ -42,19 +43,28 @@ export default function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [loginApi, { isError, isLoading }] = useLoginMutation();
+  const [loginApi, { isLoading }] = useLoginMutation();
 
   const onSubmit = async (credentials) => {
+    setStatus("");
     try {
       const response = await loginApi(credentials);
-      // save response data
-      Cookies.set("access_token", response.data.access_token);
-      Cookies.set("refresh_token", response.data.refresh_token);
-      navigate(PATHS.HOME);
-      notifySooner.success(t("auth:loginSuccess"));
+      if (!response.error) {
+        Cookies.set("access_token", response.data.access_token);
+        Cookies.set("refresh_token", response.data.refresh_token);
+        navigate(PATHS.HOME);
+        notifySooner.success(t("auth:loginSuccess"));
+      } else {
+        if (response.error.status === 401) {
+          notifySooner.error(t("auth:loginError"));
+          setStatus(t("auth:loginError"));
+          console.log(123);
+        } else throw new Error(response.error.data?.message);
+      }
     } catch (error) {
       console.log(error);
       notifySooner.error(t("auth:loginError"));
+      setStatus(t("auth:loginError"));
     }
   };
 
@@ -72,6 +82,9 @@ export default function Login() {
   return (
     <div className="text-foreground mb-8 text-center">
       <h1 className="mb-4 text-base font-bold">{t("auth:login")}</h1>
+      <div className="mb-8 text-sm text-red-500 italic dark:text-red-300">
+        {status}
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Login */}

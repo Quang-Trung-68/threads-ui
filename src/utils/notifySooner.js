@@ -3,14 +3,14 @@ import { toast } from "sonner";
 export const notifySooner = {
   success(message, options = {}) {
     toast.success(message, {
-      duration: 3000,
+      duration: 2500,
       ...options,
     });
   },
 
   error(message, options = {}) {
     toast.error(message, {
-      duration: 3500,
+      duration: 4000,
       ...options,
     });
   },
