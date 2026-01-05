@@ -11,9 +11,10 @@ import { Spinner } from "@/components/Common/ui/spinner";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { Tooltip } from "@/components/Common/Tooltip";
 
 export default function PostDetail({ onNavigate, state }) {
-  const { t } = useTranslation(["user"]);
+  const { t } = useTranslation(["user", "tooltip"]);
   useScrollToTop();
 
   const params = useParams();
@@ -30,12 +31,11 @@ export default function PostDetail({ onNavigate, state }) {
   useTitle(
     post?.content
       ? `${post.content.slice(0, 20)}...`
-      : t("common:followingTitle")
+      : t("common:followingTitle"),
   );
 
   const repliesData = replies?.data;
   const pagination = replies?.pagination;
-
 
   return (
     <div className="bg-background relative flex min-h-screen w-full flex-col">
@@ -44,17 +44,19 @@ export default function PostDetail({ onNavigate, state }) {
         <div className="bg-background sticky top-0 z-50">
           {/* Header Title Bar */}
           <div className="flex items-center justify-between px-2 py-2 text-lg font-bold">
-            <div className="flex w-10 justify-center transition ease-in">
-              {window.history.length > 1 && (
-                <CircleArrowLeft
-                  className="cursor-pointer hover:scale-110"
-                  onClick={() =>
-                    state?.isDeck ? onNavigate("Home") : navigate(-1)
-                  }
-                  strokeWidth={1}
-                />
-              )}
-            </div>
+            <Tooltip label={t("tooltip:back")}>
+              <div className="flex w-10 justify-center transition ease-in">
+                {window.history.length > 1 && (
+                  <CircleArrowLeft
+                    className="cursor-pointer hover:scale-110"
+                    onClick={() =>
+                      state?.isDeck ? onNavigate("Home") : navigate(-1)
+                    }
+                    strokeWidth={1}
+                  />
+                )}
+              </div>
+            </Tooltip>
             <span className="text-foreground text-[15px] font-bold">
               {t("user:threads")}
             </span>

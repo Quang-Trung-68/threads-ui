@@ -49,6 +49,9 @@ const InteractionBar = ({
     is_reposted_by_auth,
   });
 
+  const [isRepostOpen, setIsRepostOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   // Sync state with props when data is refetched or changes
   useEffect(() => {
     setInteractionsCount((prev) => ({
@@ -161,51 +164,53 @@ const InteractionBar = ({
     return (
       <>
         <div className="text-muted-foreground flex gap-4">
-          <Tooltip label={t("tooltip:like")}>
-            <div
-              onClick={handleRequireAuth}
-              className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
-                interactionsCount.is_liked_by_auth
-                  ? "text-red-500"
-                  : "hover:bg-accent"
-              }`}
-            >
-              <MotionButton>
+          <div
+            onClick={handleRequireAuth}
+            className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 py-2 ${
+              interactionsCount.is_liked_by_auth
+                ? "text-red-500"
+                : "hover:bg-accent"
+            }`}
+          >
+            <MotionButton>
+              <Tooltip label={t("tooltip:like")}>
                 <LikeIcon
                   className={`size-4.5 ${interactionsCount.is_liked_by_auth ? "fill-current" : ""}`}
                 />
-                <span className="text-sm">{interactionsCount.likes_count}</span>
-              </MotionButton>
-            </div>
-          </Tooltip>
+              </Tooltip>
+              <span className="text-sm">{interactionsCount.likes_count}</span>
+            </MotionButton>
+          </div>
 
-          <Tooltip label={t("tooltip:reply")}>
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRequireAuth();
-              }}
-              className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
-            >
-              <MotionButton>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRequireAuth();
+            }}
+            className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
+          >
+            <MotionButton>
+              <Tooltip label={t("tooltip:reply")}>
                 <ReplyIcon className="size-4.5" />
-                <span className="text-sm">
-                  {interactionsCount.replies_count}
-                </span>
-              </MotionButton>
-            </div>
-          </Tooltip>
+              </Tooltip>
+              <span className="text-sm">
+                {interactionsCount.replies_count}
+              </span>
+            </MotionButton>
+          </div>
 
-          <Tooltip label={t("tooltip:repost")}>
-            <div className="replies_count hover:bg-accent rounded-2xl p-1">
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <span
-                    className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
-                      interactionsCount.is_reposted_by_auth
-                        ? "text-green-500"
-                        : "hover:bg-accent"
-                    }`}
+          <div className="replies_count hover:bg-accent rounded-2xl p-1">
+            <DropdownMenu modal={false} onOpenChange={setIsRepostOpen}>
+              <DropdownMenuTrigger asChild>
+                <span
+                  className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
+                    interactionsCount.is_reposted_by_auth
+                      ? "text-green-500"
+                      : "hover:bg-accent"
+                  }`}
+                >
+                  <Tooltip
+                    label={isRepostOpen ? null : t("tooltip:repost")}
                   >
                     <MotionButton>
                       <Repeat2Icon className="size-4.5" />
@@ -213,60 +218,61 @@ const InteractionBar = ({
                         {interactionsCount.reposts_and_quotes_count}
                       </span>
                     </MotionButton>
-                  </span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className={"rounded-3xl border-2 p-2"}>
-                  <DropdownMenuCheckboxItem
-                    onClick={handleRequireAuth}
-                    className={
-                      "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
-                    }
-                  >
-                    {interactionsCount.is_reposted_by_auth ? (
-                      <span className="text-red-500">Remove</span>
-                    ) : (
-                      <span>Reposts</span>
-                    )}
-                    <span
-                      className={`${interactionsCount.is_reposted_by_auth ? "text-red-500" : ""}`}
-                    >
-                      <Repeat2Icon className="size-4.5" />
-                    </span>
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    className={
-                      "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
-                    }
-                    onClick={handleRequireAuth}
-                  >
-                    <span>Quote</span>
-                    <QuoteIcon className="size-4.5 font-normal" />
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </Tooltip>
-
-          <Tooltip label={t("tooltip:share")}>
-            <div
-              onClick={handleRequireAuth}
-              className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500"
-            >
-              <MotionButton>
-                <ShareDropdown
-                  id={id}
-                  user={user}
-                  content={content}
-                  updated_at={updated_at}
-                  likes_count={likes_count}
-                  replies_count={replies_count}
-                  reposts_and_quotes_count={reposts_and_quotes_count}
+                  </Tooltip>
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className={"rounded-3xl border-2 p-2"}>
+                <DropdownMenuCheckboxItem
+                  onClick={handleRequireAuth}
+                  className={
+                    "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                  }
                 >
+                  {interactionsCount.is_reposted_by_auth ? (
+                    <span className="text-red-500">Remove</span>
+                  ) : (
+                    <span>Reposts</span>
+                  )}
+                  <span
+                    className={`${interactionsCount.is_reposted_by_auth ? "text-red-500" : ""}`}
+                  >
+                    <Repeat2Icon className="size-4.5" />
+                  </span>
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  className={
+                    "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                  }
+                  onClick={handleRequireAuth}
+                >
+                  <span>Quote</span>
+                  <QuoteIcon className="size-4.5 font-normal" />
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <div
+            onClick={handleRequireAuth}
+            className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500"
+          >
+            <MotionButton>
+              <ShareDropdown
+                id={id}
+                user={user}
+                content={content}
+                updated_at={updated_at}
+                likes_count={likes_count}
+                replies_count={replies_count}
+                reposts_and_quotes_count={reposts_and_quotes_count}
+                onOpenChange={setIsShareOpen}
+              >
+                <Tooltip label={isShareOpen ? null : t("tooltip:share")}>
                   <SendIcon className="size-4.5" />
-                </ShareDropdown>
-              </MotionButton>
-            </div>
-          </Tooltip>
+                </Tooltip>
+              </ShareDropdown>
+            </MotionButton>
+          </div>
         </div>
       </>
     );
@@ -274,42 +280,41 @@ const InteractionBar = ({
   return (
     <>
       <div className="text-muted-foreground flex gap-4">
-        <Tooltip label={t("tooltip:like")}>
-          <div
-            onClick={handleLikeCount}
-            className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
-              interactionsCount.is_liked_by_auth
-                ? "text-red-500"
-                : "hover:bg-accent"
-            }`}
-          >
-            <MotionButton>
+        <div
+          onClick={handleLikeCount}
+          className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
+            interactionsCount.is_liked_by_auth
+              ? "text-red-500"
+              : "hover:bg-accent"
+          }`}
+        >
+          <MotionButton>
+            <Tooltip label={t("tooltip:like")}>
               <LikeIcon
                 className={`size-4.5 ${interactionsCount.is_liked_by_auth ? "fill-current" : ""}`}
               />
-              <span className="text-sm">{interactionsCount.likes_count}</span>
-            </MotionButton>
-          </div>
-        </Tooltip>
+            </Tooltip>
+            <span className="text-sm">{interactionsCount.likes_count}</span>
+          </MotionButton>
+        </div>
 
-        <Tooltip label={t("tooltip:reply")}>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleReplyModal();
-            }}
-            className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
-          >
-            <MotionButton>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleReplyModal();
+          }}
+          className="replies_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-blue-500"
+        >
+          <MotionButton>
+            <Tooltip label={t("tooltip:reply")}>
               <ReplyIcon className="size-4.5" />
-              <span className="text-sm">{interactionsCount.replies_count}</span>
-            </MotionButton>
-          </div>
-        </Tooltip>
+            </Tooltip>
+            <span className="text-sm">{interactionsCount.replies_count}</span>
+          </MotionButton>
+        </div>
 
-        <Tooltip label={t("tooltip:repost")}>
-          <div className="replies_count hover:bg-accent rounded-2xl p-1">
-            <DropdownMenu modal={false}>
+        <div className="replies_count hover:bg-accent rounded-2xl p-1">
+            <DropdownMenu modal={false} onOpenChange={setIsRepostOpen}>
               <DropdownMenuTrigger asChild>
                 <span
                   className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
@@ -319,7 +324,9 @@ const InteractionBar = ({
                   }`}
                 >
                   <MotionButton>
-                    <Repeat2Icon className="size-4.5" />
+                    <Tooltip label={isRepostOpen ? null : t("tooltip:repost")}>
+                      <Repeat2Icon className="size-4.5" />
+                    </Tooltip>
                     <span className="text-sm">
                       {interactionsCount.reposts_and_quotes_count}
                     </span>
@@ -356,10 +363,8 @@ const InteractionBar = ({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </Tooltip>
 
-        <Tooltip label={t("tooltip:share")}>
-          <div className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500">
+        <div className="hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:text-purple-500">
             <MotionButton>
               <ShareDropdown
                 id={id}
@@ -369,12 +374,14 @@ const InteractionBar = ({
                 likes_count={likes_count}
                 replies_count={replies_count}
                 reposts_and_quotes_count={reposts_and_quotes_count}
+                onOpenChange={setIsShareOpen}
               >
-                <SendIcon className="size-4.5" />
+                <Tooltip label={isShareOpen ? null : t("tooltip:share")}>
+                  <SendIcon className="size-4.5" />
+                </Tooltip>
               </ShareDropdown>
             </MotionButton>
           </div>
-        </Tooltip>
       </div>
     </>
   );

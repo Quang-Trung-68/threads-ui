@@ -10,9 +10,14 @@ import { useTranslation } from "react-i18next";
 import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { Tooltip } from "@/components/Common/Tooltip";
 
-export default React.memo(function Search({ dragHandleProps, onRemoveColumn, canRemove }) {
-  const { t } = useTranslation(["feed", "user", "common"]);
+export default React.memo(function Search({
+  dragHandleProps,
+  onRemoveColumn,
+  canRemove,
+}) {
+  const { t } = useTranslation(["feed", "user", "common", "tooltip"]);
   useScrollToTop();
   // Title
   useTitle(t("common:searchTitle"));
@@ -25,7 +30,6 @@ export default React.memo(function Search({ dragHandleProps, onRemoveColumn, can
     data: followSuggestionsData,
     isLoading,
     isFetching,
-    isError,
   } = useGetFollowSuggestionQuery({
     type: "suggestions", // or any type required by API
     page,
@@ -69,19 +73,22 @@ export default React.memo(function Search({ dragHandleProps, onRemoveColumn, can
                 {t("feed:search")}
               </span>
             </div>
+
             <MoreAtFeedHeader
               canRemove={canRemove}
               onRemoveColumn={onRemoveColumn}
             >
-              <div
-                className="flex w-10 justify-center"
-                onPointerDown={(e) => e.stopPropagation()}
-              >
-                <CircleEllipsis
-                  className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                  strokeWidth={1.1}
-                />
-              </div>
+              <Tooltip label={t("tooltip:more")}>
+                <div
+                  className="flex w-10 justify-center"
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  <CircleEllipsis
+                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                    strokeWidth={1.1}
+                  />
+                </div>
+              </Tooltip>
             </MoreAtFeedHeader>
           </div>
 

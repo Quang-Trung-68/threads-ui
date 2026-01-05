@@ -20,6 +20,7 @@ import {
 import threadsIcon from "@assets/threads-icon.svg";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { truncateTextByWidth } from "@/utils/truncateTextByWidth";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 
 const PreviewInteractionBar = ({
   likes_count,
@@ -77,6 +78,9 @@ const Modal = NiceModal.create(
       setIsCopying(false);
     };
 
+    const textareaContentRef = useRef(null);
+    useAutoResizeTextarea(textareaContentRef, content);
+
     return (
       <Dialog open={modal.visible} onOpenChange={handleCancel}>
         <DialogContent
@@ -91,7 +95,10 @@ const Modal = NiceModal.create(
             <div className="w-full rounded-3xl p-2 shadow-sm">
               {/* Header */}
               <div className="mb-3 flex items-center gap-2">
-                <UserAvatar user={user} className="size-9 border border-gray-100" />
+                <UserAvatar
+                  user={user}
+                  className="size-9 border border-gray-100"
+                />
                 <div className="flex items-center gap-1 text-sm">
                   <span className="font-semibold">
                     {user?.username || "username"}
@@ -106,9 +113,12 @@ const Modal = NiceModal.create(
               </div>
 
               {/* Content */}
-              <div className="mb-4 text-[15px] leading-relaxed whitespace-pre-wrap">
-                {content || "No content provided."}
-              </div>
+              <textarea
+                ref={textareaContentRef}
+                readOnly
+                value={content}
+                className="mb-4 min-h-30 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              ></textarea>
 
               {/* Footer */}
               <div className="mt-2 flex items-center justify-between">

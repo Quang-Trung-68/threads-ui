@@ -27,6 +27,8 @@ import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useTheme } from "next-themes";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
+import { Textarea } from "../Common/ui/textarea";
 
 const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
   const { t } = useTranslation(["common", "post"]);
@@ -78,12 +80,6 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
   const [replyText, setReplyText] = useState("");
   const textareaRef = useRef(null);
 
-  const handleInput = (e) => {
-    setReplyText(e.target.value);
-    e.target.style.height = "auto";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-  };
-
   // Select emoji
   const { resolvedTheme } = useTheme();
   const [openEmoji, setOpenEmoji] = useState(false);
@@ -101,6 +97,7 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
     if (!modal.visible) {
       setOpenEmoji(false);
     }
+    setReplyText("");
   }, [modal.visible]);
 
   useEffect(() => {
@@ -121,6 +118,9 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openEmoji]);
+
+  const textareaContentRef = useRef(null);
+  useAutoResizeTextarea(textareaContentRef, content, modal.visible);
 
   return (
     <Dialog open={modal.visible} onOpenChange={handleCancel}>
@@ -151,7 +151,7 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
         </DialogHeader>
 
         {/* --- Body (Scrollable) --- */}
-        <ScrollArea className="flex-1">
+        <ScrollArea className="flex-1" style={{ overflowY: "auto" }}>
           <div className="flex gap-3 px-4 py-4">
             {/* Cột trái: Avatar + Đường kẻ nối */}
             <div className="flex shrink-0 flex-col items-center">
@@ -179,7 +179,7 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
                 <span className="text-[15px] font-semibold">{username}</span>
                 <ChevronRight className="text-muted-foreground h-3.5 w-3.5" />
                 <span className="text-muted-foreground text-sm font-semibold">
-                  工程師日常
+                  Topic
                 </span>
                 <span className="text-muted-foreground text-sm">
                   {formatTime(updated_at)}
@@ -188,9 +188,12 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
 
               {/* Original Post Content */}
               <div className="mb-3">
-                <p className="text-foreground mb-2 text-[15px] leading-relaxed">
-                  {content}
-                </p>
+                <textarea
+                  ref={textareaContentRef}
+                  readOnly
+                  value={content}
+                  className="min-h-30 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                ></textarea>
               </div>
 
               {/* Reply Section */}
@@ -212,8 +215,7 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     ref={textareaRef}
-                    rows={1}
-                    className="text-foreground placeholder:text-muted-foreground mb-2 max-h-[300px] min-h-[120px] w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
+                    className="text-foreground placeholder:text-muted-foreground mb-2 max-h-20 min-h-15 w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
                     placeholder={t("post:replyTo", {
                       username: user?.username || "user",
                     })}
@@ -293,7 +295,7 @@ const Modal = NiceModal.create(({ id, user, content, updated_at }) => {
           <Button
             className="bg-primary text-primary-foreground cursor-pointer rounded-full px-6 py-2 text-sm font-semibold transition-colors hover:opacity-90"
             onClick={handlePost}
-            disabled={isCreateReplyLoading}
+            disabled={isCreateReplyLoading || replyText.trim() === "" || replyText.length > 500}
           >
             {t("common:post")}
           </Button>

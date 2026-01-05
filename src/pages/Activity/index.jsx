@@ -1,9 +1,10 @@
 import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader";
+import { Tooltip } from "@/components/Common/Tooltip";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import { Button } from "@/components/Common/ui/button";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { Heart, UserPlus, Zap, CircleEllipsis } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTitle } from "react-use";
 
@@ -12,12 +13,10 @@ export default React.memo(function Activity({
   onRemoveColumn,
   canRemove,
 }) {
-  const { t } = useTranslation(["common"]);
+  const { t } = useTranslation(["common", "tooltip"]);
   useScrollToTop();
   // Title
   useTitle(t("common:activityTitle"));
-
-  const [loading, setLoading] = useState(false);
 
   // Mock Data
   const activities = [
@@ -93,10 +92,11 @@ export default React.memo(function Activity({
             <span className="text-foreground flex items-center justify-center px-4 py-3 text-[15px] font-bold">
               {t("common:activity")}
             </span>
-              <MoreAtFeedHeader
-                canRemove={canRemove}
-                onRemoveColumn={onRemoveColumn}
-              >
+            <MoreAtFeedHeader
+              canRemove={canRemove}
+              onRemoveColumn={onRemoveColumn}
+            >
+              <Tooltip label={t("tooltip:more")}>
                 <div
                   className="flex w-10 justify-center"
                   onPointerDown={(e) => e.stopPropagation()}
@@ -106,7 +106,8 @@ export default React.memo(function Activity({
                     strokeWidth={1.1}
                   />
                 </div>
-              </MoreAtFeedHeader>
+              </Tooltip>
+            </MoreAtFeedHeader>
           </div>
 
           {/* Visible Border connecting the masks */}

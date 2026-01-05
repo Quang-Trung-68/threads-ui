@@ -19,6 +19,7 @@ import MoreAtFeedHeader from "@/components/Common/DropdownMenu/MoreAtFeedHeader"
 import { useTitle } from "react-use";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useLocation, useNavigate } from "react-router";
+import { Tooltip } from "@/components/Common/Tooltip";
 
 export default function Following({
   type,
@@ -27,7 +28,7 @@ export default function Following({
   canRemove,
   onNavigate,
 }) {
-  const { t } = useTranslation(["feed", "common"]);
+  const { t } = useTranslation(["feed", "common", "tooltip"]);
   useScrollToTop();
   // Title
   useTitle(t("common:followingTitle"));
@@ -115,19 +116,22 @@ export default function Following({
                   {t("feed:following")}
                 </span>
               </div>
+
               <MoreAtFeedHeader
                 onRemoveColumn={onRemoveColumn}
                 canRemove={canRemove}
               >
-                <div
-                  className="flex w-10 justify-center"
-                  onPointerDown={(e) => e.stopPropagation()}
-                >
-                  <CircleEllipsis
-                    className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
-                    strokeWidth={1.1}
-                  />
-                </div>
+                <Tooltip label={t("tooltip:more")}>
+                  <div
+                    className="flex w-10 justify-center"
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    <CircleEllipsis
+                      className="cursor-pointer shadow-2xl shadow-gray-400 hover:scale-110"
+                      strokeWidth={1.1}
+                    />
+                  </div>
+                </Tooltip>
               </MoreAtFeedHeader>
             </div>
           )}

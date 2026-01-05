@@ -58,7 +58,7 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
   };
 
   const handlePost = async () => {
-    if (content.trim()) {
+    if (content.trim() && content.length <= 500) {
       try {
         const createPromise = createPostApi({
           content,
@@ -141,6 +141,8 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
     if (!modal.visible) {
       setOpenEmoji(false);
     }
+    setContent("");
+    setTopic("");
   }, [modal.visible]);
 
   useEffect(() => {
@@ -167,7 +169,7 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
       <DialogContent
         aria-describedby={undefined}
         showCloseButton={false}
-        className="bg-background text-foreground flex h-[67vh] max-h-[85vh] max-w-[600px] flex-col gap-0 overflow-hidden rounded-2xl border-none p-0 shadow-xl transition-colors"
+        className="bg-background text-foreground flex h-[60vh] max-h-[85vh] max-w-[600px] flex-col gap-0 overflow-hidden rounded-2xl border-none p-0 shadow-xl transition-colors"
       >
         {/* --- HEADER --- */}
         <div className="flex items-center justify-between px-5 py-4">
@@ -245,18 +247,12 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder={t("common:whatsNew")}
-                className="text-foreground placeholder:text-muted-foreground mb-2 w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
+                className="text-foreground placeholder:text-muted-foreground mb-2 min-h-[120px] w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
                 rows={1}
-                style={{ minHeight: "24px", height: "auto" }}
-                onInput={(e) => {
-                  e.currentTarget.style.height = "auto";
-                  e.currentTarget.style.height =
-                    e.currentTarget.scrollHeight + "px";
-                }}
               />
 
               {/* Toolbar Icons */}
-              <div className="relative mb-6 flex items-center gap-4">
+              <div className="relative flex items-center gap-4">
                 <button
                   onClick={handlePickImage}
                   className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
@@ -290,7 +286,7 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
                     ref={emojiPickerRef}
                     style={{
                       position: "absolute",
-                      top: "-410%",
+                      top: "-1000%",
                       right: "5%",
                       zIndex: 1000,
                     }}
@@ -375,7 +371,9 @@ const Modal = NiceModal.create(({ username: propUsername, onSuccess }) => {
 
           <Button
             onClick={handlePost}
-            disabled={!content.trim() || isCreatePostLoading}
+            disabled={
+              !content.trim() || content.length > 500 || isCreatePostLoading
+            }
             className={`cursor-pointer rounded-full px-5 py-5 text-[15px] font-semibold transition-all ${
               content.trim()
                 ? "bg-primary text-primary-foreground hover:opacity-90"

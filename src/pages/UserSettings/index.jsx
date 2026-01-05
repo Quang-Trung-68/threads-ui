@@ -13,9 +13,10 @@ import { useUpdateProfileMutation } from "@/services/authService";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import useAuth from "@/hooks/useAuth";
+import { Tooltip } from "@/components/Common/Tooltip";
 
 export default function UserSettings() {
-  const { t } = useTranslation(["user", "common"]);
+  const { t } = useTranslation(["user", "common", "tooltip"]);
   const { user } = useAuth();
   const [updateProfile, { isLoading: isUpdateProfileLoading }] =
     useUpdateProfileMutation();
@@ -78,16 +79,18 @@ export default function UserSettings() {
     <div className="mx-auto max-w-2xl px-4 py-8">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        {window.history.length > 1 && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="rounded-full"
-          >
-            <ChevronLeft size={24} />
-          </Button>
-        )}
+        <Tooltip label={t("tooltip:back")}>
+          {window.history.length > 1 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="rounded-full"
+            >
+              <ChevronLeft size={24} />
+            </Button>
+          )}
+        </Tooltip>
         <h1 className="text-foreground text-2xl font-bold">
           {t("user:editProfile")}
         </h1>

@@ -8,10 +8,10 @@ const MotionButton = forwardRef(({ children, ...props }, ref) => {
       whileTap={{ scale: 0.85 }}
       transition={{
         type: "spring",
-        stiffness: 800,
+        stiffness: 600,
         damping: 28,
       }}
-      className="flex cursor-pointer items-center justify-center gap-1"
+      className="flex cursor-pointer items-center justify-center gap-1 px-1.5"
       {...props}
     >
       {children}

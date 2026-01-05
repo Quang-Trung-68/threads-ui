@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
   Image as ImageIcon,
   FileText,
   MapPin,
-  Smile,
+  SmilePlus,
   AlignLeft,
   ChevronRight,
   Grid3x3,
@@ -23,10 +23,14 @@ import Cookies from "js-cookie";
 import { formatTime } from "@/utils/formatTime";
 import ReplyOptionsDropdown from "../Common/DropdownMenu/ReplyOptionsDropdown";
 import { useTranslation } from "react-i18next";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
+import EmojiPicker, { Theme } from "emoji-picker-react";
+import { useTheme } from "next-themes";
 
 const Modal = NiceModal.create(({ user, content, updated_at }) => {
   const { t } = useTranslation(["common", "post"]);
   const modal = useModal();
+  const { resolvedTheme } = useTheme();
 
   const handleCancel = () => {
     modal.hide();
@@ -44,6 +48,47 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
   const [replyQuote, setReplyQuote] = useState("anyone");
   const [reviewApprove, setReviewApprove] = useState(false);
   const [textQuote, setTextQuote] = useState("");
+
+  const textareaContentRef = useRef(null);
+  useAutoResizeTextarea(textareaContentRef, content);
+
+  // Select emoji
+  const [openEmoji, setOpenEmoji] = useState(false);
+
+  const onEmojiClick = (emojiData) => {
+    setTextQuote((prev) => prev + emojiData.emoji);
+    setOpenEmoji(false);
+  };
+
+  // Close emoji picker when click outside or modal close
+  const emojiPickerRef = useRef(null);
+  const emojiButtonRef = useRef(null);
+
+  React.useEffect(() => {
+    if (!modal.visible) {
+      setOpenEmoji(false);
+    }
+    setTextQuote("");
+  }, [modal.visible]);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        openEmoji &&
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target) &&
+        emojiButtonRef.current &&
+        !emojiButtonRef.current.contains(event.target)
+      ) {
+        setOpenEmoji(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openEmoji]);
 
   return (
     <Dialog open={modal.visible} onOpenChange={handleCancel}>
@@ -114,18 +159,48 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
                   value={textQuote}
                   onChange={(e) => setTextQuote(e.target.value)}
                   placeholder={t("post:shareYourThoughts")}
-                  className="text-foreground placeholder:text-muted-foreground mb-2 max-h-[300px] min-h-[120px] w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
+                  className="text-foreground placeholder:text-muted-foreground max-h-[200px] min-h-[100px] w-full resize-none bg-transparent py-1 text-[15px] focus:outline-none"
                 />
               </div>
 
               {/* Action Icons */}
-              <div className="mb-4 flex gap-5 text-gray-400">
+              <div className="relative mb-4 flex gap-5 text-gray-400">
                 <ImageIcon className="h-5 w-5 cursor-pointer hover:text-gray-700" />
                 <FileText className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                <Smile className="h-5 w-5 cursor-pointer hover:text-gray-700" />
+                <button
+                  ref={emojiButtonRef}
+                  onClick={() => setOpenEmoji((prev) => !prev)}
+                  className="cursor-pointer transition-colors hover:text-gray-700"
+                >
+                  <SmilePlus className="h-5 w-5" />
+                </button>
                 <AlignLeft className="h-5 w-5 cursor-pointer hover:text-gray-700" />
                 <Grid3x3 className="h-5 w-5 cursor-pointer hover:text-gray-700" />
                 <MapPin className="h-5 w-5 cursor-pointer hover:text-gray-700" />
+
+                {/* EMOJI PICKER */}
+                {openEmoji && (
+                  <div
+                    ref={emojiPickerRef}
+                    style={{
+                      position: "absolute",
+                      top: "-400%",
+                      right: "5%",
+                      zIndex: 1000,
+                    }}
+                  >
+                    <EmojiPicker
+                      width={300}
+                      height={350}
+                      onEmojiClick={onEmojiClick}
+                      autoFocusSearch={false}
+                      onEmojiStyle="native"
+                      theme={
+                        resolvedTheme === "dark" ? Theme.DARK : Theme.LIGHT
+                      }
+                    />
+                  </div>
+                )}
               </div>
 
               {/* --- Quoted Post (Embedded Content) --- */}
@@ -149,7 +224,12 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
 
                 {/* Quoted Text */}
                 <div className="text-sm leading-relaxed text-gray-800">
-                  <p className="mb-2">{content}</p>
+                  <textarea
+                    ref={textareaContentRef}
+                    readOnly
+                    value={content}
+                    className="min-h-28 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  ></textarea>
                   <p className="mb-1">
                     <span className="text-blue-500">
                       {t("common:translate")}
@@ -186,6 +266,7 @@ const Modal = NiceModal.create(({ user, content, updated_at }) => {
           <Button
             className="cursor-pointer rounded-full bg-black px-6 py-2 text-sm font-semibold text-white hover:bg-gray-800"
             onClick={handlePost}
+            // disabled={isCreateQuoteLoading || textQuote.trim() === "" || textQuote.length > 500}
           >
             {t("common:post")}
           </Button>

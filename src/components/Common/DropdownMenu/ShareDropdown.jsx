@@ -18,6 +18,7 @@ const ShareDropdown = ({
   likes_count,
   replies_count,
   reposts_and_quotes_count,
+  onOpenChange,
   children,
 }) => {
   const handleCopyLink = () => {
@@ -50,7 +51,7 @@ const ShareDropdown = ({
 
   return (
     <>
-      <DropdownMenu modal={false}>
+      <DropdownMenu modal={false} onOpenChange={onOpenChange}>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
         <DropdownMenuContent className={"w-fit rounded-3xl border-2 p-2"}>
           <DropdownMenuRadioGroup>

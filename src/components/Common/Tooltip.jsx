@@ -11,34 +11,40 @@ export const Tooltip = forwardRef(
       label,
       children,
       side = "bottom",
-      align = "center",
-      delay = 500,
+      align = "start",
+      delay = 800,
       className = "",
       ...props
     },
     ref,
   ) => {
-    if (!label) return children;
-
+    // Determine controlled vs uncontrolled based on props.open presence
+    const isControlled = props.open !== undefined;
+    
     return (
-      <TooltipRoot delayDuration={delay}>
+      <TooltipRoot 
+        delayDuration={delay} 
+        open={isControlled ? props.open : undefined}
+      >
         <TooltipTrigger asChild ref={ref} {...props}>
           {children}
         </TooltipTrigger>
 
-        <TooltipContent
-          side={side}
-          align={align}
-          sideOffset={4}
-          className={[
-            "rounded-md px-2 py-1 text-xs",
-            "bg-gray-900 text-white",
-            "border border-gray-700",
-            className,
-          ].join(" ")}
-        >
-          {label}
-        </TooltipContent>
+        {label && (
+          <TooltipContent
+            side={side}
+            align={align}
+            sideOffset={4}
+            className={[
+              "rounded-none px-2 py-1 text-sm",
+              "bg-gray-900 text-white",
+              "border border-gray-700",
+              className,
+            ].join(" ")}
+          >
+            {label}
+          </TooltipContent>
+        )}
       </TooltipRoot>
     );
   },

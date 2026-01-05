@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import {
   Ellipsis as MoreIcon,
@@ -18,6 +18,8 @@ import useAuth from "@/hooks/useAuth";
 import NiceModal from "@ebay/nice-modal-react";
 import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
 import { PATHS } from "@/configs/paths";
+import { Tooltip } from "../Common/Tooltip";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 
 function PostCard({
   user,
@@ -36,7 +38,7 @@ function PostCard({
   onNavigate,
   state,
 }) {
-  const { t } = useTranslation(["post", "common", "auth"]);
+  const { t } = useTranslation(["post", "common", "auth", "tooltip"]);
   const { user: userAuth } = useAuth();
   const [isMuted, setIsMuted] = useState(false);
   const [isHidePost, setIsHidePost] = useState(false);
@@ -116,6 +118,10 @@ function PostCard({
     });
   };
 
+  // Auto resize textarea theo content
+  const textareaRef = useRef(null);
+  useAutoResizeTextarea(textareaRef, content);
+
   if (!userAuth)
     return (
       <div className="border-border flex flex-col p-3 md:p-6">
@@ -157,9 +163,13 @@ function PostCard({
                     </div>
                   </div>
                   {content && (
-                    <div onClick={handleRequireAuth} className="body mt-1">
-                      {content}
-                    </div>
+                    <textarea
+                      ref={textareaRef}
+                      readOnly
+                      onClick={handleRequireAuth}
+                      className="w-full cursor-pointer resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      value={content}
+                    ></textarea>
                   )}
                 </div>
                 <PostOptionsDropdown
@@ -290,9 +300,13 @@ function PostCard({
                   </div>
                 </div>
                 {content && (
-                  <div onClick={handlePostDetail} className="body mt-1">
-                    {content}
-                  </div>
+                  <textarea
+                    ref={textareaRef}
+                    readOnly
+                    onClick={handlePostDetail}
+                    className="w-full cursor-pointer resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    value={content}
+                  ></textarea>
                 )}
               </div>
               <PostOptionsDropdown
@@ -306,9 +320,11 @@ function PostCard({
                 onBlockSuccess={handleBlockSuccess}
                 onDeleteSuccess={handleDeleteSuccess}
               >
-                <div className="hover:bg-muted flex size-8 items-center justify-center rounded-2xl">
-                  <MoreIcon className="text-muted-foreground size-7 cursor-pointer p-1" />
-                </div>
+                <Tooltip label={t("tooltip:more")}>
+                  <div className="hover:bg-muted flex size-8 items-center justify-center rounded-2xl">
+                    <MoreIcon className="text-muted-foreground size-7 cursor-pointer p-1" />
+                  </div>
+                </Tooltip>
               </PostOptionsDropdown>
             </div>
 

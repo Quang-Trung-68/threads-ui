@@ -1,6 +1,6 @@
 import { useGetSinglePostQuery } from "@/services/postService";
 import { formatTime } from "@/utils/formatTime";
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import { useParams } from "react-router";
 import threadsIcon from "@assets/threads-icon.svg";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
@@ -12,6 +12,7 @@ import {
   Repeat2 as Repeat2Icon,
   Send as SendIcon,
 } from "lucide-react";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 
 const PreviewInteractionBar = ({
   likes_count,
@@ -43,12 +44,11 @@ function Embed() {
   const { t } = useTranslation(["common", "auth"]);
   const params = useParams();
   const { postId } = params;
-  const {
-    data: postData,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useGetSinglePostQuery({ postId });
+  const { data: postData } = useGetSinglePostQuery({ postId });
+
+  const textareaContentRef = useRef(null);
+  useAutoResizeTextarea(textareaContentRef, postData.content);
+
   if (postData) {
     const {
       user,
@@ -66,22 +66,27 @@ function Embed() {
           <div className="w-full rounded-3xl p-4 shadow-sm">
             {/* Header */}
             <div className="mb-3 flex items-center gap-2">
-              <UserAvatar user={user} className="size-9 border border-border" />
+              <UserAvatar user={user} className="border-border size-9 border" />
               <div className="flex items-center gap-1 text-sm">
-                <span className="font-semibold text-foreground">
+                <span className="text-foreground font-semibold">
                   {user?.username || t("auth:username")}
                 </span>
                 <span className="text-muted-foreground">›</span>
                 <span className="text-muted-foreground">threads</span>
               </div>
-              <span className="ml-auto text-muted-foreground">
+              <span className="text-muted-foreground ml-auto">
                 {updated_at ? formatTime(updated_at) : "3h"}
               </span>
             </div>
 
             {/* Content */}
-            <div className="mb-4 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground">
-              {content || t("common:noContentProvided")}
+            <div className="text-foreground mb-4 text-[15px] leading-relaxed whitespace-pre-wrap">
+              <textarea
+                ref={textareaContentRef}
+                readOnly
+                value={content}
+                className="mb-4 max-h-35 min-h-20 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              ></textarea>
             </div>
 
             {/* Footer */}
@@ -94,7 +99,7 @@ function Embed() {
             </div>
             <div className="mt-2 flex items-center justify-between">
               {/* Watermark/Logo */}
-              <div className="ml-auto flex items-center justify-between gap-2 rounded-2xl bg-muted px-3 py-2 text-[12px] font-semibold text-foreground">
+              <div className="bg-muted text-foreground ml-auto flex items-center justify-between gap-2 rounded-2xl px-3 py-2 text-[12px] font-semibold">
                 <span>{t("common:viewOnThreads")}</span>
                 <img src={threadsIcon} className="size-6 rounded-xl" />
               </div>
