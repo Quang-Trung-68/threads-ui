@@ -1,4 +1,3 @@
-// utils/time.ts
 import dayjs from "@/lib/dayjs";
 import i18next from "i18next";
 import "dayjs/locale/vi";

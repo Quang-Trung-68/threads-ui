@@ -4,7 +4,7 @@ import baseQuery from "./baseQuery";
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: baseQuery(),
-  tagTypes: ["Post"],
+  tagTypes: ["Post", "Replies"],
   endpoints: (builder) => ({
     // Get feed
     getFeed: builder.query({
@@ -139,11 +139,13 @@ export const postApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["Replies"],
     }),
     getReplies: builder.query({
       query: ({ postId }) => ({
         url: `/api/posts/${postId}/replies`,
       }),
+      providesTags: ["Replies"],
     }),
     getPendingReplies: builder.query({
       query: ({ postId }) => ({

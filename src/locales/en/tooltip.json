@@ -13,5 +13,7 @@
   "reply": "Reply",
   "repost": "Repost",
   "share": "Share",
-  "addColumn": "Add Column"
+  "addColumn": "Add Column",
+  "expandComposer": "Expand composer",
+  "verified": "Verified"
 }

@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import UserAvatar from "@/components/Common/ui/UserAvatar";
 import {
   Ellipsis as MoreIcon,
   CirclePlus as FollowIcon,
   Plus,
+  BadgeCheck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,6 +41,7 @@ function PostCard({
 }) {
   const { t } = useTranslation(["post", "common", "auth", "tooltip"]);
   const { user: userAuth } = useAuth();
+  const isAuth = userAuth.id === user_id;
   const [isMuted, setIsMuted] = useState(false);
   const [isHidePost, setIsHidePost] = useState(false);
   const [isRestrictUser, setIsRestrictUser] = useState(false);
@@ -130,15 +132,17 @@ function PostCard({
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
                 <UserAvatar user={user} className="size-9 cursor-pointer" />
-                <div
-                  className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // TODO: follow / unfollow
-                  }}
-                >
-                  <Plus size={12} strokeWidth={3} />
-                </div>
+                {!isAuth && (
+                  <div
+                    className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // TODO: follow / unfollow
+                    }}
+                  >
+                    <Plus size={12} strokeWidth={3} />
+                  </div>
+                )}
               </div>
 
               {isReplyOpen && <div className="bg-border w-[3px] flex-1" />}
@@ -216,6 +220,7 @@ function PostCard({
           user={user}
           content={content}
           updated_at={updated_at}
+          setIsReplyOpen={setIsReplyOpen}
           ref={ReplyModalRef}
         />
       </div>
@@ -267,15 +272,17 @@ function PostCard({
           <div className="flex flex-col items-center gap-2">
             <div className="relative">
               <UserAvatar user={user} className="size-9 cursor-pointer" />
-              <div
-                className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // TODO: follow / unfollow
-                }}
-              >
-                <Plus size={12} strokeWidth={3} />
-              </div>
+              {!isAuth && (
+                <div
+                  className="border-background bg-foreground text-background hover:bg-foreground/90 absolute -right-1 -bottom-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition duration-300 hover:scale-110"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // TODO: follow / unfollow
+                  }}
+                >
+                  <Plus size={12} strokeWidth={3} />
+                </div>
+              )}
             </div>
 
             {isReplyOpen && <div className="bg-border w-[3px] flex-1" />}
@@ -286,7 +293,7 @@ function PostCard({
               <div
                 className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   <UserHoverCard {...user}>
                     <div
                       onClick={handleUserProfile}
@@ -295,6 +302,11 @@ function PostCard({
                       {user.username}
                     </div>
                   </UserHoverCard>
+                  <Tooltip label={t("tooltip:verified")}>
+                    <span>
+                      <BadgeCheck className="mr-1 size-4 fill-blue-400 text-white" />
+                    </span>
+                  </Tooltip>
                   <div className="text-muted-foreground text-sm">
                     <TimeTooltip dateString={updated_at} />
                   </div>
@@ -356,6 +368,7 @@ function PostCard({
         user={user}
         content={content}
         updated_at={updated_at}
+        setIsReplyOpen={setIsReplyOpen}
         ref={ReplyModalRef}
       />
     </div>

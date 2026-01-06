@@ -28,7 +28,9 @@ const UserAvatar = ({ user, className, ...props }) => {
           onError={handleError}
         />
       )}
-      <AvatarFallback>{user?.username?.charAt(0)?.toUpperCase() || "?"}</AvatarFallback>
+      <AvatarFallback>
+        {user?.username?.charAt(0)?.toUpperCase() || "?"}
+      </AvatarFallback>
     </Avatar>
   );
 };
