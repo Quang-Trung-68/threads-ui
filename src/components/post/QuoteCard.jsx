@@ -11,7 +11,7 @@ import { Tooltip } from "../Common/Tooltip";
 import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 
 function QuoteCard({
-  user,
+  user = { username: "username", verified: false },
   id,
   user_id,
   content,
