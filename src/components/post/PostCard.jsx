@@ -6,7 +6,7 @@ import {
   Plus,
   BadgeCheck,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import InteractionBar from "./InteractionBar";
 import QuickReplyModal from "@/components/Common/Modals/QuickReplyModal";
@@ -46,6 +46,7 @@ function PostCard({
   const { t } = useTranslation(["post", "common", "auth", "tooltip"]);
   const { user: userAuth } = useAuth();
   const isAuth = userAuth?.id === user_id;
+  const { postId } = useParams(); // Get postId from URL
 
   const [isMuted, setIsMuted] = useState(false);
   const [isHidePost, setIsHidePost] = useState(false);
@@ -58,8 +59,12 @@ function PostCard({
 
   const navigate = useNavigate();
   const handlePostDetail = () => {
+    // Prevent recursive navigation if already on this post's detail page
+    if (postId && String(id) === postId) return;
+
     if (!onNavigate)
-      navigate(`/@${user.username}/post/${id}`, {
+      // Use relative path for overlay support (e.g. /@user/post/1 OR /following/@user/post/1)
+      navigate(`@${user.username}/post/${id}`, {
         state: {
           id,
         },
@@ -69,7 +74,7 @@ function PostCard({
 
   const handleUserProfile = () => {
     if (!onNavigate)
-      navigate(`/@${user.username}`, {
+      navigate(`@${user.username}`, {
         state: {
           userId: user_id,
         },
@@ -325,7 +330,7 @@ function PostCard({
                       ref={textareaRef}
                       readOnly
                       onClick={handlePostDetail}
-                      className="w-full cursor-pointer resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className={`w-full resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${!postId || postId !== String(id) ? "cursor-pointer" : "cursor-default"}`}
                       value={content}
                     ></textarea>
                   )}
@@ -413,7 +418,7 @@ function PostCard({
             <div className="flex flex-1 flex-col gap-2">
               <div className="content flex items-start justify-between">
                 <div
-                  className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
+                  className={`flex-1 ${isPermitDetailPost && (!postId || postId !== String(id)) ? "cursor-pointer" : "cursor-default"}`}
                 >
                   <div className="flex items-center gap-1">
                     <UserHoverCard {...user}>
@@ -440,7 +445,7 @@ function PostCard({
                       ref={textareaRef}
                       readOnly
                       onClick={handlePostDetail}
-                      className="w-full cursor-pointer resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className={`w-full resize-none overflow-hidden border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ${!postId || postId !== String(id) ? "cursor-pointer" : "cursor-default"}`}
                       value={content}
                     ></textarea>
                   )}

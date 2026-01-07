@@ -79,11 +79,27 @@ export default function Navigation() {
           </svg>
         </div>
         <div className="flex flex-1 items-center justify-between md:flex-col md:items-center md:justify-center">
-          {ROUTES.map((rou) => {
-            return rou.children.map((child, index) => {
+          {ROUTES.map((rou, routeIndex) => {
+            // Collect all items to render for this route block
+            const items = [];
+
+            // 1. Check parent navItem (e.g. Home)
+            if (rou.navItem) {
+              items.push(rou.navItem);
+            }
+
+            // 2. Check children
+            if (rou.children) {
+              items.push(...rou.children);
+            }
+
+            return items.map((child, index) => {
               const Icon = child.icon;
               const isPrivate = child.private;
               const path = child.path;
+              // Use Title or Key for unique key
+              const key = `${routeIndex}-${index}-${child.title || child.path}`;
+
               let renderPath = child.path;
 
               if (path === PATHS.USER_PROFILE && user) {
@@ -92,21 +108,20 @@ export default function Navigation() {
 
               return (
                 child.isShowInNav && (
-                  <Tooltip key={index} label={t(`tooltip:${child.title}`)}>
+                  <Tooltip key={key} label={t(`tooltip:${child.title}`)}>
                     <NavLink
                       className={
                         "group text-muted-foreground/60 hover:bg-accent mt-1 mb-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 md:h-12 md:w-15 md:flex-none md:gap-1"
                       }
-                      key={index}
                       to={renderPath}
                       onClick={(event) =>
                         handleUserAuth(event, isPrivate, path)
                       }
+                      end={renderPath === PATHS.HOME} // Exact match for Home to prevent active state on sub-routes if needed, but for Home it is usually exact.
                     >
                       <Icon
-                        className={`group-[.active]:text-foreground size-6 ${
-                          child.isFill ? "group-[.active]:fill-foreground" : ""
-                        } `}
+                        className={`group-[.active]:text-foreground size-6 ${child.isFill ? "group-[.active]:fill-foreground" : ""
+                          } `}
                       />
                     </NavLink>
                   </Tooltip>

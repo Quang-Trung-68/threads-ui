@@ -13,7 +13,8 @@ import {
   User as UserIcon,
   Search as SearchIcon,
 } from "lucide-react";
-import PostDetail from "@/pages/PostDetail";
+import PostDetailOverlay from "@/pages/PostDetailOverlay";
+import UserProfileOverlay from "@/pages/UserProfileOverlay";
 import UserProfile from "@/pages/UserProfile";
 import Following from "@/pages/Following";
 import GhostPosts from "@/pages/GhostPosts";
@@ -27,7 +28,65 @@ import Embed from "./pages/Embed";
 import UserSettings from "@/pages/UserSettings";
 import Deck from "@/pages/Deck";
 
+// Shared Overlay Routes
+const overlayRoutes = [
+  {
+    path: "/:username/post/:postId",
+    title: "Post Detail Overlay",
+    element: PostDetailOverlay,
+    isShowInNav: false,
+    icon: null,
+    isFill: null,
+    private: false,
+  },
+  {
+    path: "/:username",
+    title: "User Profile Overlay",
+    element: UserProfileOverlay,
+    isShowInNav: false,
+    icon: null,
+    isFill: null,
+    private: false,
+  },
+];
+
 export const ROUTES = [
+  // 1. HOME Base Page + Overlays
+  {
+    layout: LAYOUTS.HOME,
+    basePath: "/", // Base path
+    props: { baseComponent: Home }, // Prop passed to Layout
+    children: [
+      ...overlayRoutes,
+    ],
+    // Nav info for Home
+    navItem: {
+      path: PATHS.HOME,
+      title: "home",
+      isShowInNav: true,
+      icon: HouseIcon,
+      isFill: true,
+    },
+  },
+  // 2. FOLLOWING Base Page + Overlays
+  {
+    layout: LAYOUTS.HOME, // Reuse Generic Layout
+    basePath: "/following",
+    props: { baseComponent: Following },
+    children: [
+      ...overlayRoutes,
+    ],
+  },
+  // 3. GHOST POSTS Base Page + Overlays
+  {
+    layout: LAYOUTS.HOME, // Reuse Generic Layout
+    basePath: "/ghost-posts",
+    props: { baseComponent: GhostPosts },
+    children: [
+      ...overlayRoutes,
+    ],
+  },
+
   {
     layout: LAYOUTS.DEFAULT,
     children: [
@@ -35,24 +94,6 @@ export const ROUTES = [
         path: PATHS.USER_SETTINGS,
         title: "User Settings",
         element: UserSettings,
-        isShowInNav: false,
-        icon: null,
-        isFill: null,
-        private: true,
-      },
-      {
-        path: PATHS.HOME,
-        title: "home",
-        element: Home,
-        isShowInNav: true,
-        icon: HouseIcon,
-        isFill: true,
-        private: false,
-      },
-      {
-        path: PATHS.POST_DETAIL,
-        title: "Post Detail",
-        element: PostDetail,
         isShowInNav: false,
         icon: null,
         isFill: null,

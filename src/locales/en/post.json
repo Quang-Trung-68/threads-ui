@@ -55,5 +55,8 @@
   "reportAnonymous": "Your report is anonymous. If someone is in immediate danger, call the local emergency services - don't wait.",
   "newThread": "New thread",
   "addToThread": "Add to thread",
-  "shareYourThoughts": "Share your thoughts..."
+  "shareYourThoughts": "Share your thoughts...",
+  "top": "Top",
+  "recent": "Recent",
+  "viewActivity": "View activity"
 }

@@ -140,13 +140,13 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
       <DialogContent
         aria-describedby={undefined}
         showCloseButton={false}
-        className="flex max-h-[85vh] w-full max-w-[600px] flex-col gap-0 overflow-hidden rounded-2xl bg-white p-0 text-black shadow-xl"
+        className="bg-background text-foreground flex max-h-[85vh] w-full max-w-[600px] flex-col gap-0 overflow-hidden rounded-2xl p-0 shadow-xl"
       >
         {/* --- Header --- */}
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b border-gray-200 px-4 py-3">
+        <DialogHeader className="border-border flex flex-row items-center justify-between space-y-0 border-b px-4 py-3">
           <Button
             variant="ghost"
-            className="h-auto cursor-pointer p-1 text-base font-normal text-black hover:bg-transparent"
+            className="text-foreground hover:bg-transparent h-auto cursor-pointer p-1 text-base font-normal"
             onClick={handleCancel}
           >
             {t("common:cancel")}
@@ -157,7 +157,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-auto cursor-pointer p-0 hover:bg-transparent"
+            className="hover:bg-transparent h-auto cursor-pointer p-0"
           >
             <MoreHorizontal className="h-6 w-6" />
           </Button>
@@ -175,7 +175,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
 
               {/* Đường kẻ dọc (Thread Line) */}
               <div
-                className="my-2 w-0.5 flex-1 bg-gray-300"
+                className="bg-border my-2 w-0.5 flex-1"
                 style={{ minHeight: "60px" }}
               ></div>
 
@@ -192,10 +192,6 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
                 <span className="text-[15px] font-semibold">
                   {usernameAuth}
                 </span>
-                <ChevronRight className="h-3.5 w-3.5" />
-                <button className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600">
-                  <span>{t("post:addTopic")}</span>
-                </button>
               </div>
 
               {/* Input Text */}
@@ -209,19 +205,19 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
               </div>
 
               {/* Action Icons */}
-              <div className="relative mb-4 flex gap-5 text-gray-400">
-                <ImageIcon className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                <FileText className="h-5 w-5 cursor-pointer hover:text-gray-700" />
+              <div className="text-muted-foreground relative mb-4 flex gap-5">
+                <ImageIcon className="hover:text-foreground h-5 w-5 cursor-pointer" />
+                <FileText className="hover:text-foreground h-5 w-5 cursor-pointer" />
                 <button
                   ref={emojiButtonRef}
                   onClick={() => setOpenEmoji((prev) => !prev)}
-                  className="cursor-pointer transition-colors hover:text-gray-700"
+                  className="hover:text-foreground cursor-pointer transition-colors"
                 >
                   <SmilePlus className="h-5 w-5" />
                 </button>
-                <AlignLeft className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                <Grid3x3 className="h-5 w-5 cursor-pointer hover:text-gray-700" />
-                <MapPin className="h-5 w-5 cursor-pointer hover:text-gray-700" />
+                <AlignLeft className="hover:text-foreground h-5 w-5 cursor-pointer" />
+                <Grid3x3 className="hover:text-foreground h-5 w-5 cursor-pointer" />
+                <MapPin className="hover:text-foreground h-5 w-5 cursor-pointer" />
 
                 {/* EMOJI PICKER */}
                 {openEmoji && (
@@ -249,7 +245,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
               </div>
 
               {/* --- Quoted Post (Embedded Content) --- */}
-              <div className="rounded-2xl border border-gray-300 bg-white p-3">
+              <div className="border-border rounded-2xl border p-3">
                 {/* Quoted Header */}
                 <div className="mb-2 flex items-center gap-2">
                   <UserAvatar
@@ -260,32 +256,25 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
                     className="h-6 w-6"
                   />
                   <span className="text-sm font-semibold">{username}</span>
-                  {/* <ChevronRight className="h-3 w-3 text-gray-400" />
-                  <span className="text-sm font-semibold">Nuôi Em</span> */}
-                  <span className="text-sm text-gray-400">
+                  <span className="text-muted-foreground text-sm">
                     {formatTime(updated_at)}
                   </span>
                 </div>
 
                 {/* Quoted Text */}
-                <div className="text-sm leading-relaxed text-gray-800">
+                <div className="text-sm leading-relaxed">
                   <textarea
                     ref={textareaContentRef}
                     readOnly
                     value={content}
-                    className="min-h-28 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="text-foreground min-h-28 w-full resize-none border-0 bg-transparent p-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   ></textarea>
-                  <p className="mb-1">
-                    <span className="text-blue-500">
-                      {t("common:translate")}
-                    </span>
-                  </p>
                 </div>
               </div>
               {/* End Quoted Post */}
 
               {/* Add to thread placeholder */}
-              <div className="mt-4 text-sm text-gray-400">
+              <div className="text-muted-foreground mt-4 text-sm">
                 {t("post:addToThread")}
               </div>
             </div>
@@ -293,7 +282,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
         </ScrollArea>
 
         {/* --- Footer --- */}
-        <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3">
+        <div className="border-border flex items-center justify-between border-t px-4 py-3">
           <ReplyOptionsDropdown
             replyQuote={replyQuote}
             setReplyQuote={setReplyQuote}
@@ -301,7 +290,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
             setReviewApprove={setReviewApprove}
           >
             <button
-              className={`flex cursor-pointer items-center gap-2 font-semibold ${reviewApprove ? "text-gray-900" : "text-gray-400"} `}
+              className={`flex cursor-pointer items-center gap-2 font-semibold ${reviewApprove ? "text-foreground" : "text-muted-foreground"} `}
             >
               <Grid3x3 className="h-4 w-4" />
               <span>{t("post:replyOptions")}</span>
@@ -309,7 +298,7 @@ const Modal = NiceModal.create(({ user, content, id: postId, updated_at }) => {
           </ReplyOptionsDropdown>
 
           <Button
-            className="cursor-pointer rounded-full bg-black px-6 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+            className="bg-foreground text-background hover:bg-foreground/90 cursor-pointer rounded-full px-6 py-2 text-sm font-semibold"
             onClick={handlePost}
             disabled={
               isQuotePostLoading ||

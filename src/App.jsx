@@ -10,7 +10,7 @@ function App() {
     <>
       <SplashScreen duration={1000} />
       <Toaster
-      expand={true}
+        expand={true}
         richColors
         position="bottom-center"
         toastOptions={{
@@ -23,22 +23,69 @@ function App() {
       <Routes>
         {ROUTES.map((router, index) => {
           const Layout = router.layout;
+          const basePath = router.basePath;
+          const layoutProps = router.props || {};
+
+          // If layout has a basePath, use it as the parent path
+          if (basePath) {
+            return (
+              <Route key={index} path={basePath} element={<Layout {...layoutProps} />}>
+
+                {router.children.map((child, childIndex) => {
+                  const Element = child.element;
+                  const isPrivate = child.private;
+
+                  if (!Element) return null;
+
+                  // Use relative path (remove leading /)
+                  const relativePath = child.path.startsWith('/')
+                    ? child.path.substring(1)
+                    : child.path;
+
+                  if (!isPrivate)
+                    return (
+                      <Route
+                        key={childIndex}
+                        path={relativePath}
+                        element={<Element />}
+                      />
+                    );
+                  return (
+                    <Route
+                      key={childIndex}
+                      path={relativePath}
+                      element={
+                        <ProtectedRoute>
+                          <Element />
+                        </ProtectedRoute>
+                      }
+                    />
+                  );
+                })}
+              </Route>
+            );
+          }
+
           return (
             <Route key={index} element={<Layout />}>
-              {router.children.map((child, index) => {
+              {router.children.map((child, childIndex) => {
                 const Element = child.element;
                 const isPrivate = child.private;
+
+                // Skip routes with null element (rendered directly in layout)
+                if (!Element) return null;
+
                 if (!isPrivate)
                   return (
                     <Route
-                      key={index}
+                      key={childIndex}
                       path={child.path}
                       element={<Element />}
                     />
                   );
                 return (
                   <Route
-                    key={index}
+                    key={childIndex}
                     path={child.path}
                     element={
                       <ProtectedRoute>

@@ -166,11 +166,10 @@ const InteractionBar = ({
         <div className="text-muted-foreground flex gap-4">
           <div
             onClick={handleRequireAuth}
-            className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 py-2 ${
-              interactionsCount.is_liked_by_auth
+            className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 py-2 ${interactionsCount.is_liked_by_auth
                 ? "text-red-500"
                 : "hover:bg-accent"
-            }`}
+              }`}
           >
             <MotionButton>
               <Tooltip label={t("tooltip:like")}>
@@ -201,11 +200,10 @@ const InteractionBar = ({
             <DropdownMenu modal={false} onOpenChange={setIsRepostOpen}>
               <DropdownMenuTrigger asChild>
                 <span
-                  className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
-                    interactionsCount.is_reposted_by_auth
+                  className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${interactionsCount.is_reposted_by_auth
                       ? "text-green-500"
                       : "hover:bg-accent"
-                  }`}
+                    }`}
                 >
                   <Tooltip label={isRepostOpen ? null : t("tooltip:repost")}>
                     <MotionButton>
@@ -278,11 +276,10 @@ const InteractionBar = ({
       <div className="text-muted-foreground flex gap-4">
         <div
           onClick={handleLikeCount}
-          className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${
-            interactionsCount.is_liked_by_auth
+          className={`likes_count hover:bg-accent flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 ${interactionsCount.is_liked_by_auth
               ? "text-red-500"
               : "hover:bg-accent"
-          }`}
+            }`}
         >
           <MotionButton>
             <Tooltip label={t("tooltip:like")}>
@@ -313,11 +310,10 @@ const InteractionBar = ({
           <DropdownMenu modal={false} onOpenChange={setIsRepostOpen}>
             <DropdownMenuTrigger asChild>
               <span
-                className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
-                  interactionsCount.is_reposted_by_auth
+                className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${interactionsCount.is_reposted_by_auth
                     ? "text-green-500"
                     : "hover:bg-accent"
-                }`}
+                  }`}
               >
                 <MotionButton>
                   <Tooltip label={isRepostOpen ? null : t("tooltip:repost")}>
