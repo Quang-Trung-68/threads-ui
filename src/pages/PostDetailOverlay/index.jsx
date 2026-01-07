@@ -80,7 +80,7 @@ export default function PostDetailOverlay() {
     const repliesData = replies?.data || [];
 
     return (
-        <div className="bg-background fixed inset-0 z-50 flex min-h-screen w-full flex-col overflow-y-auto">
+        <div className="bg-background fixed inset-0 z-[60] flex min-h-screen w-full flex-col overflow-y-auto pb-20">
             <div className="mx-auto flex w-full max-w-160 flex-col">
                 {/* Sticky Header Container */}
                 <div className="bg-background sticky top-0 z-50">

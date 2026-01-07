@@ -60,7 +60,7 @@ export default function Navigation() {
 
   return (
     <div className="z-100">
-      <nav className="bg-background fixed right-0 bottom-0 left-0 z-50 flex md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col md:p-2">
+      <nav className="bg-background fixed right-0 bottom-0 left-0 z-[70] flex md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col md:p-2">
         <div
           onClick={navigateToHome}
           className="hidden items-center md:flex md:flex-0 md:flex-col"

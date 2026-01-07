@@ -13,7 +13,7 @@ export default function AddPostButton() {
   return (
     <div
       onClick={handleClick}
-      className="border-border bg-card fixed right-6 bottom-6 z-50 hidden h-18 w-20 cursor-pointer items-center justify-center rounded-2xl border shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl md:flex"
+      className="border-border bg-card fixed right-6 bottom-6 z-[70] hidden h-18 w-20 cursor-pointer items-center justify-center rounded-2xl border shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl md:flex"
     >
       <Tooltip label={t("tooltip:create")}>
         <Plus size={28} className="text-foreground" strokeWidth={2.5} />
