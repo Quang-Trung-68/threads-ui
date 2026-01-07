@@ -84,6 +84,7 @@ const Modal = NiceModal.create(
     return (
       <Dialog open={modal.visible} onOpenChange={handleCancel}>
         <DialogContent
+          aria-describedby={undefined}
           showCloseButton={false}
           className="max-w-[650px] gap-0 overflow-hidden rounded-3xl border-none bg-[#fafafa] p-1 shadow-2xl"
         >
@@ -163,7 +164,7 @@ const Modal = NiceModal.create(
   },
 );
 
-export const GetEmbedCodeModal = {
+export const EmbedModal = {
   open: (props) => NiceModal.show(Modal, props),
   close: () => NiceModal.hide(Modal),
 };

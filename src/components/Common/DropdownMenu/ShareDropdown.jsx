@@ -8,7 +8,7 @@ import {
 } from "../ui/dropdown-menu";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { CopyAsImageModal } from "@/components/post/CopyAsImageModal";
-import { GetEmbedCodeModal } from "@/components/post/GetEmbedCodeModal";
+import { EmbedModal } from "@/components/post/EmbedModal";
 
 const ShareDropdown = ({
   id,
@@ -37,8 +37,8 @@ const ShareDropdown = ({
     });
   };
 
-  const handleGetEmbedCodeModal = () => {
-    GetEmbedCodeModal.open({
+  const handleEmbedModal = () => {
+    EmbedModal.open({
       id,
       user,
       content,
@@ -84,7 +84,7 @@ const ShareDropdown = ({
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               showIcon={false}
-              onClick={handleGetEmbedCodeModal}
+              onClick={handleEmbedModal}
             >
               <span>Get embed code</span>
               <span>
