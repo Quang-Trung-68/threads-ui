@@ -14,6 +14,7 @@ import { useCreateReplyMutation } from "@/services/postService";
 import { notifySooner } from "@/utils/notifySooner";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "../../Tooltip";
+import { Button } from "../../ui/button";
 
 const QuickReplyModal = forwardRef(
   ({ id, user, content, updated_at, setIsReplyOpen }, ref) => {
@@ -103,7 +104,7 @@ const QuickReplyModal = forwardRef(
 
                     <div className="body mt-1 flex items-center justify-between text-sm">
                       <div className="flex-1">
-                        <Textarea
+                        <textarea
                           ref={textareaRef}
                           value={replyText}
                           onChange={handleInput}
@@ -125,15 +126,19 @@ const QuickReplyModal = forwardRef(
                             <ExpandIcon className="size-4 stroke-[2.5]" />
                           </div>
                         </Tooltip>
-                        {replyText && (
+                        {replyText.trim() && (
                           <Tooltip label={t("tooltip:reply")}>
-                            <div
+                            <Button
                               onClick={handleQuickPost}
-                              disable={isCreateReplyLoading}
+                              disabled={
+                                isCreateReplyLoading ||
+                                !replyText.trim() ||
+                                replyText.length > 500
+                              }
                               className="bg-foreground text-background flex size-8 cursor-pointer items-center justify-center rounded-full shadow-sm transition-all hover:scale-110"
                             >
                               <SendReplyIcon className="size-4 stroke-[2.5]" />
-                            </div>
+                            </Button>
                           </Tooltip>
                         )}
                       </div>
