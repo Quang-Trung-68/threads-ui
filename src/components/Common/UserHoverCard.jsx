@@ -23,7 +23,7 @@ function UserHoverCard({
   return (
     <HoverCard delay={500}>
       <HoverCardTrigger asChild>
-        <span>{children}</span>
+        {children}
       </HoverCardTrigger>
       <HoverCardContent className="w-80 rounded-2xl p-6">
         <div className="space-y-4">
